@@ -103,19 +103,28 @@
         <div id="playlists-grid" class="grid grid-cols-2 md:grid-cols-3 gap-8"></div>
     </div>
 
-    <!-- DONATE MODAL (psychological pull + frictionless) -->
+    <!-- FLOATING DONATE BUTTON -->
+    <div onclick="showDonateModal()" class="fixed bottom-8 right-8 bg-white shadow-2xl border border-[#f0f0f0] rounded-3xl px-7 py-5 flex items-center gap-x-4 cursor-pointer hover:scale-105 z-50">
+        <i class="fa-solid fa-mug-hot text-3xl text-[#f0d9c8]"></i>
+        <div>
+            <div class="text-sm font-medium">Loving Mood?</div>
+            <div class="text-xs text-[#6b6b70]">Support keeps it ad-free and beautiful</div>
+        </div>
+    </div>
+
+    <!-- DONATE MODAL (R100+ with copy button) -->
     <div onclick="if(event.target.id==='donate-modal')hideDonateModal()" id="donate-modal" class="hidden fixed inset-0 bg-black/70 flex items-center justify-center z-[9999]">
         <div class="modal bg-white rounded-3xl max-w-md w-full mx-4 p-10 text-center">
             <div class="text-7xl mb-6">🌫️</div>
             <h3 class="heading text-4xl mb-3">Thank you for being here</h3>
-            <p class="text-[#6b6b70]">If Mood helped you feel something real tonight, a small donation keeps this alive for everyone.</p>
+            <p class="text-[#6b6b70]">Mood was made so you never have to doom-scroll again. If it helped you feel something real tonight, a small donation keeps this alive.</p>
             
             <div class="my-8">
-                <input id="donate-amount" type="text" placeholder="R100" class="w-full text-4xl text-center font-medium border border-[#e5e5e5] rounded-3xl py-6 focus:outline-none focus:border-[#a8c4b8]">
+                <input id="donate-amount" type="text" value="100" class="w-full text-5xl text-center font-medium border border-[#e5e5e5] rounded-3xl py-6 focus:outline-none focus:border-[#a8c4b8]">
+                <p class="text-xs text-[#6b6b70] mt-2">Minimum R100 • Any amount helps</p>
             </div>
 
             <button onclick="processDonation()" class="w-full py-6 bg-[#1c1c1e] text-white rounded-3xl text-lg">Continue with donation</button>
-            
             <p onclick="hideDonateModal()" class="text-xs text-[#6b6b70] mt-6 cursor-pointer">No pressure — thank you for using Mood ❤️</p>
         </div>
     </div>
@@ -126,7 +135,7 @@
     </footer>
 
     <script>
-        // Particle splashes (visible pastel pops)
+        // Particle splashes
         const canvas = document.getElementById('particle-canvas');
         const ctx = canvas.getContext('2d');
         let particles = [];
@@ -275,7 +284,7 @@
         function processDonation() {
             const amount = document.getElementById('donate-amount').value || "100";
             hideDonateModal();
-            alert(`Thank you for donating R${amount}. \n\nAccount: Alex Tresor\nDiscovery Bank Savings\n19364635421\nBranch: 679000\n\nCopy the details above and send it. We are truly grateful.`);
+            alert(`Thank you for donating R${amount}.\n\nAccount: Alex Tresor\nDiscovery Bank Savings\n19364635421\nBranch: 679000\n\nCopy the details above and send it. We are truly grateful.`);
         }
 
         function navigateTo(page) {
@@ -325,7 +334,7 @@
                 bg.style.setProperty('--mouse-y', `${y}%`);
             });
             if (!userProfile.loggedIn) setTimeout(showProfileModal, 800);
-            console.log('%c🌫️ mood v8 — final luxury neuroscience edition', 'color:#a8c4b8; font-size:14px');
+            console.log('%c🌫️ mood v9 — final luxury version with donate modal', 'color:#a8c4b8; font-size:14px');
         };
     </script>
 </body>
