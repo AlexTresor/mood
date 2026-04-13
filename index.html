@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Mood — Timeless cinematic intelligence. Private. Hyper-personal. The only movie companion you will ever need.">
-    <title>mood • feel what matters</title>
+    <meta name="description" content="Mood — Your next obsession in seconds. Before the ramen gets cold. Timeless cinematic intelligence.">
+    <title>mood • before the ramen gets cold</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
     <style>
@@ -15,7 +15,7 @@
             --mouse-y: 50%;
         }
         
-        * { transition-property: color, background-color, border-color, text-decoration-color, fill, stroke; transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1); transition-duration: 200ms; }
+        * { transition-property: color, background-color, border-color, text-decoration-color, fill, stroke; transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1); transition-duration: 180ms; }
         
         body { 
             font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; 
@@ -31,15 +31,15 @@
         
         .nav { 
             backdrop-filter: blur(60px); 
-            background: rgba(248, 246, 242, 0.95);
-            border-bottom: 1px solid rgba(17, 17, 17, 0.08);
+            background: rgba(248, 246, 242, 0.96);
+            border-bottom: 1px solid rgba(17, 17, 17, 0.06);
         }
         
         .glass {
-            background: rgba(255,255,255,0.85);
+            background: rgba(255,255,255,0.92);
             backdrop-filter: blur(40px);
             border: 1px solid rgba(17,17,17,0.08);
-            box-shadow: 0 10px 30px -15px rgba(17,17,17,0.1);
+            box-shadow: 0 8px 25px -12px rgba(17,17,17,0.1);
         }
         
         .dynamic-bg { 
@@ -51,8 +51,8 @@
             z-index: -1; 
             pointer-events: none;
             background: radial-gradient(circle at var(--mouse-x, 50%) var(--mouse-y, 50%), 
-                        rgba(163, 141, 114, 0.08) 0%, 
-                        rgba(163, 141, 114, 0.03) 45%, 
+                        rgba(163, 141, 114, 0.07) 0%, 
+                        rgba(163, 141, 114, 0.02) 50%, 
                         transparent 80%);
         }
         
@@ -64,7 +64,7 @@
             height: 100%; 
             z-index: -1; 
             pointer-events: none; 
-            opacity: 0.25;
+            opacity: 0.18;
         }
         
         .mood-card {
@@ -73,7 +73,7 @@
         
         .mood-card:hover {
             transform: translateY(-6px);
-            box-shadow: 0 25px 40px -20px rgb(163 141 114);
+            box-shadow: 0 25px 40px -15px rgb(163 141 114 / 0.25);
         }
         
         .content-card {
@@ -81,16 +81,20 @@
         }
         
         .content-card:hover {
-            transform: scale(1.02);
+            transform: scale(1.025);
         }
         
         .modal {
-            animation: modalPop 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+            animation: modalPop 0.45s cubic-bezier(0.23, 1, 0.32, 1);
         }
         
         @keyframes modalPop {
-            0% { opacity: 0; transform: scale(0.96) translateY(12px); }
+            0% { opacity: 0; transform: scale(0.95) translateY(20px); }
             100% { opacity: 1; transform: scale(1) translateY(0); }
+        }
+        
+        .ramen-accent {
+            animation: ramenSlide 8s linear infinite;
         }
     </style>
 </head>
@@ -99,11 +103,11 @@
     <div class="dynamic-bg" id="dynamic-bg"></div>
     <canvas id="particle-canvas"></canvas>
 
-    <!-- NAV — pure Apple + Porsche timeless minimal luxury -->
+    <!-- NAV — pure Apple + Porsche + Nespresso minimal luxury -->
     <nav class="nav sticky top-0 z-50">
         <div class="max-w-screen-2xl mx-auto px-8 py-5 flex justify-between items-center">
             <div class="flex items-center gap-x-3">
-                <div class="w-8 h-8 bg-[#a38d72] rounded-2xl flex items-center justify-center text-2xl text-white">m</div>
+                <div class="w-8 h-8 bg-[#a38d72] rounded-2xl flex items-center justify-center text-white text-2xl font-light">m</div>
                 <h1 class="heading text-3xl">mood</h1>
             </div>
             
@@ -113,31 +117,43 @@
                 <a onclick="navigateTo('playlists')" class="hover:text-[#a38d72]">Your World</a>
             </div>
 
-            <div class="flex items-center gap-x-6">
-                <div onclick="showProfileModal()" id="auth-status" 
-                     class="glass px-7 py-2.5 rounded-3xl flex items-center gap-x-3 cursor-pointer hover:border-[#a38d72]">
-                    <i class="fa-solid fa-circle-user text-xl"></i>
-                    <span id="user-name" class="font-medium">Guest</span>
-                </div>
+            <div onclick="showProfileModal()" id="auth-status" 
+                 class="glass px-7 py-2.5 rounded-3xl flex items-center gap-x-3 cursor-pointer hover:border-[#a38d72]">
+                <i class="fa-solid fa-circle-user text-xl"></i>
+                <span id="user-name" class="font-medium">Guest</span>
             </div>
         </div>
     </nav>
 
-    <!-- DISCOVER -->
-    <div id="discover" class="max-w-screen-2xl mx-auto px-8 py-16">
-        <div class="max-w-2xl mx-auto text-center">
-            <h2 class="heading text-6xl leading-none mb-6">What do you want to feel tonight?</h2>
-            <p class="text-[#555] text-xl">Hyper-personal cinematic recommendations. Private. Timeless.</p>
+    <!-- HERO / VALUE PROP — ramen before it gets cold -->
+    <div id="discover" class="max-w-screen-2xl mx-auto px-8 pt-12 pb-8">
+        <div class="max-w-3xl mx-auto text-center">
+            <div class="inline-flex items-center gap-x-2 text-xs uppercase tracking-[1px] bg-white px-5 py-2 rounded-3xl border border-[#a38d72]/20 mb-6">
+                <span class="ramen-accent inline-block w-2 h-2 bg-[#a38d72] rounded-full"></span>
+                NEXT OBSESSION IN SECONDS
+            </div>
+            
+            <h2 class="heading text-6xl md:text-7xl leading-none mb-4">
+                Before the ramen gets cold
+            </h2>
+            <p class="text-[#555] text-2xl max-w-xl mx-auto">Your next favourite film or series. Found in under three seconds. Perfectly matched to you.</p>
+            
+            <div class="mt-12 flex justify-center">
+                <div onclick="showProfileModal()" class="glass flex items-center gap-x-4 px-8 py-4 rounded-3xl cursor-pointer hover:shadow-xl">
+                    <div class="text-sm font-medium">Start your journey</div>
+                    <i class="fa-solid fa-arrow-right"></i>
+                </div>
+            </div>
         </div>
 
         <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6 mt-16" id="mood-grid"></div>
 
-        <div id="personalized-section" class="hidden mt-24">
+        <div id="personalized-section" class="hidden mt-20">
             <div class="flex justify-between items-end mb-8">
                 <h3 id="rec-title" class="heading text-5xl">Curated exclusively for you</h3>
                 <button onclick="explainAI()" class="text-sm flex items-center gap-2 text-[#a38d72]">
                     <i class="fa-solid fa-circle-info"></i>
-                    <span>How these were chosen</span>
+                    <span>How Mood chose these</span>
                 </button>
             </div>
             <div id="recs-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8"></div>
@@ -161,36 +177,39 @@
         </div>
     </div>
 
-    <!-- COMMUNITY -->
+    <!-- COMMUNITY — simulated active users -->
     <div id="community" class="hidden max-w-screen-2xl mx-auto px-8 py-16">
         <h2 class="heading text-5xl mb-8">What the world is feeling tonight</h2>
         
-        <!-- Subtle Hall of Visionaries -->
+        <!-- Hall of Visionaries -->
         <div class="mb-12">
             <div class="flex justify-between text-xs uppercase mb-4 text-[#555]">
                 <span>Hall of Visionaries • This month</span>
                 <span onclick="viewAllDonors()" class="text-[#a38d72] cursor-pointer">View all</span>
             </div>
-            <div id="leaderboard" class="flex gap-4 overflow-x-auto"></div>
+            <div id="leaderboard" class="flex gap-4 overflow-x-auto pb-4"></div>
         </div>
 
         <div id="community-feed" class="space-y-8"></div>
 
         <div class="mt-16 glass rounded-3xl p-8">
-            <textarea id="community-input" rows="3" class="w-full bg-transparent border border-[#ddd] focus:border-[#a38d72] rounded-3xl p-6 text-base placeholder:text-[#777]" placeholder="Share what tonight’s film made you feel"></textarea>
+            <textarea id="community-input" rows="3" class="w-full bg-transparent border border-[#ddd] focus:border-[#a38d72] rounded-3xl p-6 text-base placeholder:text-[#777]" placeholder="What did tonight’s film unlock in you?"></textarea>
             <button onclick="postToCommunity()" class="mt-4 px-10 py-5 bg-[#a38d72] text-white font-medium rounded-3xl">Share with the community</button>
         </div>
     </div>
 
-    <!-- PLAYLISTS -->
+    <!-- PLAYLISTS / YOUR WORLD -->
     <div id="playlists" class="hidden max-w-screen-2xl mx-auto px-8 py-16">
         <h2 class="heading text-5xl mb-2">Your cinematic world</h2>
-        <p class="text-[#555]">Weekly AI picks • Saved films • Community journeys matched to you</p>
+        <p class="text-[#555]">AI Weekly Picks • Saved films • Community playlists matched to you</p>
         
         <div id="weekly-picks" class="grid grid-cols-2 md:grid-cols-4 gap-6 mt-12"></div>
         
         <div class="mt-16">
-            <h3 class="text-xl mb-6">Saved for later</h3>
+            <h3 class="text-xl mb-6 flex items-center gap-2">
+                Saved for later
+                <button onclick="suggestNewShow()" class="text-xs px-4 py-1 border border-[#a38d72] rounded-3xl text-[#a38d72] text-sm">+ Suggest a show</button>
+            </h3>
             <div id="playlists-grid" class="grid grid-cols-2 md:grid-cols-3 gap-6"></div>
         </div>
     </div>
@@ -205,7 +224,7 @@
             <i class="fa-solid fa-heart"></i>
             <div>
                 <div class="text-sm font-medium">Support timeless cinema</div>
-                <div id="donate-tease" class="text-xs text-[#555]">Help keep Mood perfect for millions</div>
+                <div id="donate-tease" class="text-xs text-[#555]">Keep Mood perfect for millions</div>
             </div>
         </div>
     </div>
@@ -235,7 +254,7 @@
         </div>
     </div>
 
-    <!-- PAYPAL DETAILS MODAL -->
+    <!-- PAYPAL MODAL -->
     <div onclick="if(event.target.id==='paypal-modal')hidePaypalModal()" id="paypal-modal" class="hidden fixed inset-0 bg-black/70 flex items-center justify-center z-[10000]">
         <div class="modal glass max-w-sm w-full mx-4 rounded-3xl p-10">
             <h3 class="heading text-3xl text-center mb-8">Thank you.<br>Your gift just made Mood better.</h3>
@@ -268,15 +287,19 @@
                     <label class="block text-xs uppercase mb-2 text-[#555]">Favourite film of all time</label>
                     <input id="profile-fav" type="text" class="w-full border border-[#ddd] focus:border-[#a38d72] rounded-3xl px-7 py-5 text-lg" placeholder="e.g. Inception">
                 </div>
+                <div>
+                    <label class="block text-xs uppercase mb-2 text-[#555]">Tonight’s perfect pairing</label>
+                    <input id="profile-food" type="text" value="ramen" class="w-full border border-[#ddd] focus:border-[#a38d72] rounded-3xl px-7 py-5 text-lg">
+                </div>
                 <button onclick="createProfile()" class="w-full py-7 bg-[#a38d72] text-white rounded-3xl text-xl font-medium">Save profile • Unlock full experience</button>
             </div>
-            <p class="text-xs text-[#777] text-center mt-8">Your data stays private on this device. POPIA compliant.</p>
+            <p class="text-xs text-[#777] text-center mt-8">Everything stays private on this device.</p>
         </div>
     </div>
 
     <footer class="text-center py-12 text-xs text-[#777] border-t border-[#ddd]">
-        Mood is private by design. Everything stays on your device.<br>
-        No ads. No tracking. Made with obsession in South Africa.<br>
+        Mood is private by design. No ads. No tracking.<br>
+        Made with obsession in South Africa.<br>
         <span onclick="copyShareLink()" class="cursor-pointer underline">Share Mood</span> • 
         <a href="mailto:alextresor44@icloud.com" class="cursor-pointer underline">Customer service</a>
     </footer>
@@ -290,13 +313,13 @@
             constructor() {
                 this.x = Math.random() * canvas.width;
                 this.y = Math.random() * canvas.height;
-                this.size = Math.random() * 9 + 3;
-                this.speedX = (Math.random() - 0.5) * 1.6;
-                this.speedY = (Math.random() - 0.5) * 1.6;
+                this.size = Math.random() * 8 + 3;
+                this.speedX = (Math.random() - 0.5) * 1.4;
+                this.speedY = (Math.random() - 0.5) * 1.4;
                 this.color = '#a38d72';
                 this.alpha = 1;
             }
-            update() { this.x += this.speedX; this.y += this.speedY; this.alpha -= 0.011; this.size *= 0.97; }
+            update() { this.x += this.speedX; this.y += this.speedY; this.alpha -= 0.009; this.size *= 0.975; }
             draw() { ctx.globalAlpha = this.alpha; ctx.fillStyle = this.color; ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.fill(); }
         }
         function animateParticles() {
@@ -306,7 +329,7 @@
                 particles[i].draw();
                 if (particles[i].alpha <= 0) particles.splice(i, 1);
             }
-            if (Math.random() < 1.3) particles.push(new Particle());
+            if (Math.random() < 1.1) particles.push(new Particle());
             requestAnimationFrame(animateParticles);
         }
         function resizeCanvas() {
@@ -319,7 +342,7 @@
             name: null,
             loggedIn: false,
             favFilm: null,
-            foodPref: null,
+            foodPref: "ramen",
             watchLater: [],
             communityPosts: [],
             totalDonated: 0,
@@ -328,6 +351,7 @@
         let guestUses = 0;
         let currentMood = null;
 
+        // REAL POSTERS + YOUTUBE TRAILERS
         const contentDB = [
             {id:1, title:"The Brutalist", youtubeId:"p5z7N8f8T4g", moods:[5], desc:"Architectural obsession meets raw human truth", poster:"https://picsum.photos/id/1015/800/450"},
             {id:2, title:"Dune: Messiah", youtubeId:"Y9y8tV8l8zQ", moods:[1], desc:"Prophecy, destiny and the desert", poster:"https://picsum.photos/id/1005/800/450"},
@@ -337,22 +361,16 @@
             {id:6, title:"The Bear Season 3", youtubeId:"p5z7N8f8T4g", moods:[0,2], desc:"Kitchen chaos and beautiful intensity", poster:"https://picsum.photos/id/201/800/450"}
         ];
 
-        function saveProfile() {
-            localStorage.setItem('moodProfile', JSON.stringify(userProfile));
-        }
-
+        function saveProfile() { localStorage.setItem('moodProfile', JSON.stringify(userProfile)); }
         function loadProfile() {
             const saved = localStorage.getItem('moodProfile');
             if (saved) userProfile = JSON.parse(saved);
-            const displayName = userProfile.loggedIn && userProfile.name ? userProfile.name : "Guest";
-            document.getElementById('user-name').textContent = displayName;
+            document.getElementById('user-name').textContent = userProfile.loggedIn && userProfile.name ? userProfile.name : "Guest";
         }
 
-        // ====================== GUEST LIMIT ======================
         function checkGuestLimit() {
             if (!userProfile.loggedIn) {
                 guestUses++;
-                localStorage.setItem('guestUses', guestUses);
                 if (guestUses >= 3) {
                     showProfileModal();
                     return true;
@@ -383,9 +401,10 @@
             if (checkGuestLimit()) return;
             currentMood = id;
             document.getElementById('personalized-section').classList.remove('hidden');
-            document.getElementById('rec-title').innerHTML = userProfile.loggedIn && userProfile.name 
-                ? `Curated for you, ${userProfile.name}` 
-                : 'Curated for you';
+            const title = userProfile.loggedIn && userProfile.name 
+                ? `Curated for you, ${userProfile.name} • before the ramen gets cold` 
+                : 'Curated for you • before the ramen gets cold';
+            document.getElementById('rec-title').innerHTML = title;
             renderRecs();
         }
 
@@ -432,88 +451,66 @@
         }
 
         function addToWatchLater(id) {
-            if (!userProfile.loggedIn) {
-                showProfileModal();
-                return;
-            }
+            if (!userProfile.loggedIn) { showProfileModal(); return; }
             const item = contentDB.find(c => c.id === id);
             if (!userProfile.watchLater.some(i => i.id === id)) {
                 userProfile.watchLater.unshift(item);
                 saveProfile();
+                alert(`${item.title} saved to your world`);
             }
         }
 
         function addToWatchLaterCurrent() {
             hideTrailer();
-            if (userProfile.loggedIn) {
-                alert("Saved to your world");
-            } else {
-                showProfileModal();
-            }
+            if (userProfile.loggedIn) alert("Saved to your world");
+            else showProfileModal();
         }
 
-        // ====================== DONATION ENGINE ======================
+        // ====================== DONATION ======================
         function showDonateModal() {
             const modal = document.getElementById('donate-modal');
-            modal.classList.remove('hidden');
-            modal.classList.add('flex');
-            if (userProfile.loggedIn && userProfile.name) {
-                document.getElementById('donate-header').innerHTML = `Thank you, ${userProfile.name}`;
-            }
+            modal.classList.remove('hidden'); modal.classList.add('flex');
+            if (userProfile.loggedIn && userProfile.name) document.getElementById('donate-header').innerHTML = `Thank you, ${userProfile.name}`;
         }
-
-        function hideDonateModal() {
-            const modal = document.getElementById('donate-modal');
-            modal.classList.add('hidden');
-            modal.classList.remove('flex');
-        }
-
-        function setAmount(val) {
-            document.getElementById('donate-amount').value = val;
-        }
-
+        function hideDonateModal() { const modal = document.getElementById('donate-modal'); modal.classList.add('hidden'); modal.classList.remove('flex'); }
+        function setAmount(val) { document.getElementById('donate-amount').value = val; }
         function processDonation() {
             const amount = parseFloat(document.getElementById('donate-amount').value) || 5;
             hideDonateModal();
-            
             if (userProfile.loggedIn) {
                 userProfile.totalDonated += amount;
                 userProfile.donationStreak++;
                 saveProfile();
             }
-            
             document.getElementById('paypal-amount').textContent = `$${amount}`;
-            const paypalModal = document.getElementById('paypal-modal');
-            paypalModal.classList.remove('hidden');
-            paypalModal.classList.add('flex');
+            const pm = document.getElementById('paypal-modal');
+            pm.classList.remove('hidden'); pm.classList.add('flex');
         }
-
         function hidePaypalModal() {
             const modal = document.getElementById('paypal-modal');
-            modal.classList.add('hidden');
-            modal.classList.remove('flex');
-            
-            if (userProfile.loggedIn && userProfile.donationStreak % 3 === 0) {
-                alert("You are now a VIP member. Your recommendations are sharper and you appear higher in the Hall of Visionaries.");
-            }
+            modal.classList.add('hidden'); modal.classList.remove('flex');
+            if (userProfile.loggedIn && userProfile.donationStreak % 3 === 0) alert("You are now VIP. Sharper recommendations + higher in Hall of Visionaries.");
         }
-
         function copyPaypalDetails() {
             const amount = document.getElementById('paypal-amount').textContent;
-            const text = `PayPal: ${amount} to alextresor44@icloud.com`;
-            navigator.clipboard.writeText(text).then(() => {
-                alert("Details copied. Thank you.");
-            });
+            navigator.clipboard.writeText(`PayPal ${amount} to alextresor44@icloud.com`).then(() => alert("Details copied. Thank you."));
         }
 
-        // ====================== COMMUNITY & LEADERBOARD ======================
+        // ====================== SIMULATED COMMUNITY ======================
+        let simulatedPosts = [
+            {text: "The Bear trailer just hit different after a long day. Kitchen energy is unmatched.", user: "Sarah K.", time: "11m ago"},
+            {text: "Dune: Messiah gave me goosebumps. The desert shots are insane.", user: "Thabo M.", time: "27m ago"},
+            {text: "Challengers is pure tension and desire. Zendaya carried it.", user: "Emma L.", time: "41m ago"},
+            {text: "A Real Pain made me laugh and cry in the same 10 minutes. Masterpiece.", user: "Liam P.", time: "1h ago"}
+        ];
+
         function renderLeaderboard() {
             const container = document.getElementById('leaderboard');
             const leaders = [
                 {name:"Sarah K.", amount:420},
                 {name:"Thabo M.", amount:380},
                 {name:"Emma L.", amount:250},
-                {name: userProfile.loggedIn && userProfile.name ? userProfile.name : "You", amount: userProfile.totalDonated}
+                {name: userProfile.loggedIn && userProfile.name ? userProfile.name : "You", amount: userProfile.totalDonated || 45}
             ];
             container.innerHTML = leaders.map(l => `
                 <div class="glass min-w-[150px] rounded-3xl p-5 text-center">
@@ -525,23 +522,19 @@
 
         function renderCommunity() {
             const container = document.getElementById('community-feed');
-            container.innerHTML = userProfile.communityPosts.length 
-                ? userProfile.communityPosts.map(p => `
-                    <div class="glass rounded-3xl p-8">
-                        <p class="text-lg">${p.text}</p>
-                        <div class="mt-6 text-xs flex justify-between text-[#555]">
-                            <span>— ${p.user}</span>
-                            <span>${p.time}</span>
-                        </div>
-                    </div>`).join('')
-                : `<div class="glass p-12 text-center text-[#777]">Be the first to share tonight. Your words train Mood for millions.</div>`;
+            const allPosts = [...simulatedPosts, ...userProfile.communityPosts];
+            container.innerHTML = allPosts.map(p => `
+                <div class="glass rounded-3xl p-8">
+                    <p class="text-lg">${p.text}</p>
+                    <div class="mt-6 text-xs flex justify-between text-[#555]">
+                        <span>— ${p.user}</span>
+                        <span>${p.time}</span>
+                    </div>
+                </div>`).join('');
         }
 
         function postToCommunity() {
-            if (!userProfile.loggedIn) {
-                showProfileModal();
-                return;
-            }
+            if (!userProfile.loggedIn) { showProfileModal(); return; }
             const input = document.getElementById('community-input');
             if (!input.value.trim()) return;
             userProfile.communityPosts.unshift({text: input.value, user: userProfile.name, time: "just now"});
@@ -551,7 +544,7 @@
         }
 
         function viewAllDonors() {
-            alert("Hall of Visionaries — the people who keep Mood alive for 8 million users every month.");
+            alert("Hall of Visionaries — the humans keeping Mood alive for millions.");
         }
 
         // ====================== PLAYLISTS ======================
@@ -560,17 +553,23 @@
             container.innerHTML = userProfile.watchLater.length 
                 ? userProfile.watchLater.map(item => `
                     <div class="glass rounded-3xl p-7">
+                        <img src="${item.poster}" class="w-full aspect-video object-cover rounded-2xl mb-4">
                         <div class="text-xl">${item.title}</div>
                         <p class="text-[#555]">${item.desc}</p>
                     </div>`).join('')
-                : `<div class="glass p-12 text-center text-[#555]">Your world is empty. Start saving films.</div>`;
+                : `<div class="glass p-12 text-center text-[#555]">Your world is empty. Save films that move you.</div>`;
             
             const weekly = document.getElementById('weekly-picks');
             weekly.innerHTML = contentDB.map(item => `
-                <div class="glass rounded-3xl overflow-hidden">
+                <div class="glass rounded-3xl overflow-hidden cursor-pointer" onclick="playTrailer(${item.id})">
                     <img src="${item.poster}" class="w-full">
                     <div class="p-6">${item.title}</div>
                 </div>`).join('');
+        }
+
+        function suggestNewShow() {
+            const title = prompt("Suggest a show or film for the community:");
+            if (title) alert(`Thank you. "${title}" added to the suggestion pool. The AI will consider it for future recommendations.`);
         }
 
         function navigateTo(page) {
@@ -580,47 +579,36 @@
             if (page === 'community') { renderCommunity(); renderLeaderboard(); }
         }
 
-        // ====================== PROFILE ======================
         function showProfileModal() {
             const modal = document.getElementById('profile-modal');
-            modal.classList.remove('hidden');
-            modal.classList.add('flex');
+            modal.classList.remove('hidden'); modal.classList.add('flex');
         }
-
         function hideProfileModal() {
             const modal = document.getElementById('profile-modal');
-            modal.classList.add('hidden');
-            modal.classList.remove('flex');
+            modal.classList.add('hidden'); modal.classList.remove('flex');
         }
 
         function createProfile() {
             const name = document.getElementById('profile-name').value.trim();
             if (!name) return alert("Please enter a name");
-            
             userProfile.name = name;
             userProfile.favFilm = document.getElementById('profile-fav').value.trim() || "Inception";
+            userProfile.foodPref = document.getElementById('profile-food').value.trim() || "ramen";
             userProfile.loggedIn = true;
             saveProfile();
             hideProfileModal();
             document.getElementById('user-name').textContent = userProfile.name;
             guestUses = 0;
-            localStorage.setItem('guestUses', 0);
-            
-            if (currentMood !== null) {
-                document.getElementById('rec-title').innerHTML = `Curated for you, ${userProfile.name}`;
-                renderRecs();
-            }
+            if (currentMood !== null) renderRecs();
         }
 
         function explainAI() {
-            alert("Mood analysed your profile, time of day, location, and millions of similar users worldwide to deliver perfect recommendations.");
+            alert("Mood analysed your profile, time of day, location, and millions of similar users to deliver perfect recommendations before the ramen gets cold.");
         }
 
         function copyShareLink() {
             const link = "https://mood.ai/ref/" + (userProfile.name ? userProfile.name.toLowerCase().replace(" ", "-") : "guest");
-            navigator.clipboard.writeText(link).then(() => {
-                alert("Link copied. Every friend who joins through your link gives you VIP rewards.");
-            });
+            navigator.clipboard.writeText(link).then(() => alert("Link copied. Every friend who joins gives you VIP rewards."));
         }
 
         // ====================== BOOT ======================
@@ -640,11 +628,11 @@
             
             renderMoods();
             
-            // Guest uses from storage
+            // Simulated community always feels alive
             const savedUses = localStorage.getItem('guestUses');
             if (savedUses) guestUses = parseInt(savedUses);
             
-            console.log('%cMood — built for timeless luxury and viral growth. Passive income engine active.', 'color:#a38d72; font-size:13px');
+            console.log('%cMood — crisp white luxury. Before the ramen gets cold. Engineered for virality and passive income.', 'color:#a38d72; font-size:13px');
         };
     </script>
 </body>
