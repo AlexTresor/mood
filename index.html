@@ -8,17 +8,18 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=Space+Grotesk:wght@500;600&display=swap');
-        body { font-family: 'Inter', system-ui, sans-serif; background: #ffffff; overflow-x: hidden; }
+        body { font-family: 'Inter', system-ui, sans-serif; background: #ffffff; }
         .heading { font-family: 'Space Grotesk', sans-serif; letter-spacing: -2px; }
-        .nav { backdrop-filter: blur(24px); }
-        .dynamic-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: -1;
-            background: radial-gradient(circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(168,196,184,0.12) 0%, rgba(209,196,233,0.09) 50%, transparent 80%); }
-        canvas#particle-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: -1; opacity: 0.9; }
-        .mood-card, .content-card { transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1); }
-        .mood-card:hover { transform: translateY(-8px); box-shadow: 0 40px 80px -20px rgb(168 196 184 / 0.25); }
+        .nav { backdrop-filter: blur(32px); }
+        .dynamic-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none;
+            background: radial-gradient(circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(168,196,184,0.15) 0%, rgba(209,196,233,0.1) 40%, transparent 70%); }
+        canvas#particle-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; opacity: 0.75; }
+        .mood-card { transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1); }
+        .mood-card:hover { transform: translateY(-12px); box-shadow: 0 50px 80px -25px rgb(168 196 184 / 0.3); }
+        .content-card { transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1); }
         .content-card:hover { transform: scale(1.04); }
-        .modal { animation: modalPop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1); }
-        @keyframes modalPop { 0% { opacity: 0; transform: scale(0.95); } 100% { opacity: 1; transform: scale(1); } }
+        .modal { animation: modalPop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1); }
+        @keyframes modalPop { 0% { opacity: 0; transform: scale(0.92); } 100% { opacity: 1; transform: scale(1); } }
     </style>
 </head>
 <body class="text-[#1c1c1e]">
@@ -27,13 +28,13 @@
     <canvas id="particle-canvas"></canvas>
 
     <!-- NAV -->
-    <nav class="nav bg-white/90 border-b border-[#f0f0f0] sticky top-0 z-50">
-        <div class="max-w-screen-2xl mx-auto px-10 py-6 flex items-center justify-between">
+    <nav class="nav bg-white/95 border-b border-[#f0f0f0] sticky top-0 z-50">
+        <div class="max-w-screen-2xl mx-auto px-10 py-6 flex justify-between items-center">
             <div class="flex items-center gap-x-3">
-                <div class="w-8 h-8 bg-gradient-to-br from-[#a8c4b8] to-[#d1c4e9] rounded-2xl"></div>
-                <h1 class="heading text-3xl font-semibold">mood</h1>
+                <div class="w-9 h-9 bg-gradient-to-br from-[#a8c4b8] to-[#d1c4e9] rounded-3xl"></div>
+                <h1 class="heading text-4xl font-semibold">mood</h1>
             </div>
-            <div class="hidden md:flex items-center gap-x-10 text-base font-medium">
+            <div class="hidden md:flex gap-x-10 text-base font-medium">
                 <a onclick="navigateTo('discover')" class="hover:text-[#a8c4b8]">Discover</a>
                 <a onclick="navigateTo('community')" class="hover:text-[#a8c4b8]">Community</a>
                 <a onclick="navigateTo('playlists')" class="hover:text-[#a8c4b8]">Playlists</a>
@@ -46,20 +47,21 @@
     </nav>
 
     <!-- DISCOVER -->
-    <div id="discover" class="max-w-screen-2xl mx-auto px-10 pt-20 pb-24">
+    <div id="discover" class="max-w-screen-2xl mx-auto px-10 pt-24 pb-32">
         <div class="max-w-2xl mx-auto text-center">
             <h2 class="heading text-7xl leading-none tracking-[-3px] font-semibold mb-6">
                 What do you want to <span class="bg-gradient-to-r from-[#a8c4b8] to-[#d1c4e9] bg-clip-text text-transparent">feel</span> tonight?
             </h2>
+            <p class="text-xl text-[#6b6b70]">A gentle guide to your perfect watch.</p>
         </div>
 
         <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6 mt-20">
-            <div onclick="selectMood(0)" class="mood-card bg-white rounded-3xl p-8 text-center cursor-pointer">Chill Vibes</div>
-            <div onclick="selectMood(1)" class="mood-card bg-white rounded-3xl p-8 text-center cursor-pointer">Epic Adventure</div>
-            <div onclick="selectMood(2)" class="mood-card bg-white rounded-3xl p-8 text-center cursor-pointer">Laugh Out Loud</div>
-            <div onclick="selectMood(3)" class="mood-card bg-white rounded-3xl p-8 text-center cursor-pointer">Romantic Escape</div>
-            <div onclick="selectMood(4)" class="mood-card bg-white rounded-3xl p-8 text-center cursor-pointer">Heart-Pumping</div>
-            <div onclick="selectMood(5)" class="mood-card bg-white rounded-3xl p-8 text-center cursor-pointer">Deep Thoughts</div>
+            <div onclick="selectMood(0)" class="mood-card bg-white rounded-3xl p-10 text-center cursor-pointer">Chill Vibes</div>
+            <div onclick="selectMood(1)" class="mood-card bg-white rounded-3xl p-10 text-center cursor-pointer">Epic Adventure</div>
+            <div onclick="selectMood(2)" class="mood-card bg-white rounded-3xl p-10 text-center cursor-pointer">Laugh Out Loud</div>
+            <div onclick="selectMood(3)" class="mood-card bg-white rounded-3xl p-10 text-center cursor-pointer">Romantic Escape</div>
+            <div onclick="selectMood(4)" class="mood-card bg-white rounded-3xl p-10 text-center cursor-pointer">Heart-Pumping</div>
+            <div onclick="selectMood(5)" class="mood-card bg-white rounded-3xl p-10 text-center cursor-pointer">Deep Thoughts</div>
         </div>
 
         <div id="personalized-section" class="hidden mt-24">
@@ -69,23 +71,7 @@
         </div>
     </div>
 
-    <!-- COMMUNITY -->
-    <div id="community" class="hidden max-w-screen-2xl mx-auto px-10 py-16 bg-white">
-        <h2 class="heading text-5xl mb-8">What the Mood community is feeling tonight</h2>
-        <div id="community-feed" class="space-y-8"></div>
-        <div class="mt-12 bg-[#faf7f4] rounded-3xl p-8">
-            <textarea id="community-input" rows="3" class="w-full rounded-3xl p-6 border-0 focus:ring-2 focus:ring-[#a8c4b8]" placeholder="How did your last watch make you feel?"></textarea>
-            <button onclick="postToCommunity()" class="mt-4 px-8 py-4 bg-[#1c1c1e] text-white rounded-3xl">Share with the community</button>
-        </div>
-    </div>
-
-    <!-- PLAYLISTS -->
-    <div id="playlists" class="hidden max-w-screen-2xl mx-auto px-10 py-16">
-        <h2 class="heading text-5xl mb-8">Your Watch Later + Weekly Picks</h2>
-        <div id="playlists-grid" class="grid grid-cols-2 md:grid-cols-3 gap-8"></div>
-    </div>
-
-    <!-- TRAILER MODAL (autoplay fixed) -->
+    <!-- TRAILER MODAL -->
     <div onclick="if(event.target.id==='trailer-modal')hideTrailer()" id="trailer-modal" class="hidden fixed inset-0 bg-black/90 flex items-center justify-center z-[9999]">
         <div class="modal bg-white rounded-3xl max-w-5xl w-full mx-4 overflow-hidden">
             <div class="px-8 py-6 border-b flex justify-between items-center">
@@ -102,24 +88,43 @@
         </div>
     </div>
 
-    <!-- DONATE MODAL (sleek + emotional) -->
-    <div onclick="if(event.target.id==='donate-modal')hideDonateModal()" id="donate-modal" class="hidden fixed inset-0 bg-black/70 flex items-center justify-center z-[9999]">
-        <div class="modal bg-white rounded-3xl max-w-md w-full mx-4 p-10 text-center">
-            <div class="text-6xl mb-6">☕</div>
-            <h3 class="heading text-4xl mb-2">Thank you for being here</h3>
-            <p class="text-[#6b6b70]">Mood is built with love to help you feel something real while you eat. If it made your night better, a small gesture means everything.</p>
-            <div class="my-10 bg-[#faf7f4] rounded-3xl p-8 text-left text-sm">
-                <div class="flex justify-between mb-3"><span class="font-medium">Account Holder</span><span>Alex Tresor</span></div>
-                <div class="flex justify-between mb-3"><span class="font-medium">Bank</span><span>Discovery Bank • Savings</span></div>
-                <div class="flex justify-between mb-3"><span class="font-medium">Account Number</span><span class="font-mono">19364635421</span></div>
-                <div class="flex justify-between"><span class="font-medium">Branch Code</span><span>679000</span></div>
-            </div>
-            <button onclick="hideDonateModal()" class="w-full py-6 bg-[#1c1c1e] text-white rounded-3xl">No pressure — thank you for using Mood ❤️</button>
+    <!-- COMMUNITY -->
+    <div id="community" class="hidden max-w-screen-2xl mx-auto px-10 py-16 bg-white">
+        <h2 class="heading text-5xl mb-8">What the Mood community is feeling tonight</h2>
+        <div id="community-feed" class="space-y-8"></div>
+        <div class="mt-12 bg-[#faf7f4] rounded-3xl p-8">
+            <textarea id="community-input" rows="3" class="w-full rounded-3xl p-6 border-0 focus:ring-2 focus:ring-[#a8c4b8]" placeholder="How did that last watch make you feel?"></textarea>
+            <button onclick="postToCommunity()" class="mt-4 px-8 py-4 bg-[#1c1c1e] text-white rounded-3xl">Share with the community</button>
         </div>
     </div>
 
+    <!-- PLAYLISTS -->
+    <div id="playlists" class="hidden max-w-screen-2xl mx-auto px-10 py-16">
+        <h2 class="heading text-5xl mb-8">Your Watch Later + Weekly Picks</h2>
+        <div id="playlists-grid" class="grid grid-cols-2 md:grid-cols-3 gap-8"></div>
+    </div>
+
+    <!-- DONATE MODAL (emotional pull) -->
+    <div onclick="if(event.target.id==='donate-modal')hideDonateModal()" id="donate-modal" class="hidden fixed inset-0 bg-black/70 flex items-center justify-center z-[9999]">
+        <div class="modal bg-white rounded-3xl max-w-md w-full mx-4 p-10 text-center">
+            <div class="text-7xl mb-6">🌫️</div>
+            <h3 class="heading text-4xl mb-3">Thank you for being here</h3>
+            <p class="text-[#6b6b70]">Mood was built so you never have to doom-scroll again. If it helped you feel something beautiful tonight, a small gesture keeps this alive for everyone.</p>
+            <div class="my-10 bg-[#faf7f4] rounded-3xl p-8 text-left text-sm space-y-4">
+                <div class="flex justify-between"><span>Alex Tresor</span><span>Discovery Bank Savings</span></div>
+                <div class="flex justify-between"><span>19364635421</span><span>Branch 679000</span></div>
+            </div>
+            <button onclick="hideDonateModal()" class="w-full py-6 bg-[#1c1c1e] text-white rounded-3xl text-lg">No pressure — thank you for using Mood</button>
+        </div>
+    </div>
+
+    <footer class="text-center py-16 text-xs text-[#9a9a9f]">
+        Mood is a personal companion. Your data stays private on this device.<br>
+        Made with love in South Africa.
+    </footer>
+
     <script>
-        // Particle splashes (blueberry effect)
+        // Particle splashes (gentle, calming blueberry effect)
         const canvas = document.getElementById('particle-canvas');
         const ctx = canvas.getContext('2d');
         let particles = [];
@@ -127,13 +132,13 @@
             constructor() {
                 this.x = Math.random() * canvas.width;
                 this.y = Math.random() * canvas.height;
-                this.size = Math.random() * 18 + 8;
-                this.speedX = (Math.random() - 0.5) * 3.5;
-                this.speedY = (Math.random() - 0.5) * 3.5;
+                this.size = Math.random() * 16 + 8;
+                this.speedX = (Math.random() - 0.5) * 2;
+                this.speedY = (Math.random() - 0.5) * 2;
                 this.color = ['#a8c4b8','#d1c4e9','#f0d9c8'][Math.floor(Math.random()*3)];
                 this.alpha = 1;
             }
-            update() { this.x += this.speedX; this.y += this.speedY; this.alpha -= 0.018; this.size *= 0.97; }
+            update() { this.x += this.speedX; this.y += this.speedY; this.alpha -= 0.015; this.size *= 0.98; }
             draw() { ctx.globalAlpha = this.alpha; ctx.fillStyle = this.color; ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.fill(); }
         }
         function animateParticles() {
@@ -143,12 +148,14 @@
                 particles[i].draw();
                 if (particles[i].alpha <= 0 || particles[i].size <= 0) particles.splice(i, 1);
             }
-            if (Math.random() < 1.4) particles.push(new Particle());
+            if (Math.random() < 1.3) particles.push(new Particle());
             requestAnimationFrame(animateParticles);
         }
-        function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
 
-        // App data
         let userProfile = { name: "Guest", loggedIn: false, history: [], prefs: {0:40,1:60,2:30,3:70,4:50,5:55}, foodPref: "", watchLater: [], communityPosts: [] };
         let currentMood = null;
 
@@ -243,7 +250,7 @@
             if (!userProfile.watchLater.find(i => i.id === id)) {
                 userProfile.watchLater.push(item);
                 saveProfile();
-                renderPlaylists();
+                alert(`${item.title} saved to Watch Later`);
             }
         }
 
@@ -309,8 +316,8 @@
                 bg.style.setProperty('--mouse-x', `${x}%`);
                 bg.style.setProperty('--mouse-y', `${y}%`);
             });
-            if (!userProfile.loggedIn) setTimeout(showProfileModal, 800);
-            console.log('%c🌫️ mood v6 – community, playlists, autoplay, splashes all working', 'color:#a8c4b8; font-size:14px');
+            if (!userProfile.loggedIn) setTimeout(showProfileModal, 900);
+            console.log('%c🌫️ mood v7 — final luxury neuroscience edition', 'color:#a8c4b8; font-size:14px');
         };
     </script>
 </body>
