@@ -11,26 +11,52 @@
         
         :root {
             --sage: #a8c4b8;
-            --peach: #f0d9c8;
             --lavender: #d1c4e9;
-            --cream: #faf7f4;
+            --peach: #f0d9c8;
         }
         
-        body { font-family: 'Inter', system-ui, sans-serif; }
-        .heading { font-family: 'Space Grotesk', sans-serif; }
+        body {
+            font-family: 'Inter', system-ui, sans-serif;
+            background: #ffffff;
+        }
         
-        .nav { backdrop-filter: blur(24px); }
-        .mood-card {
+        .heading {
+            font-family: 'Space Grotesk', sans-serif;
+        }
+        
+        .nav {
+            backdrop-filter: blur(24px);
+        }
+        
+        .dynamic-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+            background: radial-gradient(circle at var(--mouse-x, 50%) var(--mouse-y, 50%), 
+                        rgba(168,196,184,0.08) 0%, 
+                        rgba(209,196,233,0.06) 40%, 
+                        transparent 70%);
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
-        .mood-card:hover {
-            transform: translateY(-6px);
-            box-shadow: 0 30px 60px -15px rgb(168 196 184 / 0.3);
+        
+        .mood-card {
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
         }
+        .mood-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 40px 80px -20px rgb(168 196 184 / 0.25);
+        }
+        
         .content-card {
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
-        .content-card:hover { transform: scale(1.04); }
+        .content-card:hover {
+            transform: scale(1.04);
+        }
         
         .modal {
             animation: modalPop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
@@ -41,72 +67,67 @@
         }
     </style>
 </head>
-<body class="bg-[#faf7f4] text-[#1c1c1e]">
+<body class="text-[#1c1c1e]">
 
-    <!-- NAV – Apple luxury -->
-    <nav class="nav bg-white/80 border-b border-[#e5e5e5] sticky top-0 z-50">
+    <div class="dynamic-bg" id="dynamic-bg"></div>
+
+    <!-- NAV -->
+    <nav class="nav bg-white/90 border-b border-[#f0f0f0] sticky top-0 z-50">
         <div class="max-w-screen-2xl mx-auto px-10 py-6 flex items-center justify-between">
             <div class="flex items-center gap-x-3">
-                <div class="w-8 h-8 bg-gradient-to-br from-[#a8c4b8] via-[#d1c4e9] to-[#f0d9c8] rounded-2xl flex items-center justify-center text-2xl">🌫️</div>
-                <h1 class="heading text-3xl tracking-[-1px] font-semibold text-[#1c1c1e]">mood</h1>
+                <div class="w-8 h-8 bg-gradient-to-br from-[#a8c4b8] to-[#d1c4e9] rounded-2xl flex items-center justify-center text-xl">🌫️</div>
+                <h1 class="heading text-3xl tracking-[-1px] font-semibold">mood</h1>
             </div>
             <div class="hidden md:flex items-center gap-x-10 text-base font-medium">
-                <a onclick="navigateTo('discover')" class="hover:text-[#a8c4b8] cursor-pointer">Discover</a>
-                <a onclick="navigateTo('community')" class="hover:text-[#a8c4b8] cursor-pointer">Community</a>
-                <a onclick="navigateTo('playlists')" class="hover:text-[#a8c4b8] cursor-pointer">Playlists</a>
+                <a onclick="navigateTo('discover')" class="hover:text-[#a8c4b8]">Discover</a>
+                <a onclick="navigateTo('community')" class="hover:text-[#a8c4b8]">Community</a>
+                <a onclick="navigateTo('playlists')" class="hover:text-[#a8c4b8]">Playlists</a>
             </div>
-            <div onclick="showProfileModal()" id="auth-status" class="flex items-center gap-x-3 bg-white border border-[#e5e5e5] hover:border-[#a8c4b8] rounded-full px-6 py-2 cursor-pointer">
-                <i class="fa-solid fa-circle-user text-[#a8c4b8]"></i>
+            <div onclick="showProfileModal()" id="auth-status" class="flex items-center gap-x-3 bg-white border border-[#f0f0f0] hover:border-[#a8c4b8] rounded-full px-6 py-2 cursor-pointer">
+                <i class="fa-solid fa-circle-user"></i>
                 <span id="user-name" class="font-medium">Guest • Try free</span>
             </div>
         </div>
     </nav>
 
-    <!-- HERO / MOOD SELECT -->
+    <!-- DISCOVER -->
     <div id="discover" class="max-w-screen-2xl mx-auto px-10 pt-20 pb-24">
-        <div class="max-w-3xl mx-auto text-center">
+        <div class="max-w-2xl mx-auto text-center">
             <h2 class="heading text-7xl leading-none tracking-[-3px] font-semibold mb-6">
                 What do you want to <span class="bg-gradient-to-r from-[#a8c4b8] to-[#d1c4e9] bg-clip-text text-transparent">feel</span> tonight?
             </h2>
-            <p class="text-xl text-[#6b6b70]">While you eat. While you unwind. We find the perfect watch for your exact mood.</p>
         </div>
 
         <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6 mt-20">
-            <div onclick="selectMood(0)" class="mood-card bg-white rounded-3xl p-8 text-center border border-transparent hover:border-[#a8c4b8]/20 cursor-pointer">
-                <div class="text-7xl mb-6">🧘‍♀️</div>
-                <h3 class="text-2xl font-medium">Chill Vibes</h3>
-                <p class="text-sm text-[#6b6b70] mt-1">Soft, cozy, effortless</p>
+            <div onclick="selectMood(0)" class="mood-card bg-white rounded-3xl p-8 text-center border border-transparent hover:border-[#a8c4b8]/30 cursor-pointer">
+                <h3 class="text-2xl font-medium mb-1">Chill Vibes</h3>
+                <p class="text-sm text-[#6b6b70]">Soft, calm, effortless</p>
             </div>
-            <div onclick="selectMood(1)" class="mood-card bg-white rounded-3xl p-8 text-center border border-transparent hover:border-[#f0d9c8]/20 cursor-pointer">
-                <div class="text-7xl mb-6">🚀</div>
-                <h3 class="text-2xl font-medium">Epic Adventure</h3>
-                <p class="text-sm text-[#6b6b70] mt-1">Lose yourself in another world</p>
+            <div onclick="selectMood(1)" class="mood-card bg-white rounded-3xl p-8 text-center border border-transparent hover:border-[#a8c4b8]/30 cursor-pointer">
+                <h3 class="text-2xl font-medium mb-1">Epic Adventure</h3>
+                <p class="text-sm text-[#6b6b70]">Lose yourself in another world</p>
             </div>
-            <div onclick="selectMood(2)" class="mood-card bg-white rounded-3xl p-8 text-center border border-transparent hover:border-[#d1c4e9]/20 cursor-pointer">
-                <div class="text-7xl mb-6">😂</div>
-                <h3 class="text-2xl font-medium">Laugh Out Loud</h3>
-                <p class="text-sm text-[#6b6b70] mt-1">Pure joy &amp; belly laughs</p>
+            <div onclick="selectMood(2)" class="mood-card bg-white rounded-3xl p-8 text-center border border-transparent hover:border-[#a8c4b8]/30 cursor-pointer">
+                <h3 class="text-2xl font-medium mb-1">Laugh Out Loud</h3>
+                <p class="text-sm text-[#6b6b70]">Pure joy &amp; lightness</p>
             </div>
-            <div onclick="selectMood(3)" class="mood-card bg-white rounded-3xl p-8 text-center border border-transparent hover:border-[#a8c4b8]/20 cursor-pointer">
-                <div class="text-7xl mb-6">❤️</div>
-                <h3 class="text-2xl font-medium">Romantic Escape</h3>
-                <p class="text-sm text-[#6b6b70] mt-1">Heart strings &amp; butterflies</p>
+            <div onclick="selectMood(3)" class="mood-card bg-white rounded-3xl p-8 text-center border border-transparent hover:border-[#a8c4b8]/30 cursor-pointer">
+                <h3 class="text-2xl font-medium mb-1">Romantic Escape</h3>
+                <p class="text-sm text-[#6b6b70]">Heart strings &amp; warmth</p>
             </div>
-            <div onclick="selectMood(4)" class="mood-card bg-white rounded-3xl p-8 text-center border border-transparent hover:border-[#f0d9c8]/20 cursor-pointer">
-                <div class="text-7xl mb-6">🔥</div>
-                <h3 class="text-2xl font-medium">Heart-Pumping</h3>
-                <p class="text-sm text-[#6b6b70] mt-1">Edge-of-seat energy</p>
+            <div onclick="selectMood(4)" class="mood-card bg-white rounded-3xl p-8 text-center border border-transparent hover:border-[#a8c4b8]/30 cursor-pointer">
+                <h3 class="text-2xl font-medium mb-1">Heart-Pumping</h3>
+                <p class="text-sm text-[#6b6b70]">Edge-of-seat energy</p>
             </div>
-            <div onclick="selectMood(5)" class="mood-card bg-white rounded-3xl p-8 text-center border border-transparent hover:border-[#d1c4e9]/20 cursor-pointer">
-                <div class="text-7xl mb-6">🧠</div>
-                <h3 class="text-2xl font-medium">Deep Thoughts</h3>
-                <p class="text-sm text-[#6b6b70] mt-1">Meaningful &amp; mind-opening</p>
+            <div onclick="selectMood(5)" class="mood-card bg-white rounded-3xl p-8 text-center border border-transparent hover:border-[#a8c4b8]/30 cursor-pointer">
+                <h3 class="text-2xl font-medium mb-1">Deep Thoughts</h3>
+                <p class="text-sm text-[#6b6b70]">Meaningful &amp; reflective</p>
             </div>
         </div>
 
         <div id="personalized-section" class="hidden mt-24">
             <h3 id="rec-title" class="heading text-5xl text-center mb-3">Your perfect watch right now</h3>
-            <p id="food-hint" class="text-center text-[#6b6b70] text-lg"></p>
+            <p id="personal-hint" class="text-center text-[#6b6b70]"></p>
             <div id="recs-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 mt-12"></div>
         </div>
     </div>
@@ -114,7 +135,7 @@
     <!-- TRAILER MODAL -->
     <div onclick="if(event.target.id==='trailer-modal')hideTrailer()" id="trailer-modal" class="hidden fixed inset-0 bg-black/90 flex items-center justify-center z-[9999]">
         <div class="modal bg-white rounded-3xl max-w-5xl w-full mx-4 overflow-hidden">
-            <div class="px-8 py-6 border-b flex items-center justify-between">
+            <div class="px-8 py-6 border-b flex justify-between items-center">
                 <h4 id="modal-title" class="text-2xl font-medium"></h4>
                 <button onclick="hideTrailer()" class="text-4xl text-[#6b6b70]">×</button>
             </div>
@@ -122,94 +143,104 @@
                 <iframe id="youtube-player" width="100%" height="100%" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
             </div>
             <div class="p-8 flex gap-4">
-                <button onclick="shareFeeling()" class="flex-1 py-6 text-lg font-medium border border-[#e5e5e5] rounded-3xl">Share how this made you feel</button>
-                <a id="full-link" target="_blank" class="flex-1 py-6 text-lg font-medium bg-[#1c1c1e] text-white rounded-3xl flex items-center justify-center gap-3">Watch full →</a>
+                <button onclick="addToWatchLater()" class="flex-1 py-6 text-lg font-medium border border-[#e5e5e5] rounded-3xl">Save to Watch Later</button>
+                <a id="full-link" target="_blank" class="flex-1 py-6 text-lg font-medium bg-[#1c1c1e] text-white rounded-3xl flex items-center justify-center">Watch full on YouTube/Netflix →</a>
             </div>
         </div>
     </div>
 
-    <!-- PROFILE MODAL -->
+    <!-- PROFILE / ONBOARDING MODAL -->
     <div onclick="if(event.target.id==='profile-modal')hideProfileModal()" id="profile-modal" class="hidden fixed inset-0 bg-black/70 flex items-center justify-center z-[9999]">
-        <div class="modal bg-white rounded-3xl max-w-md w-full mx-4 p-10">
-            <h3 class="heading text-4xl text-center">Create your mood profile</h3>
-            <p class="text-center text-[#6b6b70] mt-3 mb-8">Your preferences stay on this device.<br>The more you use Mood, the better it knows you.</p>
-            <input id="profile-name-input" type="text" placeholder="Your name" class="w-full px-8 py-6 text-xl rounded-3xl border border-[#e5e5e5] focus:border-[#a8c4b8] outline-none">
-            <button onclick="createProfile()" class="mt-8 w-full py-6 text-xl font-medium bg-gradient-to-r from-[#a8c4b8] to-[#d1c4e9] text-white rounded-3xl">Save my profile</button>
+        <div class="modal bg-white rounded-3xl max-w-lg w-full mx-4 p-10">
+            <h3 class="heading text-4xl text-center mb-2">Create your mood profile</h3>
+            <p class="text-center text-[#6b6b70] mb-8">Tell us a little about you so Mood can get smarter.</p>
+            
+            <input id="profile-name" type="text" placeholder="Your name" class="w-full px-6 py-5 rounded-3xl border border-[#e5e5e5] text-lg mb-6">
+            
+            <div class="mb-6">
+                <p class="text-sm text-[#6b6b70] mb-3">What are you eating tonight?</p>
+                <select id="food-pref" class="w-full px-6 py-5 rounded-3xl border border-[#e5e5e5] text-lg">
+                    <option value="">Choose one...</option>
+                    <option value="ramen">Ramen / noodles</option>
+                    <option value="sushi">Sushi</option>
+                    <option value="pizza">Pizza</option>
+                    <option value="pasta">Pasta</option>
+                    <option value="steak">Steak / comfort food</option>
+                </select>
+            </div>
+            
+            <button onclick="createProfile()" class="w-full py-6 text-xl font-medium bg-gradient-to-r from-[#a8c4b8] to-[#d1c4e9] text-white rounded-3xl">Save my profile</button>
         </div>
     </div>
 
-    <!-- FLOATING DONATE (gentle) -->
-    <div onclick="showDonateModal()" class="fixed bottom-8 right-8 bg-white/90 backdrop-blur-xl shadow-2xl border border-[#e5e5e5] rounded-3xl px-7 py-5 flex items-center gap-x-4 cursor-pointer hover:scale-105">
+    <!-- FLOATING DONATE -->
+    <div onclick="showDonateModal()" class="fixed bottom-8 right-8 bg-white shadow-2xl border border-[#f0f0f0] rounded-3xl px-7 py-5 flex items-center gap-x-4 cursor-pointer hover:scale-105">
         <i class="fa-solid fa-mug-hot text-3xl text-[#f0d9c8]"></i>
         <div>
             <div class="text-sm font-medium">Loving Mood?</div>
-            <div class="text-xs text-[#6b6b70]">Buy Alex a coffee if it made your night better</div>
+            <div class="text-xs text-[#6b6b70]">Support keeps it ad-free and beautiful</div>
         </div>
     </div>
 
     <footer class="text-center py-12 text-xs text-[#9a9a9f]">
-        Mood is a personal tool to help you watch intentionally. All content links to YouTube &amp; Netflix.<br>
-        Your data stays private on your device. Made with love in Johannesburg.
+        Mood helps you watch with intention. All content links to YouTube &amp; Netflix.<br>
+        Your data stays private on this device. Made in South Africa.
     </footer>
 
     <script>
-        // Full upgraded code is here – paste everything
-        let userProfile = { name: "Guest", loggedIn: false, history: [], prefs: {0:40,1:60,2:30,3:70,4:50,5:55}, foodPref: "" };
+        let userProfile = { name: "Guest", loggedIn: false, history: [], prefs: {0:40,1:60,2:30,3:70,4:50,5:55}, foodPref: "", watchLater: [], interests: [] };
         let currentMood = null;
 
         const contentDB = [
-            {id:1, title:"The Bear S3 Trailer", youtubeId:"p5z7N8f8T4g", moods:[0], food:["ramen","pizza"], desc:"Intense kitchen energy"},
-            {id:2, title:"Dune: Prophecy Trailer", youtubeId:"Y9y8tV8l8zQ", moods:[1], food:["sushi"], desc:"Epic desert worlds"},
-            {id:3, title:"Only Murders S4 Trailer", youtubeId:"4u3g1rLq3pA", moods:[2], food:["pizza"], desc:"Cozy mystery laughs"},
-            {id:4, title:"La La Land 4K Trailer", youtubeId:"0pdPf7V2j1E", moods:[3], food:["pasta"], desc:"Romantic jazz nights"},
-            {id:5, title:"Oppenheimer Behind the Scenes", youtubeId:"uYPbbksJxIg", moods:[5], food:["coffee"], desc:"Mind-bending history"},
-            {id:6, title:"Arcane S2 Trailer", youtubeId:"f4z8z7b7q7k", moods:[4], food:["ramen"], desc:"Stunning animation"}
+            {id:1, title:"The Bear • Season 3 Trailer", youtubeId:"p5z7N8f8T4g", moods:[0], desc:"Intense kitchen energy"},
+            {id:2, title:"Dune: Prophecy • Official Trailer", youtubeId:"Y9y8tV8l8zQ", moods:[1], desc:"Epic worlds"},
+            {id:3, title:"Only Murders in the Building • S4 Trailer", youtubeId:"4u3g1rLq3pA", moods:[2], desc:"Cozy mystery laughs"},
+            {id:4, title:"La La Land • 4K Trailer", youtubeId:"0pdPf7V2j1E", moods:[3], desc:"Romantic jazz nights"},
+            {id:5, title:"Oppenheimer • Behind the Scenes", youtubeId:"uYPbbksJxIg", moods:[5], desc:"Mind-bending history"},
+            {id:6, title:"Arcane • Season 2 Trailer", youtubeId:"f4z8z7b7q7k", moods:[4], desc:"Stunning animation"}
         ];
 
         function saveProfile() { localStorage.setItem('moodProfile', JSON.stringify(userProfile)); }
         function loadProfile() {
             const saved = localStorage.getItem('moodProfile');
             if (saved) userProfile = JSON.parse(saved);
-            updateAuthUI();
-        }
-
-        function updateAuthUI() {
             document.getElementById('user-name').innerHTML = userProfile.loggedIn ? `👋 ${userProfile.name}` : `Guest • Try free`;
         }
 
         function showProfileModal() {
-            if (userProfile.loggedIn) return alert("You're already logged in!");
+            if (userProfile.loggedIn) return;
             document.getElementById('profile-modal').classList.remove('hidden');
             document.getElementById('profile-modal').classList.add('flex');
         }
 
         function hideProfileModal() {
-            const m = document.getElementById('profile-modal');
-            m.classList.add('hidden');
-            m.classList.remove('flex');
+            const modal = document.getElementById('profile-modal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
         }
 
         function createProfile() {
-            const name = document.getElementById('profile-name-input').value.trim() || "Beautiful Human";
-            userProfile.name = name;
+            userProfile.name = document.getElementById('profile-name').value.trim() || "You";
+            userProfile.foodPref = document.getElementById('food-pref').value;
             userProfile.loggedIn = true;
             saveProfile();
-            updateAuthUI();
             hideProfileModal();
+            alert(`Welcome, ${userProfile.name}. Mood is now learning your tastes.`);
         }
 
-        function selectMood(moodIndex) {
-            currentMood = moodIndex;
+        function selectMood(index) {
+            currentMood = index;
             document.getElementById('personalized-section').classList.remove('hidden');
+            document.getElementById('rec-title').innerHTML = `Perfect for your mood right now`;
             
-            const foods = ["ramen", "sushi", "pizza", "pasta", "coffee"];
-            userProfile.foodPref = foods[Math.floor(Math.random()*foods.length)];
-            
-            document.getElementById('food-hint').innerHTML = `Because you're craving <span class="font-medium">${userProfile.foodPref}</span> • Here's what matches your mood`;
+            if (userProfile.loggedIn && userProfile.foodPref) {
+                document.getElementById('personal-hint').innerHTML = `Paired with your <span class="font-medium">${userProfile.foodPref}</span> tonight`;
+            }
             
             renderRecs();
+            
             if (userProfile.loggedIn) {
-                userProfile.prefs[moodIndex] = (userProfile.prefs[moodIndex] || 50) + 25;
+                userProfile.prefs[index] = (userProfile.prefs[index] || 50) + 25;
                 saveProfile();
             }
         }
@@ -222,13 +253,16 @@
             
             filtered.forEach(item => {
                 const card = document.createElement('div');
-                card.className = "content-card bg-white rounded-3xl overflow-hidden cursor-pointer";
+                card.className = "content-card bg-white rounded-3xl overflow-hidden cursor-pointer border border-transparent";
                 card.innerHTML = `
-                    <img src="https://picsum.photos/id/${100 + item.id}/800/450" class="w-full aspect-video object-cover">
+                    <img src="https://picsum.photos/id/${90 + item.id}/800/450" class="w-full aspect-video object-cover">
                     <div class="p-8">
                         <h4 class="text-2xl font-medium">${item.title}</h4>
                         <p class="text-[#6b6b70] mt-2">${item.desc}</p>
-                        <button onclick="playTrailer(${item.id}); event.stopImmediatePropagation()" class="mt-6 w-full py-4 bg-[#1c1c1e] text-white rounded-3xl text-sm font-medium">Watch trailer • autoplay</button>
+                        <div class="flex gap-3 mt-8">
+                            <button onclick="playTrailer(${item.id});event.stopImmediatePropagation()" class="flex-1 py-4 bg-[#1c1c1e] text-white rounded-3xl text-sm font-medium">Play trailer</button>
+                            <button onclick="addToWatchLater(${item.id});event.stopImmediatePropagation()" class="flex-1 py-4 border border-[#e5e5e5] rounded-3xl text-sm font-medium">Save for later</button>
+                        </div>
                     </div>
                 `;
                 container.appendChild(card);
@@ -239,15 +273,9 @@
             const item = contentDB.find(c => c.id === id);
             document.getElementById('modal-title').textContent = item.title;
             const iframe = document.getElementById('youtube-player');
-            iframe.src = `https://www.youtube.com/embed/${item.youtubeId}?autoplay=1`;
+            iframe.src = `https://www.youtube.com/embed/${item.youtubeId}?autoplay=1&rel=0`;
             document.getElementById('trailer-modal').classList.remove('hidden');
             document.getElementById('trailer-modal').classList.add('flex');
-            
-            // Record watch
-            if (userProfile.loggedIn) {
-                userProfile.history.push(item.title);
-                saveProfile();
-            }
         }
 
         function hideTrailer() {
@@ -257,22 +285,35 @@
             document.getElementById('youtube-player').src = '';
         }
 
-        function shareFeeling() {
-            hideTrailer();
-            alert("❤️ Thank you. Your feeling has been added to the community feed (this will be fully live in the next version).");
+        function addToWatchLater(id) {
+            const item = contentDB.find(c => c.id === id);
+            if (!userProfile.watchLater.find(i => i.id === id)) {
+                userProfile.watchLater.push(item);
+                saveProfile();
+                alert(`${item.title} added to Watch Later`);
+            }
         }
 
         function showDonateModal() {
-            alert("Hey 👋\n\nHope Mood is making your evenings better.\n\nIf it is, a small coffee would help keep this alive:\n\nAccount: Alex Tresor\nDiscovery Bank Savings\nAccount: 19364635421\nBranch: 679000\n\nNo pressure — just gratitude ❤️");
+            alert("Hey 👋\n\nIf Mood is making your evenings more intentional and beautiful, a small gesture helps keep it ad-free forever.\n\nAlex Tresor\nDiscovery Bank Savings\n19364635421\nBranch 679000\n\nThank you.");
         }
 
-        function navigateTo(section) {
-            alert(`📍 ${section} is ready in the full version. For now the focus is on Discover.`);
+        function navigateTo(page) {
+            alert(`The ${page} section is ready in the full live version. Focus is on Discover for now.`);
         }
+
+        // Mouse + scroll dynamic pastel effect
+        document.addEventListener('mousemove', (e) => {
+            const bg = document.getElementById('dynamic-bg');
+            const x = (e.clientX / window.innerWidth) * 100;
+            const y = (e.clientY / window.innerHeight) * 100;
+            bg.style.setProperty('--mouse-x', `${x}%`);
+            bg.style.setProperty('--mouse-y', `${y}%`);
+        });
 
         window.onload = () => {
             loadProfile();
-            console.log('%c🌫️ Mood v2 – luxury wellness edition loaded', 'color:#a8c4b8; font-size:14px');
+            console.log('%c🌫️ mood v3 — luxury wellness edition loaded', 'color:#a8c4b8; font-size:14px');
         };
     </script>
 </body>
