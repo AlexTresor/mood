@@ -7,13 +7,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500&amp;family=Space+Grotesk:wght@500;600&display=swap');
-        
-        :root {
-            --sage: #a8c4b8;
-            --lavender: #d1c4e9;
-            --peach: #f0d9c8;
-        }
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=Space+Grotesk:wght@500;600&display=swap');
         
         body { font-family: 'Inter', system-ui, sans-serif; background: #ffffff; overflow-x: hidden; }
         .heading { font-family: 'Space Grotesk', sans-serif; }
@@ -23,9 +17,10 @@
         .dynamic-bg {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: -1;
             background: radial-gradient(circle at var(--mouse-x, 50%) var(--mouse-y, 50%), 
-                        rgba(168,196,184,0.08) 0%, rgba(209,196,233,0.06) 40%, transparent 70%);
-            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+                        rgba(168,196,184,0.1) 0%, rgba(209,196,233,0.08) 50%, transparent 80%);
         }
+        
+        canvas#particle-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: -1; opacity: 0.7; }
         
         .mood-card { transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1); }
         .mood-card:hover { transform: translateY(-8px); box-shadow: 0 40px 80px -20px rgb(168 196 184 / 0.25); }
@@ -35,8 +30,6 @@
         
         .modal { animation: modalPop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1); }
         @keyframes modalPop { 0% { opacity: 0; transform: scale(0.95); } 100% { opacity: 1; transform: scale(1); } }
-        
-        canvas#particle-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: -1; opacity: 0.6; }
     </style>
 </head>
 <body class="text-[#1c1c1e]">
@@ -63,7 +56,7 @@
         </div>
     </nav>
 
-    <!-- DISCOVER -->
+    <!-- DISCOVER SECTION -->
     <div id="discover" class="max-w-screen-2xl mx-auto px-10 pt-20 pb-24">
         <div class="max-w-2xl mx-auto text-center">
             <h2 class="heading text-7xl leading-none tracking-[-3px] font-semibold mb-6">
@@ -76,7 +69,6 @@
                 <h3 class="text-2xl font-medium mb-1">Chill Vibes</h3>
                 <p class="text-sm text-[#6b6b70]">Soft, calm, effortless</p>
             </div>
-            <!-- repeat for other 5 moods exactly like before -->
             <div onclick="selectMood(1)" class="mood-card bg-white rounded-3xl p-8 text-center border border-transparent hover:border-[#a8c4b8]/30 cursor-pointer">
                 <h3 class="text-2xl font-medium mb-1">Epic Adventure</h3>
                 <p class="text-sm text-[#6b6b70]">Lose yourself in another world</p>
@@ -106,7 +98,7 @@
         </div>
     </div>
 
-    <!-- TRAILER MODAL -->
+    <!-- TRAILER MODAL (autoplay fixed) -->
     <div onclick="if(event.target.id==='trailer-modal')hideTrailer()" id="trailer-modal" class="hidden fixed inset-0 bg-black/90 flex items-center justify-center z-[9999]">
         <div class="modal bg-white rounded-3xl max-w-5xl w-full mx-4 overflow-hidden">
             <div class="px-8 py-6 border-b flex justify-between items-center">
@@ -114,11 +106,12 @@
                 <button onclick="hideTrailer()" class="text-4xl text-[#6b6b70]">×</button>
             </div>
             <div class="aspect-video bg-black">
-                <iframe id="youtube-player" width="100%" height="100%" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+                <iframe id="youtube-player" width="100%" height="100%" frameborder="0" 
+                        allow="autoplay; encrypted-media" allowfullscreen></iframe>
             </div>
             <div class="p-8 flex gap-4">
                 <button onclick="addToWatchLater()" class="flex-1 py-6 text-lg font-medium border border-[#e5e5e5] rounded-3xl">Save to Watch Later</button>
-                <a id="full-link" target="_blank" class="flex-1 py-6 text-lg font-medium bg-[#1c1c1e] text-white rounded-3xl flex items-center justify-center">Watch full →</a>
+                <a id="full-link" target="_blank" class="flex-1 py-6 text-lg font-medium bg-[#1c1c1e] text-white rounded-3xl flex items-center justify-center">Watch full on YouTube →</a>
             </div>
         </div>
     </div>
@@ -127,7 +120,7 @@
     <div onclick="if(event.target.id==='profile-modal')hideProfileModal()" id="profile-modal" class="hidden fixed inset-0 bg-black/70 flex items-center justify-center z-[9999]">
         <div class="modal bg-white rounded-3xl max-w-lg w-full mx-4 p-10">
             <h3 class="heading text-4xl text-center mb-2">Create your mood profile</h3>
-            <p class="text-center text-[#6b6b70] mb-8">Tell us a little about you so Mood can get smarter.</p>
+            <p class="text-center text-[#6b6b70] mb-8">Tell us a little so Mood can get smarter.</p>
             <input id="profile-name" type="text" placeholder="Your name" class="w-full px-6 py-5 rounded-3xl border border-[#e5e5e5] text-lg mb-6">
             <div class="mb-6">
                 <p class="text-sm text-[#6b6b70] mb-3">What are you eating tonight?</p>
@@ -159,25 +152,25 @@
     </footer>
 
     <script>
-        // === PARTICLE SYSTEM (blueberry pops) ===
+        // Blueberry particle system (more visible pops)
         const canvas = document.getElementById('particle-canvas');
         const ctx = canvas.getContext('2d');
         let particles = [];
         class Particle {
             constructor() {
-                this.x = Math.random() * window.innerWidth;
-                this.y = Math.random() * window.innerHeight;
-                this.size = Math.random() * 12 + 6;
-                this.speedX = Math.random() * 1.5 - 0.75;
-                this.speedY = Math.random() * 1.5 - 0.75;
-                this.color = ['#a8c4b8','#d1c4e9','#f0d9c8'][Math.floor(Math.random()*3)];
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 14 + 8;
+                this.speedX = (Math.random() - 0.5) * 2;
+                this.speedY = (Math.random() - 0.5) * 2;
+                this.color = ['#a8c4b8', '#d1c4e9', '#f0d9c8'][Math.floor(Math.random()*3)];
                 this.alpha = 1;
             }
             update() {
                 this.x += this.speedX;
                 this.y += this.speedY;
-                this.alpha -= 0.008;
-                this.size *= 0.99;
+                this.alpha -= 0.012;
+                this.size *= 0.98;
             }
             draw() {
                 ctx.globalAlpha = this.alpha;
@@ -189,21 +182,21 @@
         }
         function animateParticles() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-            particles.forEach((p, i) => {
-                p.update();
-                p.draw();
-                if (p.alpha <= 0 || p.size <= 0) particles.splice(i, 1);
-            });
-            if (Math.random() < 0.4) particles.push(new Particle());
+            for (let i = particles.length - 1; i >= 0; i--) {
+                particles[i].update();
+                particles[i].draw();
+                if (particles[i].alpha <= 0 || particles[i].size <= 0) particles.splice(i, 1);
+            }
+            // More frequent pops
+            if (Math.random() < 0.8) particles.push(new Particle());
             requestAnimationFrame(animateParticles);
         }
         function resizeCanvas() {
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
         }
-        window.addEventListener('resize', resizeCanvas);
 
-        // Rest of your app code (same as before but with autoplay fix)
+        // App logic
         let userProfile = { name: "Guest", loggedIn: false, history: [], prefs: {0:40,1:60,2:30,3:70,4:50,5:55}, foodPref: "", watchLater: [] };
         let currentMood = null;
 
@@ -280,7 +273,7 @@
             document.getElementById('modal-title').textContent = item.title;
             
             const iframe = document.getElementById('youtube-player');
-            iframe.src = `https://www.youtube.com/embed/${item.youtubeId}?autoplay=1&mute=1&rel=0`;
+            iframe.src = `https://www.youtube.com/embed/${item.youtubeId}?autoplay=1&mute=1&rel=0&modestbranding=1`;
             
             const fullLink = document.getElementById('full-link');
             fullLink.href = `https://www.youtube.com/watch?v=${item.youtubeId}`;
@@ -313,7 +306,7 @@
             alert(`The ${page} section is ready in the full live version.`);
         }
 
-        // Mouse gradient + particle system
+        // Mouse gradient + particles
         document.addEventListener('mousemove', (e) => {
             const bg = document.getElementById('dynamic-bg');
             const x = (e.clientX / window.innerWidth) * 100;
@@ -326,7 +319,8 @@
             loadProfile();
             resizeCanvas();
             animateParticles();
-            console.log('%c🌫️ mood v4 — luxury wellness edition with blueberry splashes loaded', 'color:#a8c4b8; font-size:14px');
+            window.addEventListener('resize', resizeCanvas);
+            console.log('%c🌫️ mood v4 – autoplay + blueberry splashes fixed', 'color:#a8c4b8; font-size:14px');
         };
     </script>
 </body>
