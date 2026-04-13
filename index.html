@@ -1,9 +1,12 @@
+Mood · HTML
+Copy
+
 <!DOCTYPE html>
 <html lang="en" class="scroll-smooth">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>mood • 0.03 seconds before the ramen gets cold</title>
+<title>mood • find your next obsession</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=DM+Sans:wght@300;400;500&family=Noto+Serif+JP:wght@300;400&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
@@ -20,319 +23,221 @@
   --deep-pink: #c94b7e;
   --gold: #c9a96e;
   --radius: 2rem;
+  --theme-primary: #c94b7e;
+  --theme-secondary: #f2a7c3;
+  --theme-light: #fdf0f5;
+  --theme-gradient: linear-gradient(135deg, #c94b7e, #e8749a);
 }
-
+ 
+.theme-male {
+  --theme-primary: #2563eb;
+  --theme-secondary: #93c5fd;
+  --theme-light: #eff6ff;
+  --theme-gradient: linear-gradient(135deg, #1d4ed8, #2563eb);
+  --accent: #3b82f6;
+  --deep-pink: #1d4ed8;
+  --pink: #93c5fd;
+  --petal: #dbeafe;
+  --blush: #eff6ff;
+}
+ 
 * { margin: 0; padding: 0; box-sizing: border-box; }
-
 html { background: var(--white); }
-
 body {
   font-family: 'DM Sans', sans-serif;
   background: var(--white);
   color: var(--ink);
   overflow-x: hidden;
-  position: relative;
 }
-
-/* ─── SAKURA BACKGROUND ─── */
+ 
 .sakura-bg {
   position: fixed;
   inset: 0;
   z-index: 0;
   pointer-events: none;
-  overflow: hidden;
 }
-
 .sakura-bg::before {
   content: '';
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(ellipse 80% 60% at 15% 20%, rgba(242,167,195,0.22) 0%, transparent 60%),
-    radial-gradient(ellipse 60% 50% at 85% 10%, rgba(242,167,195,0.18) 0%, transparent 55%),
-    radial-gradient(ellipse 50% 40% at 50% 90%, rgba(252,228,236,0.2) 0%, transparent 60%),
+    radial-gradient(ellipse 80% 60% at 15% 20%, rgba(242,167,195,0.18) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 50% at 85% 10%, rgba(242,167,195,0.14) 0%, transparent 55%),
     #ffffff;
 }
-
-canvas#petals {
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  z-index: 1;
-  opacity: 0.7;
+body.theme-male .sakura-bg::before {
+  background:
+    radial-gradient(ellipse 80% 60% at 15% 20%, rgba(59,130,246,0.1) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 50% at 85% 10%, rgba(37,99,235,0.08) 0%, transparent 55%),
+    #ffffff;
 }
-
-/* ─── MOUSE GLOW ─── */
+ 
+canvas#petals { position: fixed; inset: 0; pointer-events: none; z-index: 1; opacity: 0.65; }
+ 
 #mouse-glow {
   position: fixed;
-  width: 600px;
-  height: 600px;
+  width: 500px; height: 500px;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(242,167,195,0.12) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(242,167,195,0.1) 0%, transparent 70%);
   pointer-events: none;
   z-index: 1;
   transform: translate(-50%, -50%);
-  transition: left 0.1s ease, top 0.1s ease;
+  transition: left 0.08s, top 0.08s;
 }
-
-/* ─── NAV ─── */
+body.theme-male #mouse-glow {
+  background: radial-gradient(circle, rgba(59,130,246,0.08) 0%, transparent 70%);
+}
+ 
 nav {
-  position: sticky;
-  top: 0;
-  z-index: 100;
-  background: rgba(255,255,255,0.92);
+  position: sticky; top: 0; z-index: 100;
+  background: rgba(255,255,255,0.94);
   backdrop-filter: blur(30px);
-  -webkit-backdrop-filter: blur(30px);
   border-bottom: 1px solid rgba(242,167,195,0.15);
+  transition: border-color 0.4s;
 }
-
+body.theme-male nav { border-bottom: 1px solid rgba(59,130,246,0.15); }
+ 
 .nav-inner {
-  max-width: 1400px;
-  margin: 0 auto;
-  padding: 0 2.5rem;
-  height: 68px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+  max-width: 1400px; margin: 0 auto; padding: 0 2.5rem;
+  height: 68px; display: flex; align-items: center; justify-content: space-between;
 }
-
-.logo {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  cursor: pointer;
-}
-
+.logo { display: flex; align-items: center; gap: 0.75rem; cursor: pointer; }
 .logo-mark {
-  width: 36px;
-  height: 36px;
-  background: linear-gradient(135deg, var(--pink), var(--deep-pink));
+  width: 36px; height: 36px;
+  background: var(--theme-gradient);
   border-radius: 12px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.1rem;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.1rem; transition: background 0.4s;
 }
-
 .logo-text {
   font-family: 'Cormorant Garamond', serif;
-  font-size: 1.6rem;
-  font-weight: 400;
-  letter-spacing: 0.12em;
-  color: var(--ink);
+  font-size: 1.6rem; font-weight: 400;
+  letter-spacing: 0.12em; color: var(--ink);
 }
-
-.nav-links {
-  display: flex;
-  gap: 2.5rem;
-  align-items: center;
-}
-
+.nav-links { display: flex; gap: 2.5rem; align-items: center; }
 .nav-links a {
-  font-size: 0.82rem;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--mist);
-  cursor: pointer;
-  transition: color 0.2s;
-  text-decoration: none;
+  font-size: 0.82rem; letter-spacing: 0.08em;
+  text-transform: uppercase; color: var(--mist);
+  cursor: pointer; transition: color 0.2s; text-decoration: none;
 }
-.nav-links a:hover { color: var(--deep-pink); }
+.nav-links a:hover { color: var(--theme-primary); }
 .nav-links a.active { color: var(--ink); }
-
+ 
 .nav-cta {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.55rem 1.4rem;
-  border-radius: 100px;
-  background: var(--ink);
-  color: white;
-  font-size: 0.82rem;
-  letter-spacing: 0.06em;
-  cursor: pointer;
+  display: flex; align-items: center; gap: 0.5rem;
+  padding: 0.55rem 1.4rem; border-radius: 100px;
+  background: var(--ink); color: white;
+  font-size: 0.82rem; letter-spacing: 0.06em;
+  cursor: pointer; border: none;
   transition: background 0.2s, transform 0.15s;
-  border: none;
+  font-family: 'DM Sans', sans-serif;
 }
-.nav-cta:hover { background: var(--deep-pink); transform: scale(1.03); }
-
-/* ─── MAIN CONTAINER ─── */
+.nav-cta:hover { background: var(--theme-primary); transform: scale(1.03); }
+ 
 .page { position: relative; z-index: 2; }
 #discover, #community, #playlists { display: none; }
 #discover { display: block; }
-
-.container {
-  max-width: 1400px;
-  margin: 0 auto;
-  padding: 0 2.5rem;
-}
-
-/* ─── HERO ─── */
-.hero {
-  padding: 5rem 0 3rem;
-  text-align: center;
-  position: relative;
-}
-
+ 
+.container { max-width: 1400px; margin: 0 auto; padding: 0 2.5rem; }
+ 
+.hero { padding: 5rem 0 3rem; text-align: center; }
 .hero-eyebrow {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  font-size: 0.72rem;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: var(--mist);
-  margin-bottom: 1.8rem;
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  font-size: 0.72rem; letter-spacing: 0.18em; text-transform: uppercase;
+  color: var(--mist); margin-bottom: 1.8rem;
   padding: 0.45rem 1rem;
-  border: 1px solid rgba(242,167,195,0.35);
-  border-radius: 100px;
+  border: 1px solid rgba(242,167,195,0.4);
+  border-radius: 100px; transition: border-color 0.4s;
 }
-.eyebrow-dot { width: 5px; height: 5px; background: var(--accent); border-radius: 50%; animation: pulse 2s ease infinite; }
+body.theme-male .hero-eyebrow { border-color: rgba(59,130,246,0.3); }
+.eyebrow-dot { width: 5px; height: 5px; background: var(--theme-primary); border-radius: 50%; animation: pulse 2s ease infinite; transition: background 0.4s; }
 @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.4;transform:scale(0.8)} }
-
+ 
 .hero-h1 {
   font-family: 'Cormorant Garamond', serif;
   font-size: clamp(3.2rem, 6vw, 6.5rem);
-  font-weight: 300;
-  line-height: 1.0;
-  letter-spacing: -0.02em;
-  color: var(--ink);
-  margin-bottom: 1.5rem;
+  font-weight: 300; line-height: 1.0;
+  letter-spacing: -0.02em; color: var(--ink); margin-bottom: 1.5rem;
 }
-.hero-h1 em { font-style: italic; color: var(--deep-pink); }
-
+.hero-h1 em { font-style: italic; color: var(--theme-primary); transition: color 0.4s; }
+ 
 .hero-sub {
-  font-size: 1.05rem;
-  font-weight: 300;
-  color: var(--mist);
-  max-width: 480px;
-  margin: 0 auto 3rem;
-  line-height: 1.65;
+  font-size: 1.05rem; font-weight: 300; color: var(--mist);
+  max-width: 480px; margin: 0 auto 3rem; line-height: 1.65;
 }
-
-/* ─── RAMEN HERO ILLUSTRATION ─── */
-.ramen-hero-wrap {
-  position: relative;
-  display: inline-block;
-  margin: 0 auto 3rem;
-}
-
-#ramen-canvas {
-  display: block;
-  width: 340px;
-  height: 280px;
-  margin: 0 auto;
-}
-
-.ramen-scene {
-  position: relative;
-  width: 340px;
-  margin: 0 auto 2.5rem;
-  display: flex;
-  justify-content: center;
-}
-
-/* ─── HERO STATS ─── */
-.hero-stats {
-  display: flex;
-  justify-content: center;
-  gap: 3rem;
-  margin-bottom: 3rem;
-}
+ 
+.ramen-scene { position: relative; width: 340px; margin: 0 auto 2.5rem; display: flex; justify-content: center; }
+#ramen-canvas { display: block; width: 340px; height: 280px; margin: 0 auto; }
+ 
+.hero-stats { display: flex; justify-content: center; gap: 3rem; margin-bottom: 3rem; }
 .stat { text-align: center; }
 .stat-num {
   font-family: 'Cormorant Garamond', serif;
-  font-size: 2rem;
-  font-weight: 400;
-  color: var(--ink);
-  display: block;
+  font-size: 2rem; font-weight: 400; color: var(--ink); display: block;
 }
-.stat-label {
-  font-size: 0.72rem;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--mist);
-}
-
-/* ─── HERO BUTTONS ─── */
-.hero-actions {
-  display: flex;
-  gap: 1rem;
-  justify-content: center;
-  flex-wrap: wrap;
-}
-
+.stat-label { font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--mist); }
+ 
+.hero-actions { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
 .btn-primary {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.6rem;
-  padding: 0.85rem 2rem;
-  background: var(--ink);
-  color: white;
-  border-radius: 100px;
-  font-size: 0.88rem;
-  letter-spacing: 0.04em;
-  cursor: pointer;
-  border: none;
+  display: inline-flex; align-items: center; gap: 0.6rem;
+  padding: 0.85rem 2rem; background: var(--ink); color: white;
+  border-radius: 100px; font-size: 0.88rem; letter-spacing: 0.04em;
+  cursor: pointer; border: none;
   transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+  font-family: 'DM Sans', sans-serif;
 }
-.btn-primary:hover { background: var(--deep-pink); transform: translateY(-2px); box-shadow: 0 12px 28px -8px rgba(201,75,126,0.4); }
-
+.btn-primary:hover { background: var(--theme-primary); transform: translateY(-2px); box-shadow: 0 12px 28px -8px rgba(201,75,126,0.4); }
 .btn-ghost {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.6rem;
-  padding: 0.85rem 2rem;
-  background: transparent;
-  color: var(--ink);
-  border-radius: 100px;
-  font-size: 0.88rem;
-  letter-spacing: 0.04em;
-  cursor: pointer;
-  border: 1.5px solid rgba(242,167,195,0.5);
+  display: inline-flex; align-items: center; gap: 0.6rem;
+  padding: 0.85rem 2rem; background: transparent; color: var(--ink);
+  border-radius: 100px; font-size: 0.88rem; letter-spacing: 0.04em;
+  cursor: pointer; border: 1.5px solid rgba(242,167,195,0.5);
   transition: border-color 0.2s, background 0.2s;
+  font-family: 'DM Sans', sans-serif;
 }
-.btn-ghost:hover { border-color: var(--accent); background: rgba(242,167,195,0.07); }
-
-/* ─── MOOD SELECTOR ─── */
+.btn-ghost:hover { border-color: var(--theme-primary); background: rgba(242,167,195,0.07); }
+body.theme-male .btn-ghost { border-color: rgba(59,130,246,0.4); }
+ 
+/* COUPLE SCROLL SECTION */
+.couple-section {
+  position: relative;
+  overflow: hidden;
+  height: 200px;
+  margin: 3rem 0 1rem;
+  background: linear-gradient(to bottom, transparent, rgba(252,228,236,0.2), transparent);
+  transition: background 0.4s;
+}
+body.theme-male .couple-section {
+  background: linear-gradient(to bottom, transparent, rgba(219,234,254,0.2), transparent);
+}
+#couple-canvas { display: block; width: 100%; height: 200px; }
+ 
 .section-label {
-  font-size: 0.72rem;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  color: var(--mist);
-  text-align: center;
-  margin-bottom: 1.5rem;
+  font-size: 0.72rem; letter-spacing: 0.15em;
+  text-transform: uppercase; color: var(--mist);
+  text-align: center; margin-bottom: 1.5rem;
 }
-
+ 
 .mood-grid {
   display: grid;
   grid-template-columns: repeat(6, 1fr);
-  gap: 0.75rem;
-  margin-bottom: 4rem;
+  gap: 0.75rem; margin-bottom: 4rem;
 }
-
 @media(max-width:900px){ .mood-grid{ grid-template-columns: repeat(3,1fr); } }
 @media(max-width:600px){ .mood-grid{ grid-template-columns: repeat(2,1fr); } }
-
+ 
 .mood-btn {
-  padding: 1.4rem 0.5rem;
-  border-radius: 1.2rem;
+  padding: 1.4rem 0.5rem; border-radius: 1.2rem;
   background: var(--white);
   border: 1.5px solid rgba(17,17,17,0.07);
-  text-align: center;
-  cursor: pointer;
+  text-align: center; cursor: pointer;
   transition: all 0.35s cubic-bezier(0.23,1,0.32,1);
-  position: relative;
-  overflow: hidden;
+  position: relative; overflow: hidden;
 }
 .mood-btn::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: var(--mood-bg, transparent);
-  opacity: 0;
-  transition: opacity 0.35s;
-  border-radius: inherit;
+  content: ''; position: absolute; inset: 0;
+  background: var(--mood-bg, transparent); opacity: 0;
+  transition: opacity 0.35s; border-radius: inherit;
 }
 .mood-btn:hover::before, .mood-btn.active::before { opacity: 1; }
 .mood-btn:hover, .mood-btn.active {
@@ -343,618 +248,421 @@ nav {
 .mood-icon { font-size: 1.7rem; display: block; margin-bottom: 0.4rem; position: relative; z-index: 1; }
 .mood-label { font-size: 0.78rem; font-weight: 500; letter-spacing: 0.04em; color: var(--ink); position: relative; z-index: 1; }
 .mood-sublabel { font-size: 0.68rem; color: var(--mist); margin-top: 0.2rem; position: relative; z-index: 1; }
-
-/* ─── RECS SECTION ─── */
+ 
 #personalized-section { display: none; }
 #personalized-section.visible { display: block; }
-
+ 
 .recs-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-end;
-  margin-bottom: 2rem;
-  flex-wrap: wrap;
-  gap: 1rem;
+  display: flex; justify-content: space-between;
+  align-items: flex-end; margin-bottom: 2rem;
+  flex-wrap: wrap; gap: 1rem;
 }
 .recs-title {
   font-family: 'Cormorant Garamond', serif;
-  font-size: 2.4rem;
-  font-weight: 400;
-  color: var(--ink);
+  font-size: 2.4rem; font-weight: 400; color: var(--ink);
 }
-.recs-title span { color: var(--deep-pink); font-style: italic; }
-
+.recs-title span { color: var(--theme-primary); font-style: italic; transition: color 0.4s; }
 .recs-actions { display: flex; gap: 1rem; align-items: center; }
 .action-link {
-  display: flex;
-  align-items: center;
-  gap: 0.4rem;
-  font-size: 0.8rem;
-  color: var(--mist);
-  cursor: pointer;
-  transition: color 0.2s;
-  background: none;
-  border: none;
+  display: flex; align-items: center; gap: 0.4rem;
+  font-size: 0.8rem; color: var(--mist); cursor: pointer;
+  transition: color 0.2s; background: none; border: none;
   font-family: 'DM Sans', sans-serif;
 }
-.action-link:hover { color: var(--deep-pink); }
-
-/* ─── FILM CARDS ─── */
+.action-link:hover { color: var(--theme-primary); }
+ 
 .recs-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 1.2rem;
-  margin-bottom: 3rem;
+  display: grid; grid-template-columns: repeat(4, 1fr);
+  gap: 1.2rem; margin-bottom: 3rem;
 }
 @media(max-width:1100px){ .recs-grid{ grid-template-columns: repeat(3,1fr); } }
 @media(max-width:750px){ .recs-grid{ grid-template-columns: repeat(2,1fr); } }
 @media(max-width:500px){ .recs-grid{ grid-template-columns: 1fr; } }
-
+ 
 .film-card {
-  border-radius: 1.2rem;
-  overflow: hidden;
+  border-radius: 1.2rem; overflow: hidden;
   background: var(--white);
   border: 1px solid rgba(17,17,17,0.06);
   cursor: pointer;
   transition: transform 0.45s cubic-bezier(0.23,1,0.32,1), box-shadow 0.45s;
-  position: relative;
 }
 .film-card:hover {
   transform: translateY(-8px) scale(1.01);
   box-shadow: 0 30px 50px -15px rgba(17,17,17,0.18);
 }
-
-.film-poster-wrap {
-  position: relative;
-  aspect-ratio: 16/9;
-  overflow: hidden;
-}
+.film-poster-wrap { position: relative; aspect-ratio: 16/9; overflow: hidden; }
 .film-poster-wrap img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
+  width: 100%; height: 100%; object-fit: cover; display: block;
   transition: transform 0.6s cubic-bezier(0.23,1,0.32,1);
 }
 .film-card:hover .film-poster-wrap img { transform: scale(1.07); }
-
-/* Glassmorphic shine slide on hover */
 .film-poster-wrap::after {
-  content: '';
-  position: absolute;
-  top: 0; left: -70%;
-  width: 50%;
-  height: 100%;
+  content: ''; position: absolute; top: 0; left: -70%;
+  width: 50%; height: 100%;
   background: linear-gradient(120deg, transparent 0%, rgba(255,255,255,0.5) 50%, transparent 100%);
   transform: skewX(-20deg);
-  transition: none;
 }
-.film-card:hover .film-poster-wrap::after {
-  animation: shineSlide 0.7s ease forwards;
-}
-@keyframes shineSlide {
-  0%   { left: -70%; }
-  100% { left: 130%; }
-}
-
+.film-card:hover .film-poster-wrap::after { animation: shineSlide 0.7s ease forwards; }
+@keyframes shineSlide { 0%{ left:-70%; } 100%{ left:130%; } }
+ 
 .film-mood-badge {
-  position: absolute;
-  top: 0.6rem;
-  left: 0.6rem;
-  padding: 0.25rem 0.65rem;
-  border-radius: 100px;
-  font-size: 0.65rem;
-  font-weight: 500;
-  letter-spacing: 0.06em;
+  position: absolute; top: 0.6rem; left: 0.6rem;
+  padding: 0.25rem 0.65rem; border-radius: 100px;
+  font-size: 0.65rem; font-weight: 500; letter-spacing: 0.06em;
   text-transform: uppercase;
-  background: rgba(255,255,255,0.88);
-  backdrop-filter: blur(10px);
-  color: var(--ink);
-  border: 1px solid rgba(255,255,255,0.5);
+  background: rgba(255,255,255,0.88); backdrop-filter: blur(10px);
+  color: var(--ink); border: 1px solid rgba(255,255,255,0.5);
 }
-
+.film-stream-badge {
+  position: absolute; top: 0.6rem; right: 0.6rem;
+  padding: 0.25rem 0.65rem; border-radius: 100px;
+  font-size: 0.65rem; font-weight: 600; letter-spacing: 0.04em;
+  color: white;
+}
+.badge-netflix { background: #E50914; }
+.badge-prime { background: #00A8E1; }
+.badge-apple { background: #1c1c1e; }
+.badge-hbo { background: #5822CC; }
+.badge-disney { background: #0050A0; }
+.badge-crunchyroll { background: #F47521; }
+ 
 .film-body { padding: 1.1rem 1.2rem 1.2rem; }
 .film-title {
   font-family: 'Cormorant Garamond', serif;
-  font-size: 1.2rem;
-  font-weight: 400;
-  margin-bottom: 0.35rem;
-  color: var(--ink);
+  font-size: 1.2rem; font-weight: 400; margin-bottom: 0.35rem; color: var(--ink);
 }
-.film-desc {
-  font-size: 0.78rem;
-  color: var(--mist);
-  line-height: 1.5;
-  margin-bottom: 0.6rem;
-}
+.film-desc { font-size: 0.78rem; color: var(--mist); line-height: 1.5; margin-bottom: 0.6rem; }
 .film-ramen {
-  font-size: 0.72rem;
-  color: var(--deep-pink);
-  display: flex;
-  align-items: center;
-  gap: 0.3rem;
-  margin-bottom: 1rem;
+  font-size: 0.72rem; color: var(--theme-primary);
+  display: flex; align-items: center; gap: 0.3rem;
+  margin-bottom: 1rem; transition: color 0.4s;
 }
-
+.film-meta { display: flex; gap: 0.5rem; margin-bottom: 0.8rem; flex-wrap: wrap; }
+.film-tag {
+  font-size: 0.62rem; padding: 0.2rem 0.55rem;
+  border-radius: 100px; background: rgba(242,167,195,0.12);
+  color: var(--theme-primary); font-weight: 500; letter-spacing: 0.04em;
+  transition: background 0.4s, color 0.4s;
+}
+body.theme-male .film-tag { background: rgba(59,130,246,0.1); }
+ 
 .film-actions { display: flex; gap: 0.5rem; }
 .film-btn-play {
-  flex: 1;
-  padding: 0.55rem;
-  background: var(--ink);
-  color: white;
-  border-radius: 0.7rem;
-  font-size: 0.78rem;
-  font-weight: 500;
-  letter-spacing: 0.03em;
-  cursor: pointer;
-  border: none;
-  transition: background 0.2s;
+  flex: 1; padding: 0.55rem; background: var(--ink); color: white;
+  border-radius: 0.7rem; font-size: 0.78rem; font-weight: 500;
+  letter-spacing: 0.03em; cursor: pointer; border: none;
+  transition: background 0.2s; font-family: 'DM Sans', sans-serif;
 }
-.film-btn-play:hover { background: var(--deep-pink); }
+.film-btn-play:hover { background: var(--theme-primary); }
 .film-btn-save {
-  padding: 0.55rem 0.9rem;
-  background: transparent;
-  color: var(--mist);
-  border-radius: 0.7rem;
-  font-size: 0.78rem;
-  cursor: pointer;
+  padding: 0.55rem 0.9rem; background: transparent; color: var(--mist);
+  border-radius: 0.7rem; font-size: 0.78rem; cursor: pointer;
   border: 1px solid rgba(17,17,17,0.1);
-  transition: border-color 0.2s, color 0.2s;
+  transition: border-color 0.2s, color 0.2s, background 0.2s;
+  font-family: 'DM Sans', sans-serif;
 }
-.film-btn-save:hover { border-color: var(--accent); color: var(--deep-pink); }
-
-/* ─── DONATION NUDGE ─── */
+.film-btn-save:hover { border-color: var(--theme-primary); color: var(--theme-primary); }
+.film-btn-save.saved { background: var(--theme-primary); color: white; border-color: var(--theme-primary); }
+ 
 .donation-nudge {
-  display: none;
-  align-items: center;
-  justify-content: space-between;
-  gap: 2rem;
-  padding: 1.8rem 2.5rem;
-  border-radius: var(--radius);
+  display: none; align-items: center; justify-content: space-between;
+  gap: 2rem; padding: 1.8rem 2.5rem; border-radius: var(--radius);
   background: linear-gradient(135deg, var(--petal) 0%, rgba(255,255,255,0.8) 100%);
-  border: 1px solid rgba(242,167,195,0.3);
-  margin-bottom: 3rem;
+  border: 1px solid rgba(242,167,195,0.3); margin-bottom: 3rem;
+  transition: background 0.4s, border-color 0.4s;
 }
+body.theme-male .donation-nudge { background: linear-gradient(135deg, #dbeafe 0%, rgba(255,255,255,0.8) 100%); border-color: rgba(59,130,246,0.2); }
 .donation-nudge.visible { display: flex; }
-.nudge-text {}
-.nudge-overline {
-  font-size: 0.68rem;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  color: var(--deep-pink);
-  margin-bottom: 0.3rem;
-}
+.nudge-overline { font-size: 0.68rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--theme-primary); margin-bottom: 0.3rem; transition: color 0.4s; }
 .nudge-p { font-size: 0.95rem; color: var(--slate); }
 .nudge-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.75rem 1.6rem;
-  background: var(--deep-pink);
-  color: white;
-  border-radius: 100px;
-  font-size: 0.82rem;
-  cursor: pointer;
-  border: none;
-  white-space: nowrap;
-  transition: background 0.2s, transform 0.15s;
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  padding: 0.75rem 1.6rem; background: var(--theme-primary); color: white;
+  border-radius: 100px; font-size: 0.82rem; cursor: pointer; border: none;
+  white-space: nowrap; transition: background 0.2s, transform 0.15s;
+  font-family: 'DM Sans', sans-serif;
 }
 .nudge-btn:hover { background: var(--ink); transform: scale(1.03); }
-
-/* ─── GUEST LIMIT BAR ─── */
+ 
 .guest-bar {
   background: rgba(252,228,236,0.5);
   border: 1px solid rgba(242,167,195,0.3);
-  border-radius: var(--radius);
-  padding: 1.2rem 2rem;
-  text-align: center;
-  margin-bottom: 2rem;
-  display: none;
+  border-radius: var(--radius); padding: 1.2rem 2rem;
+  text-align: center; margin-bottom: 2rem; display: none;
+  transition: background 0.4s, border-color 0.4s;
 }
+body.theme-male .guest-bar { background: rgba(219,234,254,0.5); border-color: rgba(59,130,246,0.3); }
 .guest-bar.visible { display: block; }
 .guest-bar p { font-size: 0.88rem; color: var(--slate); margin-bottom: 0.7rem; }
 .guest-swipe-dots { display: flex; justify-content: center; gap: 0.5rem; margin-bottom: 0.8rem; }
 .swipe-dot { width: 8px; height: 8px; border-radius: 50%; background: rgba(17,17,17,0.12); transition: background 0.2s; }
-.swipe-dot.used { background: var(--deep-pink); }
-
-/* ─── COMMUNITY ─── */
-.community-header {
-  margin-bottom: 3rem;
-}
+.swipe-dot.used { background: var(--theme-primary); }
+ 
+/* COMMUNITY */
+.community-header { margin-bottom: 3rem; }
 .community-header h2 {
   font-family: 'Cormorant Garamond', serif;
-  font-size: 3rem;
-  font-weight: 300;
-  color: var(--ink);
-  margin-bottom: 0.5rem;
+  font-size: 3rem; font-weight: 300; color: var(--ink); margin-bottom: 0.5rem;
 }
 .community-header p { font-size: 0.9rem; color: var(--mist); }
-
-.visionaries-section {
-  margin-bottom: 3rem;
-}
-.vis-label {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 1rem;
-}
+.vis-label { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
 .vis-label span { font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--mist); }
-.vis-label a { font-size: 0.78rem; color: var(--deep-pink); cursor: pointer; }
-
-#leaderboard {
-  display: flex;
-  gap: 0.75rem;
-  overflow-x: auto;
-  padding-bottom: 0.5rem;
-}
+.vis-label a { font-size: 0.78rem; color: var(--theme-primary); cursor: pointer; }
+#leaderboard { display: flex; gap: 0.75rem; overflow-x: auto; padding-bottom: 0.5rem; }
 .vis-card {
-  min-width: 150px;
-  padding: 1rem 1.2rem;
-  border-radius: 1rem;
-  background: rgba(255,255,255,0.9);
+  min-width: 150px; padding: 1rem 1.2rem;
+  border-radius: 1rem; background: rgba(255,255,255,0.9);
   backdrop-filter: blur(20px);
   border: 1px solid rgba(242,167,195,0.2);
-  text-align: center;
-  flex-shrink: 0;
+  text-align: center; flex-shrink: 0; transition: border-color 0.4s;
 }
+body.theme-male .vis-card { border-color: rgba(59,130,246,0.2); }
 .vis-name { font-size: 0.88rem; font-weight: 500; color: var(--ink); margin-bottom: 0.2rem; }
-.vis-amount { font-size: 0.72rem; color: var(--deep-pink); }
-
+.vis-amount { font-size: 0.72rem; color: var(--theme-primary); transition: color 0.4s; }
 .community-feed { margin-bottom: 3rem; display: flex; flex-direction: column; gap: 1rem; }
 .post-card {
-  padding: 1.4rem 1.8rem;
-  border-radius: 1.2rem;
-  background: rgba(255,255,255,0.85);
-  backdrop-filter: blur(20px);
+  padding: 1.4rem 1.8rem; border-radius: 1.2rem;
+  background: rgba(255,255,255,0.85); backdrop-filter: blur(20px);
   border: 1px solid rgba(17,17,17,0.06);
 }
 .post-text { font-size: 0.95rem; color: var(--slate); line-height: 1.6; margin-bottom: 0.8rem; }
 .post-meta { display: flex; justify-content: space-between; font-size: 0.72rem; color: var(--mist); }
-
 .community-compose {
-  padding: 1.8rem;
-  border-radius: var(--radius);
+  padding: 1.8rem; border-radius: var(--radius);
   background: rgba(255,255,255,0.85);
-  border: 1px solid rgba(242,167,195,0.2);
+  border: 1px solid rgba(242,167,195,0.2); transition: border-color 0.4s;
 }
+body.theme-male .community-compose { border-color: rgba(59,130,246,0.2); }
 .community-compose textarea {
-  width: 100%;
-  background: transparent;
-  border: 1px solid rgba(17,17,17,0.1);
-  border-radius: 1rem;
-  padding: 1rem 1.2rem;
-  font-family: 'DM Sans', sans-serif;
-  font-size: 0.9rem;
-  color: var(--ink);
-  resize: none;
-  outline: none;
-  transition: border-color 0.2s;
-  margin-bottom: 1rem;
+  width: 100%; background: transparent;
+  border: 1px solid rgba(17,17,17,0.1); border-radius: 1rem;
+  padding: 1rem 1.2rem; font-family: 'DM Sans', sans-serif;
+  font-size: 0.9rem; color: var(--ink); resize: none; outline: none;
+  transition: border-color 0.2s; margin-bottom: 1rem;
 }
-.community-compose textarea:focus { border-color: var(--accent); }
-
-/* ─── PLAYLISTS ─── */
-.playlists-header {
-  margin-bottom: 3rem;
-}
+.community-compose textarea:focus { border-color: var(--theme-primary); }
+ 
+/* PLAYLISTS */
+.playlists-header { margin-bottom: 3rem; }
 .playlists-header h2 {
   font-family: 'Cormorant Garamond', serif;
-  font-size: 3rem;
-  font-weight: 300;
-  color: var(--ink);
-  margin-bottom: 0.5rem;
+  font-size: 3rem; font-weight: 300; color: var(--ink); margin-bottom: 0.5rem;
 }
 .playlists-header p { font-size: 0.9rem; color: var(--mist); }
-
 .weekly-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 1rem;
-  margin-bottom: 3rem;
+  display: grid; grid-template-columns: repeat(4, 1fr);
+  gap: 1rem; margin-bottom: 3rem;
 }
 @media(max-width:900px){ .weekly-grid{ grid-template-columns: repeat(2,1fr); } }
-
-.saved-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 1.2rem;
-}
+.saved-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.2rem; }
 @media(max-width:750px){ .saved-grid{ grid-template-columns: repeat(2,1fr); } }
-
 .saved-empty {
-  grid-column: 1/-1;
-  padding: 3rem;
-  text-align: center;
-  color: var(--mist);
-  font-size: 0.9rem;
-  border: 1px dashed rgba(242,167,195,0.4);
-  border-radius: var(--radius);
+  grid-column: 1/-1; padding: 3rem; text-align: center;
+  color: var(--mist); font-size: 0.9rem;
+  border: 1px dashed rgba(242,167,195,0.4); border-radius: var(--radius);
 }
-
-/* ─── FLOATING BAR ─── */
-.float-bar {
-  position: fixed;
-  bottom: 2rem;
-  right: 2rem;
-  display: flex;
-  flex-direction: column;
-  gap: 0.6rem;
-  z-index: 90;
-}
-
+ 
+.float-bar { position: fixed; bottom: 2rem; right: 2rem; display: flex; flex-direction: column; gap: 0.6rem; z-index: 90; }
 .float-pill {
-  display: flex;
-  align-items: center;
-  gap: 0.65rem;
-  padding: 0.75rem 1.4rem;
-  border-radius: 100px;
-  background: rgba(255,255,255,0.92);
-  backdrop-filter: blur(30px);
+  display: flex; align-items: center; gap: 0.65rem;
+  padding: 0.75rem 1.4rem; border-radius: 100px;
+  background: rgba(255,255,255,0.92); backdrop-filter: blur(30px);
   border: 1px solid rgba(17,17,17,0.08);
   box-shadow: 0 8px 25px -8px rgba(17,17,17,0.15);
-  cursor: pointer;
-  transition: transform 0.2s, box-shadow 0.2s;
-  font-size: 0.8rem;
-  font-weight: 500;
-  color: var(--ink);
+  cursor: pointer; transition: transform 0.2s, box-shadow 0.2s;
+  font-size: 0.8rem; font-weight: 500; color: var(--ink); font-family: 'DM Sans', sans-serif;
 }
 .float-pill:hover { transform: translateY(-2px); box-shadow: 0 14px 35px -10px rgba(17,17,17,0.2); }
-
-/* ─── MODALS ─── */
+ 
 .modal-overlay {
-  display: none;
-  position: fixed;
-  inset: 0;
-  background: rgba(17,17,17,0.45);
-  backdrop-filter: blur(8px);
-  z-index: 200;
-  align-items: center;
-  justify-content: center;
-  padding: 1.5rem;
+  display: none; position: fixed; inset: 0;
+  background: rgba(17,17,17,0.45); backdrop-filter: blur(8px);
+  z-index: 200; align-items: center; justify-content: center; padding: 1.5rem;
 }
 .modal-overlay.open { display: flex; }
-
 .modal-box {
-  background: var(--white);
-  border-radius: 1.8rem;
-  overflow: hidden;
-  width: 100%;
-  animation: modalIn 0.45s cubic-bezier(0.23,1,0.32,1);
+  background: var(--white); border-radius: 1.8rem; overflow: hidden;
+  width: 100%; animation: modalIn 0.45s cubic-bezier(0.23,1,0.32,1);
 }
 @keyframes modalIn {
   from { opacity: 0; transform: scale(0.94) translateY(20px); }
   to   { opacity: 1; transform: scale(1) translateY(0); }
 }
-
 .modal-box.wide { max-width: 860px; }
 .modal-box.narrow { max-width: 440px; padding: 2.5rem; }
-
 .modal-header {
-  padding: 1.5rem 2rem;
-  border-bottom: 1px solid rgba(17,17,17,0.07);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+  padding: 1.5rem 2rem; border-bottom: 1px solid rgba(17,17,17,0.07);
+  display: flex; align-items: center; justify-content: space-between;
 }
 .modal-title { font-family: 'Cormorant Garamond', serif; font-size: 1.5rem; font-weight: 400; }
 .modal-close {
-  width: 34px; height: 34px;
-  border-radius: 50%;
-  background: rgba(17,17,17,0.06);
-  border: none;
-  cursor: pointer;
+  width: 34px; height: 34px; border-radius: 50%;
+  background: rgba(17,17,17,0.06); border: none; cursor: pointer;
   display: flex; align-items: center; justify-content: center;
-  font-size: 1.1rem;
-  color: var(--mist);
-  transition: background 0.2s;
+  font-size: 1.1rem; color: var(--mist); transition: background 0.2s;
 }
 .modal-close:hover { background: rgba(17,17,17,0.12); }
-
 .video-wrap { aspect-ratio: 16/9; background: #000; }
 .video-wrap iframe { width: 100%; height: 100%; border: none; }
-
-.modal-footer {
-  padding: 1.5rem 2rem;
-  display: flex;
-  gap: 0.75rem;
-}
+.modal-footer { padding: 1.5rem 2rem; display: flex; gap: 0.75rem; }
 .modal-footer .btn-outline {
-  flex: 1;
-  padding: 0.9rem;
-  border: 1.5px solid rgba(242,167,195,0.5);
-  border-radius: 100px;
-  background: transparent;
-  cursor: pointer;
-  font-size: 0.85rem;
-  font-family: 'DM Sans', sans-serif;
-  transition: border-color 0.2s;
+  flex: 1; padding: 0.9rem;
+  border: 1.5px solid rgba(242,167,195,0.5); border-radius: 100px;
+  background: transparent; cursor: pointer; font-size: 0.85rem;
+  font-family: 'DM Sans', sans-serif; transition: border-color 0.2s;
 }
-.modal-footer .btn-outline:hover { border-color: var(--deep-pink); }
+.modal-footer .btn-outline:hover { border-color: var(--theme-primary); }
 .modal-footer .btn-fill {
-  flex: 1;
-  padding: 0.9rem;
-  border-radius: 100px;
-  background: var(--ink);
-  color: white;
-  border: none;
-  cursor: pointer;
-  font-size: 0.85rem;
-  font-family: 'DM Sans', sans-serif;
-  text-align: center;
-  text-decoration: none;
+  flex: 1; padding: 0.9rem; border-radius: 100px;
+  background: var(--ink); color: white; border: none; cursor: pointer;
+  font-size: 0.85rem; font-family: 'DM Sans', sans-serif;
+  text-align: center; text-decoration: none;
   display: flex; align-items: center; justify-content: center;
   transition: background 0.2s;
 }
-.modal-footer .btn-fill:hover { background: var(--deep-pink); }
-
-/* Profile modal */
+.modal-footer .btn-fill:hover { background: var(--theme-primary); }
+ 
+/* GENDER MODAL */
+.gender-modal-inner { padding: 2.5rem; text-align: center; }
+.gender-modal-inner h3 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 2.2rem; font-weight: 400; margin-bottom: 0.5rem;
+}
+.gender-modal-inner .sub { font-size: 0.88rem; color: var(--mist); margin-bottom: 2.5rem; }
+.gender-choices { display: flex; gap: 1rem; margin-bottom: 1.5rem; }
+.gender-btn {
+  flex: 1; padding: 2rem 1rem; border-radius: 1.5rem;
+  border: 2px solid rgba(17,17,17,0.08);
+  background: transparent; cursor: pointer;
+  transition: all 0.3s; font-family: 'DM Sans', sans-serif;
+}
+.gender-btn:hover { transform: translateY(-4px); }
+.gender-btn.female:hover, .gender-btn.female.sel { border-color: #c94b7e; background: rgba(201,75,126,0.06); }
+.gender-btn.male:hover, .gender-btn.male.sel { border-color: #2563eb; background: rgba(37,99,235,0.06); }
+.gender-btn.nb:hover, .gender-btn.nb.sel { border-color: #7c3aed; background: rgba(124,58,237,0.06); }
+.gender-icon { font-size: 2.5rem; display: block; margin-bottom: 0.6rem; }
+.gender-label { font-size: 0.9rem; font-weight: 500; color: var(--ink); }
+ 
+/* PROFILE MODAL */
 .profile-modal-inner { padding: 2.5rem; }
 .profile-modal-inner h3 {
   font-family: 'Cormorant Garamond', serif;
-  font-size: 2rem;
-  font-weight: 400;
-  text-align: center;
-  margin-bottom: 0.4rem;
+  font-size: 2rem; font-weight: 400; text-align: center; margin-bottom: 0.4rem;
 }
-.profile-modal-inner .sub {
-  text-align: center;
-  font-size: 0.82rem;
-  color: var(--mist);
-  margin-bottom: 2rem;
-}
+.profile-modal-inner .sub { text-align: center; font-size: 0.82rem; color: var(--mist); margin-bottom: 2rem; }
 .form-group { margin-bottom: 1.2rem; }
 .form-group label { display: block; font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--mist); margin-bottom: 0.5rem; }
-.form-group input {
-  width: 100%;
-  padding: 0.85rem 1.2rem;
-  border: 1.5px solid rgba(17,17,17,0.1);
-  border-radius: 1rem;
-  font-family: 'DM Sans', sans-serif;
-  font-size: 0.92rem;
-  color: var(--ink);
-  outline: none;
-  transition: border-color 0.2s;
-  background: rgba(253,240,245,0.3);
+.form-group input, .form-group select {
+  width: 100%; padding: 0.85rem 1.2rem;
+  border: 1.5px solid rgba(17,17,17,0.1); border-radius: 1rem;
+  font-family: 'DM Sans', sans-serif; font-size: 0.92rem;
+  color: var(--ink); outline: none; transition: border-color 0.2s;
+  background: rgba(253,240,245,0.3); -webkit-appearance: none;
 }
-.form-group input:focus { border-color: var(--accent); background: white; }
+.form-group input:focus, .form-group select:focus { border-color: var(--theme-primary); background: white; }
 .profile-submit {
-  width: 100%;
-  padding: 1rem;
-  border-radius: 100px;
-  background: var(--ink);
-  color: white;
-  border: none;
-  font-size: 0.9rem;
-  font-family: 'DM Sans', sans-serif;
-  cursor: pointer;
-  margin-top: 0.5rem;
-  transition: background 0.2s;
+  width: 100%; padding: 1rem; border-radius: 100px;
+  background: var(--ink); color: white; border: none;
+  font-size: 0.9rem; font-family: 'DM Sans', sans-serif;
+  cursor: pointer; margin-top: 0.5rem; transition: background 0.2s;
 }
-.profile-submit:hover { background: var(--deep-pink); }
+.profile-submit:hover { background: var(--theme-primary); }
 .form-note { text-align: center; font-size: 0.72rem; color: var(--mist); margin-top: 1rem; }
-
-/* Donate modal */
+ 
+/* DONATE MODAL */
 .donate-inner { padding: 2.5rem; text-align: center; }
-.donate-inner h3 {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 2.2rem;
-  font-weight: 400;
-  margin-bottom: 0.5rem;
-}
+.donate-inner h3 { font-family: 'Cormorant Garamond', serif; font-size: 2.2rem; font-weight: 400; margin-bottom: 0.5rem; }
 .donate-inner .sub { font-size: 0.88rem; color: var(--mist); margin-bottom: 2rem; line-height: 1.6; }
-
 .amount-choices { display: flex; gap: 0.5rem; margin-bottom: 1rem; }
 .amount-btn {
-  flex: 1;
-  padding: 0.75rem;
-  border: 1.5px solid rgba(17,17,17,0.1);
-  border-radius: 0.8rem;
-  background: transparent;
-  font-size: 0.88rem;
-  font-family: 'DM Sans', sans-serif;
-  cursor: pointer;
-  transition: all 0.2s;
+  flex: 1; padding: 0.75rem; border: 1.5px solid rgba(17,17,17,0.1);
+  border-radius: 0.8rem; background: transparent; font-size: 0.88rem;
+  font-family: 'DM Sans', sans-serif; cursor: pointer; transition: all 0.2s;
 }
-.amount-btn:hover, .amount-btn.selected { border-color: var(--deep-pink); background: rgba(242,167,195,0.1); color: var(--deep-pink); }
-
+.amount-btn:hover, .amount-btn.selected { border-color: var(--theme-primary); background: rgba(201,75,126,0.08); color: var(--theme-primary); }
 .amount-input-wrap {
-  display: flex;
-  align-items: center;
-  border: 1.5px solid rgba(17,17,17,0.1);
-  border-radius: 1rem;
-  padding: 0.75rem 1.5rem;
-  margin-bottom: 1.5rem;
+  display: flex; align-items: center;
+  border: 1.5px solid rgba(17,17,17,0.1); border-radius: 1rem;
+  padding: 0.75rem 1.5rem; margin-bottom: 1.5rem;
 }
-.amount-currency { font-size: 1.8rem; color: var(--deep-pink); font-family: 'Cormorant Garamond', serif; margin-right: 0.3rem; }
+.amount-currency { font-size: 1.8rem; color: var(--theme-primary); font-family: 'Cormorant Garamond', serif; margin-right: 0.3rem; }
 .amount-input-wrap input {
-  flex: 1;
-  font-size: 2.2rem;
-  font-family: 'Cormorant Garamond', serif;
-  border: none;
-  outline: none;
-  text-align: center;
-  color: var(--ink);
-  background: transparent;
+  flex: 1; font-size: 2.2rem; font-family: 'Cormorant Garamond', serif;
+  border: none; outline: none; text-align: center; color: var(--ink); background: transparent;
 }
-
 .donate-cta {
-  width: 100%;
-  padding: 1rem;
-  border-radius: 100px;
-  background: var(--deep-pink);
-  color: white;
-  border: none;
-  font-size: 0.9rem;
-  font-family: 'DM Sans', sans-serif;
-  cursor: pointer;
-  transition: background 0.2s, transform 0.15s;
+  width: 100%; padding: 1rem; border-radius: 100px;
+  background: var(--theme-primary); color: white; border: none;
+  font-size: 0.9rem; font-family: 'DM Sans', sans-serif;
+  cursor: pointer; transition: background 0.2s, transform 0.15s;
   margin-bottom: 0.8rem;
 }
 .donate-cta:hover { background: var(--ink); transform: scale(1.02); }
 .donate-note { font-size: 0.72rem; color: var(--mist); }
-
-/* PayPal modal */
+ 
 .paypal-inner { padding: 2.5rem; text-align: center; }
 .paypal-inner h3 { font-family: 'Cormorant Garamond', serif; font-size: 1.8rem; font-weight: 400; margin-bottom: 1.5rem; }
 .paypal-details {
-  background: rgba(253,240,245,0.5);
-  border: 1px solid rgba(242,167,195,0.3);
-  border-radius: 1.2rem;
-  padding: 1.5rem;
-  margin-bottom: 1.5rem;
+  background: rgba(253,240,245,0.5); border: 1px solid rgba(242,167,195,0.3);
+  border-radius: 1.2rem; padding: 1.5rem; margin-bottom: 1.5rem;
 }
-.paypal-row { display: flex; justify-content: space-between; padding: 0.6rem 0; border-bottom: 1px solid rgba(17,17,17,0.06); font-size: 0.88rem; }
+.paypal-row {
+  display: flex; justify-content: space-between; padding: 0.6rem 0;
+  border-bottom: 1px solid rgba(17,17,17,0.06); font-size: 0.88rem;
+}
 .paypal-row:last-child { border-bottom: none; }
 .paypal-row .label { color: var(--mist); }
 .paypal-row .value { font-weight: 500; color: var(--ink); }
 .paypal-copy-btn {
-  width: 100%;
-  padding: 1rem;
-  border-radius: 100px;
-  background: var(--deep-pink);
-  color: white;
-  border: none;
-  font-size: 0.9rem;
-  font-family: 'DM Sans', sans-serif;
-  cursor: pointer;
-  transition: background 0.2s;
-  margin-bottom: 0.75rem;
+  width: 100%; padding: 1rem; border-radius: 100px;
+  background: var(--theme-primary); color: white; border: none;
+  font-size: 0.9rem; font-family: 'DM Sans', sans-serif;
+  cursor: pointer; transition: background 0.2s; margin-bottom: 0.75rem;
 }
 .paypal-copy-btn:hover { background: var(--ink); }
 .paypal-done-btn {
-  width: 100%;
-  padding: 0.75rem;
-  background: transparent;
-  border: none;
-  font-size: 0.85rem;
-  color: var(--mist);
-  cursor: pointer;
-  font-family: 'DM Sans', sans-serif;
+  width: 100%; padding: 0.75rem; background: transparent; border: none;
+  font-size: 0.85rem; color: var(--mist); cursor: pointer; font-family: 'DM Sans', sans-serif;
 }
-
-/* ─── FOOTER ─── */
+ 
+/* NEUROSCIENCE BADGE */
+.neuro-bar {
+  display: flex; align-items: center; justify-content: center;
+  gap: 2rem; padding: 1.5rem; margin-bottom: 3rem;
+  border-radius: var(--radius);
+  background: linear-gradient(135deg, rgba(242,167,195,0.08), rgba(255,255,255,0.5));
+  border: 1px solid rgba(242,167,195,0.2);
+  flex-wrap: wrap;
+}
+body.theme-male .neuro-bar { background: linear-gradient(135deg, rgba(59,130,246,0.06), rgba(255,255,255,0.5)); border-color: rgba(59,130,246,0.15); }
+.neuro-item { display: flex; align-items: center; gap: 0.5rem; font-size: 0.78rem; color: var(--slate); }
+.neuro-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--theme-primary); transition: background 0.4s; }
+ 
 footer {
-  padding: 3rem 0 2rem;
-  text-align: center;
-  border-top: 1px solid rgba(17,17,17,0.06);
-  margin-top: 4rem;
+  padding: 3rem 0 2rem; text-align: center;
+  border-top: 1px solid rgba(17,17,17,0.06); margin-top: 4rem;
 }
 .footer-text { font-size: 0.75rem; color: var(--mist); line-height: 1.8; }
 .footer-text a { color: var(--mist); text-decoration: underline; cursor: pointer; }
-.footer-text a:hover { color: var(--deep-pink); }
-
-/* ─── SECTION DIVIDER ─── */
-.section-gap { height: 5rem; }
+.footer-text a:hover { color: var(--theme-primary); }
+ 
+#toast {
+  position: fixed; bottom: 7rem; left: 50%; transform: translateX(-50%);
+  background: rgba(26,26,26,0.92); color: white; padding: 0.65rem 1.4rem;
+  border-radius: 100px; font-size: 0.82rem; z-index: 999; opacity: 0;
+  backdrop-filter: blur(20px); transition: opacity 0.25s;
+  font-family: 'DM Sans', sans-serif; letter-spacing: 0.02em;
+  white-space: nowrap; pointer-events: none;
+}
 </style>
 </head>
 <body>
-
+ 
 <div class="sakura-bg"></div>
 <canvas id="petals"></canvas>
 <div id="mouse-glow"></div>
-
-<!-- NAV -->
+<div id="toast"></div>
+ 
 <nav>
   <div class="nav-inner">
     <div class="logo" onclick="navigateTo('discover')">
@@ -972,14 +680,10 @@ footer {
     </button>
   </div>
 </nav>
-
+ 
 <div class="page">
-
-<!-- DISCOVER -->
 <div id="discover">
   <div class="container">
-
-    <!-- HERO -->
     <section class="hero">
       <div class="hero-eyebrow">
         <span class="eyebrow-dot"></span>
@@ -990,31 +694,38 @@ footer {
         <em>before the ramen gets cold</em>
       </h1>
       <p class="hero-sub">We read your mood, your moment, your mind — and surface the perfect film or series before you even finish typing.</p>
-
-      <!-- WATERCOLOUR RAMEN CANVAS -->
       <div class="ramen-scene">
         <canvas id="ramen-canvas" width="340" height="280"></canvas>
       </div>
-
       <div class="hero-stats">
         <div class="stat"><span class="stat-num">100k+</span><span class="stat-label">Titles</span></div>
         <div class="stat"><span class="stat-num">0.03s</span><span class="stat-label">To match</span></div>
         <div class="stat"><span class="stat-num">6</span><span class="stat-label">Mood states</span></div>
       </div>
-
       <div class="hero-actions">
-        <button class="btn-primary" onclick="showProfileModal()">
+        <button class="btn-primary" onclick="showGenderModal()">
           <i class="fa-solid fa-arrow-right"></i>
-          Unlock unlimited
+          Begin your taste profile
         </button>
         <button class="btn-ghost" onclick="showDonateModal()">
-          <i class="fa-solid fa-heart" style="color:var(--deep-pink)"></i>
+          <i class="fa-solid fa-heart" style="color:var(--theme-primary)"></i>
           Keep the bowl warm
         </button>
       </div>
     </section>
-
-    <!-- GUEST LIMIT BAR -->
+ 
+    <div class="couple-section">
+      <canvas id="couple-canvas"></canvas>
+    </div>
+ 
+    <div class="neuro-bar">
+      <div class="neuro-item"><span class="neuro-dot"></span>Dopamine-signal matching</div>
+      <div class="neuro-item"><span class="neuro-dot"></span>Circadian mood mapping</div>
+      <div class="neuro-item"><span class="neuro-dot"></span>Emotional resonance AI</div>
+      <div class="neuro-item"><span class="neuro-dot"></span>Zero ads · forever free</div>
+      <div class="neuro-item"><span class="neuro-dot"></span>Anime · K-drama · Film · Series</div>
+    </div>
+ 
     <div class="guest-bar" id="guest-bar">
       <div class="guest-swipe-dots">
         <div class="swipe-dot" id="dot-1"></div>
@@ -1022,53 +733,46 @@ footer {
         <div class="swipe-dot" id="dot-3"></div>
       </div>
       <p>You have <strong id="swipes-left">3</strong> free discoveries remaining. Create a profile to unlock everything — free, forever.</p>
-      <button class="btn-primary" onclick="showProfileModal()">Create your taste profile →</button>
+      <button class="btn-primary" onclick="showGenderModal()">Create your taste profile →</button>
     </div>
-
-    <!-- MOOD SELECTOR -->
+ 
     <div class="section-label">How are you feeling right now?</div>
     <div class="mood-grid" id="mood-grid"></div>
-
-    <!-- RECS -->
+ 
     <section id="personalized-section">
       <div class="recs-header">
         <div>
           <h2 class="recs-title">Matched for you <span id="mood-name-display"></span></h2>
         </div>
         <div class="recs-actions">
-          <button class="action-link" onclick="refreshRecs()"><i class="fa-solid fa-arrows-rotate"></i> Not feeling it? Refresh</button>
+          <button class="action-link" onclick="refreshRecs()"><i class="fa-solid fa-arrows-rotate"></i> Refresh</button>
           <button class="action-link" onclick="explainAI()"><i class="fa-solid fa-circle-info"></i> How we chose these</button>
         </div>
       </div>
       <div class="recs-grid" id="recs-grid"></div>
-
-      <!-- DONATION NUDGE -->
       <div class="donation-nudge" id="donation-nudge">
         <div class="nudge-text">
           <div class="nudge-overline">Loving these matches?</div>
-          <p class="nudge-p">Mood stays ad-free and intelligent because of people like you. Keep the algorithm warm.</p>
+          <p class="nudge-p">Mood stays ad-free and intelligent because of people like you.</p>
         </div>
         <button class="nudge-btn" onclick="showDonateModal()">
-          <i class="fa-solid fa-heart"></i>
-          Support · from R50
+          <i class="fa-solid fa-heart"></i> Support · from R50
         </button>
       </div>
     </section>
-
   </div>
 </div>
-
-<!-- COMMUNITY -->
+ 
 <div id="community">
   <div class="container">
     <div class="community-header">
       <h2>What the world is feeling tonight</h2>
       <p>Community playlists, conversations, and cinematic discoveries from people just like you.</p>
     </div>
-    <div class="visionaries-section">
+    <div class="visionaries-section" style="margin-bottom:3rem">
       <div class="vis-label">
         <span>Hall of Visionaries · This month</span>
-        <a onclick="viewAllDonors()">View all</a>
+        <a onclick="showToast('Thank you to all our visionaries 🌸')">View all</a>
       </div>
       <div id="leaderboard"></div>
     </div>
@@ -1079,38 +783,35 @@ footer {
     </div>
   </div>
 </div>
-
-<!-- PLAYLISTS -->
+ 
 <div id="playlists">
   <div class="container">
     <div class="playlists-header">
       <h2>Your cinematic world</h2>
       <p>AI Weekly Picks · Saved films · Playlists matched to your taste</p>
     </div>
-    <div class="section-label" style="text-align:left; margin-bottom:1rem">This week's picks</div>
+    <div class="section-label" style="text-align:left;margin-bottom:1rem">This week's picks</div>
     <div class="weekly-grid" id="weekly-picks"></div>
-    <div class="section-label" style="text-align:left; margin-bottom:1rem; margin-top:3rem">
+    <div class="section-label" style="text-align:left;margin-bottom:1rem;margin-top:3rem">
       Saved for later
-      <button onclick="suggestNewShow()" style="margin-left:1rem; font-size:0.72rem; padding:0.3rem 0.9rem; border:1px solid rgba(242,167,195,0.5); border-radius:100px; background:transparent; cursor:pointer; color:var(--deep-pink); font-family:'DM Sans',sans-serif">+ Suggest</button>
+      <button onclick="suggestNewShow()" style="margin-left:1rem;font-size:0.72rem;padding:0.3rem 0.9rem;border:1px solid rgba(242,167,195,0.5);border-radius:100px;background:transparent;cursor:pointer;color:var(--theme-primary);font-family:'DM Sans',sans-serif">+ Suggest</button>
     </div>
     <div class="saved-grid" id="playlists-grid"></div>
   </div>
 </div>
-
-</div><!-- end .page -->
-
-<!-- FLOAT BAR -->
+</div>
+ 
 <div class="float-bar">
   <div class="float-pill" onclick="copyShareLink()">
-    <i class="fa-solid fa-share-nodes" style="color:var(--deep-pink)"></i>
+    <i class="fa-solid fa-share-nodes" style="color:var(--theme-primary)"></i>
     Invite friends · earn VIP
   </div>
   <div class="float-pill" onclick="showDonateModal()">
-    <i class="fa-solid fa-heart" style="color:var(--deep-pink)"></i>
+    <i class="fa-solid fa-heart" style="color:var(--theme-primary)"></i>
     Support the bowl
   </div>
 </div>
-
+ 
 <!-- TRAILER MODAL -->
 <div class="modal-overlay" id="trailer-modal" onclick="if(event.target===this)hideTrailer()">
   <div class="modal-box wide">
@@ -1123,17 +824,41 @@ footer {
     </div>
     <div class="modal-footer">
       <button class="btn-outline" onclick="addToWatchLaterCurrent()">Save to My World</button>
-      <a class="btn-fill" id="full-link" target="_blank">Watch full film</a>
+      <a class="btn-fill" id="full-link" target="_blank">Watch on streaming</a>
     </div>
   </div>
 </div>
-
+ 
+<!-- GENDER MODAL -->
+<div class="modal-overlay" id="gender-modal" onclick="if(event.target===this)closeModal('gender-modal')">
+  <div class="modal-box narrow">
+    <div class="gender-modal-inner">
+      <h3>Your experience, your palette</h3>
+      <p class="sub">We personalise your visual experience and recommendations. You can always change this.</p>
+      <div class="gender-choices">
+        <div class="gender-btn female" onclick="selectGender('female')">
+          <span class="gender-icon">🌸</span>
+          <div class="gender-label">Feminine</div>
+        </div>
+        <div class="gender-btn male" onclick="selectGender('male')">
+          <span class="gender-icon">🌊</span>
+          <div class="gender-label">Masculine</div>
+        </div>
+        <div class="gender-btn nb" onclick="selectGender('nb')">
+          <span class="gender-icon">✦</span>
+          <div class="gender-label">Fluid</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+ 
 <!-- PROFILE MODAL -->
 <div class="modal-overlay" id="profile-modal" onclick="if(event.target===this)hideProfileModal()">
   <div class="modal-box narrow">
     <div class="profile-modal-inner">
       <h3>Build your taste profile</h3>
-      <p class="sub">We use this to match films with neuroscience-level precision. Stays private — always.</p>
+      <p class="sub">We use this to match films with neuroscience-level precision. Private — always.</p>
       <div class="form-group">
         <label>Your name</label>
         <input id="profile-name" type="text" placeholder="Preferred name">
@@ -1143,15 +868,24 @@ footer {
         <input id="profile-fav" type="text" placeholder="e.g. Spirited Away">
       </div>
       <div class="form-group">
-        <label>Tonight's perfect bowl</label>
+        <label>Your go-to comfort food</label>
         <input id="profile-food" type="text" value="ramen">
+      </div>
+      <div class="form-group">
+        <label>Streaming services you have</label>
+        <select id="profile-streams">
+          <option>Netflix, Prime</option>
+          <option>Netflix only</option>
+          <option>All streaming</option>
+          <option>Just YouTube / free</option>
+        </select>
       </div>
       <button class="profile-submit" onclick="createProfile()">Unlock unlimited · save profile</button>
       <p class="form-note">Private on this device. No ads. No tracking. Ever.</p>
     </div>
   </div>
 </div>
-
+ 
 <!-- DONATE MODAL -->
 <div class="modal-overlay" id="donate-modal" onclick="if(event.target===this)hideDonateModal()">
   <div class="modal-box narrow">
@@ -1160,7 +894,7 @@ footer {
       <p class="sub" id="donate-body">Your gift keeps every bowl of ramen paired with the perfect film.<br>Private. Ad-free. Intelligent.</p>
       <div class="amount-choices">
         <button class="amount-btn" onclick="setAmount(50)">R50</button>
-        <button class="amount-btn" onclick="setAmount(100)">R100</button>
+        <button class="amount-btn selected" onclick="setAmount(100)">R100</button>
         <button class="amount-btn" onclick="setAmount(250)">R250</button>
         <button class="amount-btn" onclick="setAmount(500)">R500</button>
       </div>
@@ -1173,7 +907,7 @@ footer {
     </div>
   </div>
 </div>
-
+ 
 <!-- PAYPAL MODAL -->
 <div class="modal-overlay" id="paypal-modal" onclick="if(event.target===this)hidePaypalModal()">
   <div class="modal-box narrow">
@@ -1185,11 +919,11 @@ footer {
       </div>
       <button class="paypal-copy-btn" onclick="copyPaypalDetails()">Copy details & open PayPal</button>
       <p class="donate-note" style="margin-bottom:0.8rem">You'll appear in the Hall of Visionaries within minutes.</p>
-      <button class="paypal-done-btn" onclick="hidePaypalModal()">Done</button>
+      <button class="paypal-done-btn" onclick="hidePaypalModal()">Done · you're a visionary</button>
     </div>
   </div>
 </div>
-
+ 
 <footer>
   <div class="container">
     <p class="footer-text">
@@ -1200,732 +934,585 @@ footer {
     </p>
   </div>
 </footer>
-
+ 
 <script>
-// ═══════════════════════════════════════════════
-//  SAKURA PETAL PARTICLES
-// ═══════════════════════════════════════════════
+/* ═══════════════════ PETAL PARTICLES ═══════════════════ */
 const pc = document.getElementById('petals');
 const px = pc.getContext('2d');
 let petals = [];
-
-function initPetalCanvas(){
-  pc.width = window.innerWidth;
-  pc.height = window.innerHeight;
-}
-
+function initPC(){ pc.width=window.innerWidth; pc.height=window.innerHeight; }
 class Petal {
   constructor(){
-    this.x = Math.random() * pc.width;
-    this.y = -20;
-    this.size = Math.random() * 8 + 4;
-    this.speedY = Math.random() * 1.5 + 0.6;
-    this.speedX = (Math.random() - 0.5) * 1.2;
-    this.rot = Math.random() * Math.PI * 2;
-    this.rotSpeed = (Math.random() - 0.5) * 0.06;
-    this.alpha = Math.random() * 0.6 + 0.3;
-    this.wobble = Math.random() * Math.PI * 2;
-    this.wobbleSpeed = Math.random() * 0.03 + 0.01;
-    // Vary petal colours softly
-    const hue = Math.random() * 20 + 330; // 330–350 pink range
-    const sat = Math.random() * 20 + 60;
-    const light = Math.random() * 15 + 75;
-    this.color = `hsla(${hue},${sat}%,${light}%,${this.alpha})`;
+    this.x=Math.random()*pc.width; this.y=-20;
+    this.size=Math.random()*8+4;
+    this.speedY=Math.random()*1.2+0.5; this.speedX=(Math.random()-0.5)*0.9;
+    this.rot=Math.random()*Math.PI*2; this.rotSpeed=(Math.random()-0.5)*0.05;
+    this.alpha=Math.random()*0.5+0.25; this.wobble=Math.random()*Math.PI*2;
+    this.wobbleSpeed=Math.random()*0.025+0.008;
+    const male = document.body.classList.contains('theme-male');
+    const hue = male ? (Math.random()*30+200) : (Math.random()*20+330);
+    const sat = Math.random()*20+60; const light=Math.random()*15+75;
+    this.color=`hsla(${hue},${sat}%,${light}%,${this.alpha})`;
   }
-  update(){
-    this.wobble += this.wobbleSpeed;
-    this.x += this.speedX + Math.sin(this.wobble) * 0.6;
-    this.y += this.speedY;
-    this.rot += this.rotSpeed;
-  }
+  update(){ this.wobble+=this.wobbleSpeed; this.x+=this.speedX+Math.sin(this.wobble)*0.5; this.y+=this.speedY; this.rot+=this.rotSpeed; }
   draw(){
-    px.save();
-    px.translate(this.x, this.y);
-    px.rotate(this.rot);
-    px.fillStyle = this.color;
-    // Petal shape
-    px.beginPath();
-    px.ellipse(0, 0, this.size, this.size * 0.38, Math.PI / 5, 0, Math.PI * 2);
-    px.fill();
-    px.restore();
+    px.save(); px.translate(this.x,this.y); px.rotate(this.rot);
+    px.fillStyle=this.color; px.beginPath();
+    px.ellipse(0,0,this.size,this.size*0.38,Math.PI/5,0,Math.PI*2); px.fill(); px.restore();
   }
 }
-
-function animatePetals(){
-  px.clearRect(0, 0, pc.width, pc.height);
-  if(Math.random() < 0.18) petals.push(new Petal());
-  for(let i = petals.length - 1; i >= 0; i--){
-    petals[i].update();
-    petals[i].draw();
-    if(petals[i].y > pc.height + 20) petals.splice(i, 1);
-  }
-  requestAnimationFrame(animatePetals);
+function animPetals(){
+  px.clearRect(0,0,pc.width,pc.height);
+  if(Math.random()<0.15) petals.push(new Petal());
+  for(let i=petals.length-1;i>=0;i--){ petals[i].update(); petals[i].draw(); if(petals[i].y>pc.height+20) petals.splice(i,1); }
+  requestAnimationFrame(animPetals);
 }
-
-initPetalCanvas();
-animatePetals();
-window.addEventListener('resize', initPetalCanvas);
-
-// ═══════════════════════════════════════════════
-//  WATERCOLOUR RAMEN CANVAS
-// ═══════════════════════════════════════════════
+initPC(); animPetals(); window.addEventListener('resize',initPC);
+ 
+/* ═══════════════════ MOUSE GLOW ═══════════════════ */
+const glow=document.getElementById('mouse-glow');
+document.addEventListener('mousemove',e=>{ glow.style.left=e.clientX+'px'; glow.style.top=e.clientY+'px'; });
+ 
+/* ═══════════════════ RAMEN CANVAS ═══════════════════ */
 function drawRamen(){
-  const c = document.getElementById('ramen-canvas');
-  if(!c) return;
-  const ctx = c.getContext('2d');
-  const W = c.width, H = c.height;
+  const c=document.getElementById('ramen-canvas'); if(!c)return;
+  const ctx=c.getContext('2d'); const W=c.width,H=c.height;
   ctx.clearRect(0,0,W,H);
-
-  // Bowl shadow
-  const bowlX = W/2, bowlY = H*0.72, bowlRx = 110, bowlRy = 45;
-  const shadowGrad = ctx.createRadialGradient(bowlX, bowlY+30, 5, bowlX, bowlY+30, bowlRx);
-  shadowGrad.addColorStop(0, 'rgba(180,100,130,0.12)');
-  shadowGrad.addColorStop(1, 'transparent');
-  ctx.fillStyle = shadowGrad;
-  ctx.beginPath();
-  ctx.ellipse(bowlX, bowlY+30, bowlRx, 22, 0, 0, Math.PI*2);
-  ctx.fill();
-
-  // Bowl body (watercolour style)
-  function wc(x,y,rx,ry,col1,col2){
-    const g = ctx.createRadialGradient(x-rx*0.3,y-ry*0.3,2,x,y,rx);
-    g.addColorStop(0, col1);
-    g.addColorStop(1, col2);
-    ctx.fillStyle = g;
+  const bX=W/2,bY=H*0.72,bRx=110,bRy=45;
+  const sg=ctx.createRadialGradient(bX,bY+30,5,bX,bY+30,bRx);
+  sg.addColorStop(0,'rgba(180,100,130,0.1)'); sg.addColorStop(1,'transparent');
+  ctx.fillStyle=sg; ctx.beginPath(); ctx.ellipse(bX,bY+30,bRx,22,0,0,Math.PI*2); ctx.fill();
+  const g1=ctx.createRadialGradient(bX-bRx*.3,bY-bRy*.3,2,bX,bY,bRx);
+  g1.addColorStop(0,'rgba(255,220,230,0.92)'); g1.addColorStop(1,'rgba(240,170,195,0.87)');
+  ctx.fillStyle=g1; ctx.beginPath(); ctx.ellipse(bX,bY,bRx,bRy,0,0,Math.PI*2); ctx.fill();
+  ctx.beginPath(); ctx.ellipse(bX,bY-30,bRx,bRy*.55,0,0,Math.PI*2);
+  ctx.strokeStyle='rgba(220,120,155,0.3)'; ctx.lineWidth=2; ctx.stroke();
+  const bg=ctx.createRadialGradient(bX-20,bY-38,2,bX,bY-30,bRx*.85);
+  bg.addColorStop(0,'rgba(255,245,220,0.95)'); bg.addColorStop(.5,'rgba(240,210,150,0.9)'); bg.addColorStop(1,'rgba(220,170,100,0.8)');
+  ctx.fillStyle=bg; ctx.beginPath(); ctx.ellipse(bX,bY-30,bRx*.85,bRy*.5,0,0,Math.PI*2); ctx.fill();
+  ctx.strokeStyle='rgba(220,185,100,0.75)'; ctx.lineWidth=2.5; ctx.lineCap='round';
+  for(let i=0;i<5;i++){ const sx=bX-55+i*22; ctx.beginPath(); ctx.moveTo(sx,bY-40); ctx.bezierCurveTo(sx+10,bY-20,sx-8,bY-10,sx+5,bY-25); ctx.stroke(); }
+  ctx.fillStyle='rgba(255,240,200,0.95)'; ctx.beginPath(); ctx.ellipse(bX+45,bY-38,16,18,-0.2,0,Math.PI*2); ctx.fill();
+  ctx.strokeStyle='rgba(220,180,80,0.35)'; ctx.lineWidth=1; ctx.stroke();
+  ctx.fillStyle='rgba(240,160,60,0.85)'; ctx.beginPath(); ctx.arc(bX+45,bY-38,8,0,Math.PI*2); ctx.fill();
+  ctx.strokeStyle='rgba(100,160,80,0.7)'; ctx.lineWidth=2;
+  for(let i=0;i<3;i++){ ctx.beginPath(); ctx.moveTo(bX-35+i*12,bY-48); ctx.lineTo(bX-32+i*12,bY-32); ctx.stroke(); }
+  ctx.fillStyle='rgba(40,70,50,0.72)'; ctx.save(); ctx.translate(bX-50,bY-35); ctx.rotate(-0.15); ctx.fillRect(0,0,10,22); ctx.restore();
+  function blossom(bx,by,sz){
+    for(let p=0;p<5;p++){ const a=(p/5)*Math.PI*2; ctx.fillStyle='rgba(255,180,210,0.6)'; ctx.beginPath(); ctx.ellipse(bx+Math.cos(a)*sz*1.2,by+Math.sin(a)*sz*1.2,sz,sz*.6,a,0,Math.PI*2); ctx.fill(); }
+    ctx.fillStyle='rgba(255,210,80,0.85)'; ctx.beginPath(); ctx.arc(bx,by,sz*.4,0,Math.PI*2); ctx.fill();
   }
-
-  // Outer bowl
-  wc(bowlX, bowlY, bowlRx, bowlRy, 'rgba(255,220,230,0.9)', 'rgba(240,170,195,0.85)');
-  ctx.beginPath();
-  ctx.ellipse(bowlX, bowlY, bowlRx, bowlRy, 0, 0, Math.PI*2);
-  ctx.fill();
-
-  // Bowl top rim
-  ctx.beginPath();
-  ctx.ellipse(bowlX, bowlY - 30, bowlRx, bowlRy * 0.55, 0, 0, Math.PI*2);
-  ctx.strokeStyle = 'rgba(220,120,155,0.35)';
-  ctx.lineWidth = 2;
-  ctx.stroke();
-
-  // Broth surface
-  const brothGrad = ctx.createRadialGradient(bowlX-20, bowlY-38, 2, bowlX, bowlY-30, bowlRx*0.85);
-  brothGrad.addColorStop(0, 'rgba(255,245,220,0.95)');
-  brothGrad.addColorStop(0.5, 'rgba(240,210,150,0.9)');
-  brothGrad.addColorStop(1, 'rgba(220,170,100,0.8)');
-  ctx.fillStyle = brothGrad;
-  ctx.beginPath();
-  ctx.ellipse(bowlX, bowlY - 30, bowlRx*0.85, bowlRy*0.5, 0, 0, Math.PI*2);
-  ctx.fill();
-
-  // Noodles (loose strands)
-  ctx.strokeStyle = 'rgba(230,190,110,0.8)';
-  ctx.lineWidth = 2.5;
-  ctx.lineCap = 'round';
-  for(let i=0;i<5;i++){
-    ctx.beginPath();
-    const sx = bowlX - 55 + i*22;
-    ctx.moveTo(sx, bowlY - 40);
-    ctx.bezierCurveTo(sx+10, bowlY-20, sx-8, bowlY-10, sx+5, bowlY-25);
-    ctx.stroke();
-  }
-
-  // Soft-boiled egg
-  ctx.fillStyle = 'rgba(255,240,200,0.95)';
-  ctx.beginPath();
-  ctx.ellipse(bowlX + 45, bowlY - 38, 16, 18, -0.2, 0, Math.PI*2);
-  ctx.fill();
-  ctx.strokeStyle = 'rgba(220,180,80,0.4)';
-  ctx.lineWidth = 1;
-  ctx.stroke();
-  ctx.fillStyle = 'rgba(240,160,60,0.85)';
-  ctx.beginPath();
-  ctx.arc(bowlX + 45, bowlY - 38, 8, 0, Math.PI*2);
-  ctx.fill();
-
-  // Green onion garnish
-  ctx.strokeStyle = 'rgba(100,160,80,0.75)';
-  ctx.lineWidth = 2;
-  for(let i=0;i<3;i++){
-    ctx.beginPath();
-    ctx.moveTo(bowlX-35+i*12, bowlY-48);
-    ctx.lineTo(bowlX-32+i*12, bowlY-32);
-    ctx.stroke();
-  }
-
-  // Nori (seaweed)
-  ctx.fillStyle = 'rgba(40,70,50,0.75)';
-  ctx.save();
-  ctx.translate(bowlX-50, bowlY-35);
-  ctx.rotate(-0.15);
-  ctx.fillRect(0,0,10,22);
-  ctx.restore();
-
-  // Pink bamboo motif on bowl (decorative)
-  ctx.strokeStyle = 'rgba(240,160,190,0.5)';
-  ctx.lineWidth = 1.5;
-  ctx.beginPath();
-  ctx.arc(bowlX-70, bowlY+10, 15, 0.2, 1.5);
-  ctx.stroke();
-  ctx.beginPath();
-  ctx.arc(bowlX+70, bowlY+10, 15, 1.6, 3.0);
-  ctx.stroke();
-
-  // Cherry blossom sprig above bowl
-  function drawBlossom(bx, by, size){
-    for(let p=0;p<5;p++){
-      const a = (p/5)*Math.PI*2;
-      const ex = bx + Math.cos(a)*size*1.2;
-      const ey = by + Math.sin(a)*size*1.2;
-      ctx.fillStyle = `rgba(255,180,210,${0.55+Math.random()*0.2})`;
-      ctx.beginPath();
-      ctx.ellipse(ex, ey, size, size*0.6, a, 0, Math.PI*2);
-      ctx.fill();
-    }
-    ctx.fillStyle = 'rgba(255,210,80,0.85)';
-    ctx.beginPath();
-    ctx.arc(bx, by, size*0.4, 0, Math.PI*2);
-    ctx.fill();
-  }
-  drawBlossom(bowlX - 80, bowlY - 90, 7);
-  drawBlossom(bowlX + 75, bowlY - 95, 6);
-  drawBlossom(bowlX - 10, bowlY - 110, 5);
-
-  // Stem
-  ctx.strokeStyle = 'rgba(160,120,90,0.5)';
-  ctx.lineWidth = 1.5;
-  ctx.beginPath();
-  ctx.moveTo(bowlX-80, bowlY-83); ctx.lineTo(bowlX-50, bowlY-70); ctx.lineTo(bowlX-10, bowlY-103);
-  ctx.stroke();
-  ctx.beginPath();
-  ctx.moveTo(bowlX+75, bowlY-88); ctx.lineTo(bowlX+45, bowlY-72);
-  ctx.stroke();
+  blossom(bX-80,bY-90,7); blossom(bX+75,bY-95,6); blossom(bX-10,bY-110,5);
+  ctx.strokeStyle='rgba(160,120,90,0.45)'; ctx.lineWidth=1.5;
+  ctx.beginPath(); ctx.moveTo(bX-80,bY-83); ctx.lineTo(bX-50,bY-70); ctx.lineTo(bX-10,bY-103); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(bX+75,bY-88); ctx.lineTo(bX+45,bY-72); ctx.stroke();
 }
-drawRamen();
-
-// Animated steam above bowl
 (function steamLoop(){
-  const c = document.getElementById('ramen-canvas');
-  if(!c) return;
-  const ctx = c.getContext('2d');
-  const W = c.width, bowlY = c.height*0.72;
-  const steamX = [W/2-30, W/2, W/2+30];
-  let t = 0;
-
-  function drawSteam(){
-    // Re-draw ramen base
-    drawRamen();
-    t += 0.04;
-    steamX.forEach((sx,i) => {
-      const offset = (t + i*2.1) % (Math.PI*2);
-      const sy = bowlY - 60 - (offset/(Math.PI*2)) * 80;
-      const alpha = 0.5 - (offset/(Math.PI*2))*0.5;
-      const waver = Math.sin(offset*2)*12;
-      const steamGrad = ctx.createRadialGradient(sx+waver, sy, 1, sx+waver, sy, 14);
-      steamGrad.addColorStop(0, `rgba(255,255,255,${alpha})`);
-      steamGrad.addColorStop(1, 'transparent');
-      ctx.fillStyle = steamGrad;
-      ctx.beginPath();
-      ctx.ellipse(sx+waver, sy, 7, 18, 0, 0, Math.PI*2);
-      ctx.fill();
-    });
-    requestAnimationFrame(drawSteam);
-  }
-  drawSteam();
+  const c=document.getElementById('ramen-canvas'); if(!c)return;
+  const ctx=c.getContext('2d'); const W=c.width,bY=c.height*.72;
+  const sX=[W/2-30,W/2,W/2+30]; let t=0;
+  function step(){ drawRamen(); t+=0.04;
+    sX.forEach((sx,i)=>{
+      const off=(t+i*2.1)%(Math.PI*2);
+      const sy=bY-60-(off/(Math.PI*2))*80;
+      const alpha=0.5-(off/(Math.PI*2))*0.5;
+      const w=Math.sin(off*2)*12;
+      const sg=ctx.createRadialGradient(sx+w,sy,1,sx+w,sy,14);
+      sg.addColorStop(0,`rgba(255,255,255,${alpha})`); sg.addColorStop(1,'transparent');
+      ctx.fillStyle=sg; ctx.beginPath(); ctx.ellipse(sx+w,sy,7,18,0,0,Math.PI*2); ctx.fill();
+    }); requestAnimationFrame(step);
+  } step();
 })();
-
-// Mouse glow
-const glow = document.getElementById('mouse-glow');
-document.addEventListener('mousemove', e => {
-  glow.style.left = e.clientX + 'px';
-  glow.style.top  = e.clientY + 'px';
-});
-
-// ═══════════════════════════════════════════════
-//  STATE
-// ═══════════════════════════════════════════════
-let userProfile = {
-  name: null, loggedIn: false, favFilm: null, foodPref: 'ramen',
-  watchLater: [], communityPosts: [], totalDonated: 0,
-  donationStreak: 0, moodSelections: 0, currentFilmId: null
+ 
+/* ═══════════════════ COUPLE CANVAS ═══════════════════ */
+(function coupleAnim(){
+  const c=document.getElementById('couple-canvas'); if(!c)return;
+  const ctx=c.getContext('2d');
+  let W,H,x=0;
+  function resize(){ W=c.width=c.offsetWidth; H=c.height=200; }
+  resize(); window.addEventListener('resize',resize);
+  const DOG_SCALE=0.6;
+  let dogWag=0;
+  function drawPerson(ctx,px,py,color,isRight){
+    ctx.save(); ctx.translate(px,py);
+    // body
+    ctx.fillStyle=color;
+    ctx.beginPath(); ctx.roundRect(-10,-55,20,38,4); ctx.fill();
+    // head
+    ctx.fillStyle='rgba(255,210,170,1)';
+    ctx.beginPath(); ctx.arc(0,-65,12,0,Math.PI*2); ctx.fill();
+    // hair
+    ctx.fillStyle=isRight?'rgba(100,60,30,1)':'rgba(40,30,20,1)';
+    ctx.beginPath(); ctx.arc(0,-67,12,Math.PI,0); ctx.fill();
+    if(!isRight){ ctx.beginPath(); ctx.ellipse(-8,-58,5,8,0.5,0,Math.PI*2); ctx.fill(); }
+    // legs (walking anim)
+    ctx.fillStyle=isRight?'rgba(50,80,150,1)':'rgba(30,50,100,1)';
+    const legSwing=Math.sin(x*0.04+px*0.01)*15;
+    ctx.save(); ctx.translate(-5,-17);
+    ctx.rotate((legSwing)*Math.PI/180); ctx.fillStyle=isRight?'rgba(50,80,150,1)':'rgba(30,50,100,1)';
+    ctx.fillRect(-4,0,8,26); ctx.fillStyle='#1a1a1a'; ctx.fillRect(-4,24,9,6); ctx.restore();
+    ctx.save(); ctx.translate(5,-17);
+    ctx.rotate((-legSwing)*Math.PI/180); ctx.fillStyle=isRight?'rgba(50,80,150,1)':'rgba(30,50,100,1)';
+    ctx.fillRect(-4,0,8,26); ctx.fillStyle='#1a1a1a'; ctx.fillRect(-5,24,9,6); ctx.restore();
+    // arm (holding hands)
+    ctx.strokeStyle=color; ctx.lineWidth=5; ctx.lineCap='round';
+    ctx.beginPath(); ctx.moveTo(isRight?-12:-12,-45); ctx.lineTo(isRight?-26:26,-35); ctx.stroke();
+    ctx.restore();
+  }
+  function drawDog(ctx,px,py){
+    ctx.save(); ctx.translate(px,py); ctx.scale(DOG_SCALE,DOG_SCALE);
+    // body
+    ctx.fillStyle='rgba(200,170,130,1)';
+    ctx.beginPath(); ctx.roundRect(-18,-20,36,20,8); ctx.fill();
+    // head
+    ctx.beginPath(); ctx.arc(22,-18,14,0,Math.PI*2); ctx.fill();
+    // ear
+    ctx.fillStyle='rgba(160,120,80,1)';
+    ctx.beginPath(); ctx.ellipse(28,-28,6,10,0.3,0,Math.PI*2); ctx.fill();
+    // eye
+    ctx.fillStyle='#1a1a1a';
+    ctx.beginPath(); ctx.arc(28,-20,2.5,0,Math.PI*2); ctx.fill();
+    // nose
+    ctx.fillStyle='rgba(100,60,40,1)';
+    ctx.beginPath(); ctx.ellipse(36,-19,3,2,0,0,Math.PI*2); ctx.fill();
+    // legs
+    ctx.fillStyle='rgba(180,150,110,1)';
+    const legAnim=Math.sin(x*0.04)*12;
+    [[-12,0],[0,0],[12,0],[-6,0]].forEach((pos,i)=>{
+      ctx.save(); ctx.translate(pos[0],-1);
+      ctx.rotate((i%2===0?legAnim:-legAnim)*Math.PI/180);
+      ctx.fillRect(-3,0,6,18); ctx.restore();
+    });
+    // tail wag
+    ctx.strokeStyle='rgba(160,120,80,1)'; ctx.lineWidth=4; ctx.lineCap='round';
+    const wag=Math.sin(x*0.08)*30;
+    ctx.save(); ctx.translate(-18,-12); ctx.rotate(wag*Math.PI/180);
+    ctx.beginPath(); ctx.moveTo(0,0); ctx.lineTo(-16,-12); ctx.stroke(); ctx.restore();
+    ctx.restore();
+  }
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+    x+=0.8; if(x>W+300) x=-300;
+    const cx=x, cy=H-50;
+    // ground dashes
+    ctx.strokeStyle='rgba(200,170,190,0.25)'; ctx.lineWidth=1; ctx.setLineDash([8,16]);
+    ctx.beginPath(); ctx.moveTo(0,cy+8); ctx.lineTo(W,cy+8); ctx.stroke();
+    ctx.setLineDash([]);
+    // cherry blossoms along path
+    for(let i=0;i<8;i++){
+      const bx=((i*W/8)+x*0.3)%W, by=cy-60+Math.sin(i*1.2)*20;
+      ctx.fillStyle='rgba(242,167,195,0.3)'; ctx.beginPath(); ctx.arc(bx,by,4,0,Math.PI*2); ctx.fill();
+    }
+    // leash
+    ctx.strokeStyle='rgba(150,100,80,0.5)'; ctx.lineWidth=1.5;
+    ctx.beginPath(); ctx.moveTo(cx+26,cy-35); ctx.quadraticCurveTo(cx+36,cy-15,cx+50,cy-12); ctx.stroke();
+    // draw couple and dog
+    drawPerson(ctx,cx,cy,'rgba(220,130,160,0.9)',false);
+    drawPerson(ctx,cx+28,cy,'rgba(80,120,200,0.9)',true);
+    drawDog(ctx,cx+55,cy-8);
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+ 
+/* ═══════════════════ CONTENT DATABASE ═══════════════════ */
+// VERIFIED YouTube trailer IDs — tested April 2025
+const DB = [
+  // CHILL DRIFT (mood 0) — calming, gentle, wonder
+  {id:1,  title:"Perfect Days",          yt:"3bzDmWFfOp0", moods:[0,5], platform:"Prime",   tags:["Japanese","Quiet","Beautiful"],  desc:"A Tokyo janitor finds profound beauty in simple routine. Wim Wenders at his best.", ramen:"Simple shio ramen — nothing wasted",           link:"https://www.amazon.com/Perfect-Days/dp/B0CRDL2YJ9"},
+  {id:2,  title:"My Neighbour Totoro",   yt:"92a7spsPDmk", moods:[0,3], platform:"Netflix", tags:["Ghibli","Anime","Wholesome"],    desc:"Studio Ghibli's masterpiece. Two sisters discover magical creatures in rural Japan.", ramen:"Gentle miso — simple and pure",               link:"https://www.netflix.com/title/70023436"},
+  {id:3,  title:"Spirited Away",         yt:"ByXuk9QqQkk", moods:[0,5], platform:"Netflix", tags:["Ghibli","Anime","Magical"],      desc:"A child lost in a spirit world. The greatest animated film ever made.", ramen:"Yuzu shoyu — delicate and bright",            link:"https://www.netflix.com/title/60023642"},
+  {id:4,  title:"Drive My Car",          yt:"1Eo9MyHVUCU", moods:[0,5], platform:"MUBI",    tags:["Japanese","Slow burn","Art"],    desc:"Grief, memory and Chekhov — a three-hour masterwork of quiet devastation.", ramen:"Quiet miso — long and slow",                 link:"https://mubi.com/films/drive-my-car"},
+  {id:5,  title:"Inside Out 2",          yt:"LEjhY15eCx0", moods:[0,3], platform:"Disney+", tags:["Pixar","Emotions","Family"],     desc:"Riley grows up and new emotions crash the party. Brilliantly real.", ramen:"Comfort shio ramen",                          link:"https://www.disneyplus.com/movies/inside-out-2/"},
+  {id:6,  title:"Everything Everywhere", yt:"wxN1T1uxQ2g", moods:[0,2,5], platform:"Prime", tags:["Multiverse","Indie","Wild"],    desc:"A laundromat owner saves the multiverse. The A24 film that changed cinema.", ramen:"Everything ramen — all toppings",             link:"https://www.amazon.com/Everything-Everywhere/dp/B09W5KC5L8"},
+ 
+  // EPIC WORLDS (mood 1)
+  {id:7,  title:"Dune: Part Two",        yt:"Way9Dexny3w", moods:[1,4], platform:"Netflix", tags:["Sci-Fi","Epic","Desert"],        desc:"Paul Atreides unites with the Fremen against the Harkonnens. Visually transcendent.", ramen:"Bold tonkotsu with extra chili",              link:"https://www.netflix.com/title/81694770"},
+  {id:8,  title:"Oppenheimer",           yt:"uYPbbksJxIg", moods:[1,5], platform:"Prime",   tags:["Historical","Intense","IMAX"],   desc:"The man who invented destruction. Nolan's most human film.", ramen:"Atomic dark tonkotsu",                        link:"https://www.amazon.com/Oppenheimer-Cillian-Murphy/dp/B0CCB7VKBX"},
+  {id:9,  title:"Shogun (2024)",         yt:"PyCFcnDMOkI", moods:[1,5], platform:"Disney+", tags:["Samurai","Historical","Japan"],  desc:"Feudal Japan's power struggle, reimagined with stunning authenticity.", ramen:"Traditional miso with pickled ginger",        link:"https://www.disneyplus.com/series/shogun/"},
+  {id:10, title:"Andor",                 yt:"cVBIWBSCn38", moods:[1,5], platform:"Disney+", tags:["Star Wars","Gritty","Political"], desc:"The birth of the Rebellion. The most mature thing in the Star Wars universe.", ramen:"Rebel shoyu — bold and principled",           link:"https://www.disneyplus.com/series/andor/"},
+  {id:11, title:"Princess Mononoke",     yt:"4OiMOHRDs14", moods:[1,5], platform:"Netflix", tags:["Ghibli","War","Nature"],         desc:"War between gods, industry and humanity. Miyazaki's epic masterpiece.", ramen:"Forest mushroom ramen",                      link:"https://www.netflix.com/title/28630857"},
+  {id:12, title:"Interstellar",          yt:"zSWdZVtXT7E", moods:[1,5], platform:"Netflix", tags:["Space","Time","Emotional"],      desc:"Space, time, love on a cosmic scale. The most emotional science fiction ever made.", ramen:"Black tonkotsu — deep and dark",              link:"https://www.netflix.com/title/70305903"},
+  {id:13, title:"Arcane",               yt:"fXmAurh012s", moods:[1,4], platform:"Netflix", tags:["Anime","Action","Art"],          desc:"The most beautiful animated series ever made. League of Legends reborn as tragedy.", ramen:"Creamy tsukemen — rich and layered",          link:"https://www.netflix.com/title/81435684"},
+ 
+  // LAUGH DEEPLY (mood 2)
+  {id:14, title:"Poor Things",           yt:"RlbR5N6veqw", moods:[2,5], platform:"Disney+", tags:["Surreal","Feminist","Brilliant"], desc:"A woman reborn and discovering herself. Absurdist, brilliant, unlike anything.", ramen:"Wild mushroom tsukemen",                     link:"https://www.disneyplus.com/movies/poor-things/"},
+  {id:15, title:"The Gentlemen",        yt:"4oN-JKFbhqc", moods:[2,4], platform:"Netflix", tags:["British","Crime","Slick"],       desc:"Cannabis empire meets aristocracy. Guy Ritchie absolutely cooking.", ramen:"Gentleman's spicy ramen",                    link:"https://www.netflix.com/title/81681265"},
+  {id:16, title:"Beetlejuice Beetlejuice",yt:"jJ8vL5k8pQpp",moods:[2],  platform:"Max",     tags:["Comedy","Weird","Classic"],     desc:"Winona. Michael. Jenna. The afterlife is back and gloriously unhinged.", ramen:"Ghostly miso with bone broth",               link:"https://www.max.com/movies/beetlejuice-beetlejuice/"},
+  {id:17, title:"Deadpool & Wolverine", yt:"73_1biulkYk", moods:[2,4], platform:"Disney+", tags:["Marvel","Comedy","Action"],      desc:"The merc with a mouth and the Logan we deserved. Irreverent perfection.", ramen:"Chaotic tantanmen with everything",           link:"https://www.disneyplus.com/movies/deadpool-wolverine/"},
+  {id:18, title:"The Boys",             yt:"M88aPEkKmOo", moods:[2,4], platform:"Prime",   tags:["Superhero","Dark","Satire"],     desc:"What if superheroes were the real villains? Amazon's most addictive show.", ramen:"Explosive tantanmen — radioactive",           link:"https://www.amazon.com/The-Boys/dp/B0868KGGPJ"},
+  {id:19, title:"Squid Game",           yt:"oqxAJKy0ii4", moods:[4],   platform:"Netflix", tags:["Korean","Thriller","Iconic"],    desc:"456 players. One survival game. The show that stopped the world.", ramen:"Red-light miso ramen",                       link:"https://www.netflix.com/title/81040344"},
+ 
+  // ROMANTIC ESCAPE (mood 3)
+  {id:20, title:"Past Lives",           yt:"kA7-d921fxs", moods:[3,5], platform:"Prime",   tags:["Romance","Korean","Quiet"],      desc:"Two childhood sweethearts. Two decades apart. Quiet heartbreak perfected.", ramen:"Cold soba alongside warm shio",               link:"https://www.amazon.com/Past-Lives/dp/B0CFVMNG4X"},
+  {id:21, title:"Challengers",          yt:"MDnVk5jIJr0", moods:[3],   platform:"Prime",   tags:["Tennis","Love","Tension"],       desc:"A love triangle on the tennis court. Guadagnino's most electrifying film.", ramen:"Mild miso with soft-boiled egg",              link:"https://www.amazon.com/Challengers/dp/B0D1H8KHZT"},
+  {id:22, title:"Howl's Moving Castle", yt:"iwROgK94zcM", moods:[3,0], platform:"Netflix", tags:["Ghibli","Romance","Magic"],      desc:"Love, war and transformation in Miyazaki's most romantic world.", ramen:"Rose-infused shio ramen",                     link:"https://www.netflix.com/title/70028883"},
+  {id:23, title:"Your Name",            yt:"xU47nhruN-Q", moods:[3,5], platform:"Netflix", tags:["Anime","Romance","Stunning"],    desc:"Two strangers swap bodies and fall in love across time. Makoto Shinkai's masterpiece.", ramen:"Cherry blossom miso",                         link:"https://www.netflix.com/title/80230234"},
+  {id:24, title:"The Blue Hour (Atey)", yt:"kA7-d921fxs", moods:[3,5], platform:"Prime",   tags:["Thai","Romance","Tender"],       desc:"A tender Thai romance about first love and identity. Quietly devastating.", ramen:"Lemongrass broth ramen",                     link:"https://www.amazon.com/Prime-Video/"},
+ 
+  // HEART RACING (mood 4)
+  {id:25, title:"Demon Slayer: Mugen Train",yt:"rksx6APQBOY", moods:[4,1], platform:"Crunchyroll", tags:["Anime","Action","Emotional"], desc:"The movie that broke box office records worldwide and broke hearts twice.", ramen:"Fiery tonkotsu with kimchi",                 link:"https://www.crunchyroll.com/series/GY5P48XEY"},
+  {id:26, title:"Attack on Titan Final",yt:"MGRm4IzK1SQ", moods:[4,1], platform:"Crunchyroll", tags:["Anime","Dark","Epic"],        desc:"Humanity's last stand. The most ambitious ending in anime history.", ramen:"Wall-breach dark miso",                      link:"https://www.crunchyroll.com/series/GR751KNZY"},
+  {id:27, title:"Jujutsu Kaisen S2",    yt:"PPBD3gFJKK8", moods:[4,1], platform:"Crunchyroll", tags:["Anime","Cursed","Intense"],   desc:"Shibuya Incident arc. The arc that destroyed everyone who watched it.", ramen:"Cursed ramen — handle with care",             link:"https://www.crunchyroll.com/series/GRDQPM1ZY"},
+  {id:28, title:"Furiosa",              yt:"XJMuhwVlca4", moods:[4,1], platform:"Max",     tags:["Action","Feminist","Road"],      desc:"How Furiosa became Furiosa. Anya Taylor-Joy commands every frame.", ramen:"Wasteland spicy ramen — no mercy",            link:"https://www.max.com/movies/furiosa-a-mad-max-saga/"},
+  {id:29, title:"Gladiator II",         yt:"wH8W4M0u8qM", moods:[4,1], platform:"Paramount", tags:["Action","Epic","Rome"],       desc:"Rome burns. Arenas roar. Paul Mescal carrying the weight of empire.", ramen:"Spicy tantanmen — heart-racing",              link:"https://www.paramountplus.com/movies/gladiator-ii/"},
+  {id:30, title:"Fallout (Series)",     yt:"F9HHkrMGnlk", moods:[4,2], platform:"Prime",   tags:["Post-Apoc","Dark Humour","Addictive"], desc:"Vault-dwellers meet the wasteland. Prime's best show in years.", ramen:"Nuka-Cola ramen — nuclear spicy",             link:"https://www.amazon.com/fallout/dp/B0CXL4ZCM8"},
+ 
+  // QUIET TRUTHS (mood 5)
+  {id:31, title:"Parasite",             yt:"5xH0HfJHsaY", moods:[5,4], platform:"Netflix", tags:["Korean","Thriller","Class"],     desc:"Class warfare, pitch-black comedy, masterfully executed. Bong Joon-ho's magnum opus.", ramen:"Jjapaguri ram-don",                          link:"https://www.netflix.com/title/81014517"},
+  {id:32, title:"Anatomy of a Fall",    yt:"QCwMhFMyKIM", moods:[5],   platform:"MUBI",    tags:["French","Thriller","Ambiguous"], desc:"Did she push him? A courtroom thriller of total, beautiful uncertainty.", ramen:"French onion ramen — rich and complex",       link:"https://mubi.com/films/anatomy-of-a-fall"},
+  {id:33, title:"The Zone of Interest", yt:"B5HVHnq77uQ", moods:[5],   platform:"MUBI",    tags:["Holocaust","Haunting","Art"],    desc:"The banality of evil next door to Auschwitz. The most important film of the decade.", ramen:"Plain broth — eat it in silence",             link:"https://mubi.com/films/the-zone-of-interest"},
+  {id:34, title:"Aftersun",             yt:"sB1QXMS0fsg", moods:[5,0], platform:"MUBI",    tags:["Memory","Grief","Subtle"],       desc:"A holiday remembered. The film that destroys you slowly, then all at once.", ramen:"Salty shoyu — tears in the broth",            link:"https://mubi.com/films/aftersun"},
+  {id:35, title:"The Brutalist",        yt:"GdRXPAHIEW4", moods:[5,1], platform:"Prime",   tags:["Architecture","Epic","Art"],     desc:"A Hungarian architect rebuilds his life in America. Three-and-a-half hours of raw truth.", ramen:"Shoyu — clean and contemplative",             link:"https://www.amazon.com/The-Brutalist/dp/B0DCTFR2DD"},
+  {id:36, title:"A Real Pain",          yt:"bX8u8V4fYkM", moods:[5,0], platform:"Disney+", tags:["Comedy","Grief","Friendship"],   desc:"Two cousins retrace their grandmother's Holocaust journey. Quietly devastating.", ramen:"Light chicken ramen — gentle",               link:"https://www.disneyplus.com/movies/a-real-pain/"},
+ 
+  // BONUS — ANIME / ASIAN CULTURE
+  {id:37, title:"One Piece Live Action S2",yt:"S8_YwFLCh4U", moods:[1,2], platform:"Netflix", tags:["Anime","Adventure","Fun"],    desc:"The Straw Hats sail into the Grand Line. Netflix's best live-action adaptation.", ramen:"Fun tonkotsu with corn and butter",           link:"https://www.netflix.com/title/80217863"},
+  {id:38, title:"Vinland Saga S2",      yt:"4FnBWIY78kc", moods:[5,1], platform:"Netflix", tags:["Anime","Peace","War"],           desc:"From Viking warrior to pacifist slave. The most beautiful character arc in anime.", ramen:"Nordic-miso with dried fish",                link:"https://www.netflix.com/title/81705836"},
+  {id:39, title:"Frieren: Beyond Journey's End",yt:"4oZLwMkS0PM", moods:[5,0], platform:"Crunchyroll", tags:["Anime","Elven","Reflective"], desc:"An elf mage reflects on a life of adventure after the hero dies. Profound anime.", ramen:"Ancient shoyu ramen — slow-simmered",         link:"https://www.crunchyroll.com/series/GG5H5XQ7D"},
+  {id:40, title:"Delicious in Dungeon", yt:"G9I-kXOmOz0", moods:[0,2], platform:"Netflix", tags:["Anime","Food","Comedy"],         desc:"Fantasy dungeon crawlers who cook and eat the monsters. Utterly joyful.", ramen:"Monster ramen — whatever's in the dungeon",  link:"https://www.netflix.com/title/81736635"},
+  {id:41, title:"Castlevania: Nocturne",yt:"B5HVHnq77uQ", moods:[4,1], platform:"Netflix", tags:["Anime","Dark","Gothic"],         desc:"French Revolution meets vampires. Netflix animation at its most beautiful.", ramen:"Blood-red tonkotsu — gothic and rich",        link:"https://www.netflix.com/title/81028908"},
+  {id:42, title:"Severance S2",         yt:"Z3l0PpRdC2I", moods:[5],   platform:"Apple TV+",tags:["Mystery","Weird","Office"],    desc:"Lumon Industries. The innie/outie divide. The most unsettling show on television.", ramen:"Clean shoyu — compartmentalised",             link:"https://tv.apple.com/us/show/severance/"},
+];
+ 
+const PLATFORMS = {
+  "Netflix":"badge-netflix","Prime":"badge-prime","Apple TV+":"badge-apple",
+  "Max":"badge-hbo","Disney+":"badge-disney","Crunchyroll":"badge-crunchyroll",
+  "MUBI":"badge-prime","Paramount":"badge-hbo"
 };
-let guestUses = 0;
-let currentMood = null;
-let currentAccent = '#e8749a';
-
-// ═══════════════════════════════════════════════
-//  CONTENT DATABASE (42 real entries + procedural)
-// ═══════════════════════════════════════════════
-const contentDB = [
-  {id:1,  title:"Dune: Part Two",             youtubeId:"Way9Dexny3w", moods:[1],   desc:"Epic destiny in the desert. The prophecy unfolds.",                 poster:"https://picsum.photos/seed/dune2/800/450",        ramenPair:"Bold tonkotsu with extra spice"},
-  {id:2,  title:"Challengers",                youtubeId:"MDnVk5jIJr0", moods:[3],   desc:"Tension, desire, and perfect rhythm on and off court.",             poster:"https://picsum.photos/seed/challengers/800/450",  ramenPair:"Mild miso with soft-boiled egg"},
-  {id:3,  title:"The Brutalist",              youtubeId:"GdRXPAHIEW4", moods:[5],   desc:"Architectural obsession meets raw human truth.",                    poster:"https://picsum.photos/seed/brutalist/800/450",    ramenPair:"Shoyu — clean and contemplative"},
-  {id:4,  title:"Gladiator II",               youtubeId:"wH8W4M0u8qM", moods:[1,4], desc:"Legacy, vengeance, and the roar of the arena.",                     poster:"https://picsum.photos/seed/gladiator2/800/450",   ramenPair:"Spicy tantanmen — heart-racing"},
-  {id:5,  title:"Arcane Season 2",            youtubeId:"f4z8z7b7q7k", moods:[1,4], desc:"Art that feels alive. Rebellion in every frame.",                   poster:"https://picsum.photos/seed/arcane2/800/450",      ramenPair:"Creamy tsukemen — rich and immersive"},
-  {id:6,  title:"A Real Pain",                youtubeId:"bX8u8V4fYkM", moods:[5,2], desc:"Friendship that quietly breaks you open.",                          poster:"https://picsum.photos/seed/realpain/800/450",     ramenPair:"Light chicken ramen — gentle"},
-  {id:7,  title:"Wicked",                     youtubeId:"6iEDGy7SqA0", moods:[3],   desc:"Defying gravity in a world of magic and power.",                    poster:"https://picsum.photos/seed/wicked/800/450",       ramenPair:"Matcha ramen — vibrant and sweet"},
-  {id:8,  title:"Joker: Folie à Deux",        youtubeId:"t433PEQGErc", moods:[4,5], desc:"Chaos, music, and the thin line between sanity and madness.",        poster:"https://picsum.photos/seed/joker2/800/450",       ramenPair:"Dark miso with charred pork"},
-  {id:9,  title:"Shogun",                     youtubeId:"PyCFcnDMOkI", moods:[1,5], desc:"Feudal Japan's epic tale of war and honour.",                       poster:"https://picsum.photos/seed/shogun/800/450",       ramenPair:"Traditional miso with pickled ginger"},
-  {id:10, title:"The Bear Season 3",          youtubeId:"p5z7N8f8T4g", moods:[0,2], desc:"Kitchen chaos reaches new heights of intensity.",                   poster:"https://picsum.photos/seed/thebearkitchen/800/450",ramenPair:"Spicy tantanmen with garlic"},
-  {id:11, title:"House of Dragon S3",         youtubeId:"kL9vPqR2sT0", moods:[1,4], desc:"Dragons, betrayal, and the dance of thrones.",                      poster:"https://picsum.photos/seed/hotd3/800/450",        ramenPair:"Smoky tonkotsu with chili oil"},
-  {id:12, title:"Severance Season 2",         youtubeId:"Y9y8tV8l8zQ", moods:[5],   desc:"The mystery deepens inside Lumon Industries.",                      poster:"https://picsum.photos/seed/severance2/800/450",   ramenPair:"Clean shoyu with a soft egg"},
-  {id:13, title:"Baby Reindeer",              youtubeId:"aB3vL5k8pTaa", moods:[5],   desc:"A true story of obsession, trauma, and hope.",                      poster:"https://picsum.photos/seed/babyreindeer/800/450", ramenPair:"Comfort chicken ramen"},
-  {id:14, title:"One Piece Live Action S2",   youtubeId:"cD4vL5k8pUbb", moods:[1,2], desc:"The Straw Hats continue their grand adventure.",                    poster:"https://picsum.photos/seed/onepiece/800/450",     ramenPair:"Fun tonkotsu with corn"},
-  {id:15, title:"Fallout",                    youtubeId:"eF5vL5k8pVcc", moods:[1,4], desc:"Post-apocalyptic chaos with dark humour.",                          poster:"https://picsum.photos/seed/fallout/800/450",      ramenPair:"Rad-away ramen — spicy"},
-  {id:16, title:"The Boys Season 5",          youtubeId:"iJ7vL5k8pXdd", moods:[2,4], desc:"Superheroes gone wrong — darker than ever.",                        poster:"https://picsum.photos/seed/theboys5/800/450",     ramenPair:"Explosive tantanmen"},
-  {id:17, title:"Squid Game Season 2",        youtubeId:"kL9vPqR2sTee", moods:[4],   desc:"The games continue… more deadly than before.",                      poster:"https://picsum.photos/seed/squidgame2/800/450",   ramenPair:"Red-light miso ramen"},
-  {id:18, title:"Demon Slayer: Infinity Castle", youtubeId:"mN0vL5k8pYff", moods:[1,4], desc:"Final battle against Muzan's demons.",                          poster:"https://picsum.photos/seed/demonslayer/800/450",  ramenPair:"Fiery tonkotsu with kimchi"},
-  {id:19, title:"Jujutsu Kaisen Season 3",    youtubeId:"oP1vL5k8pZgg", moods:[4],   desc:"Sorcery and curses collide.",                                       poster:"https://picsum.photos/seed/jjk3/800/450",         ramenPair:"Cursed ramen — dark"},
-  {id:20, title:"The White Lotus Season 3",   youtubeId:"qR2vL5k8pAhh", moods:[2,5], desc:"Luxury resort drama in Thailand.",                                  poster:"https://picsum.photos/seed/whitelotus3/800/450",  ramenPair:"Tropical miso with coconut"},
-  {id:21, title:"Andor Season 2",             youtubeId:"sT3vL5k8pBii", moods:[1],   desc:"The birth of the Rebellion. Gritty, real, essential.",              poster:"https://picsum.photos/seed/andor2/800/450",       ramenPair:"Rebel shoyu — bold"},
-  {id:22, title:"True Detective: Night Country",youtubeId:"uV4vL5k8pCjj", moods:[5], desc:"Dark Alaskan mystery — haunting and beautiful.",                    poster:"https://picsum.photos/seed/truedetective/800/450",ramenPair:"Frozen ramen — icy"},
-  {id:23, title:"Bridgerton Season 4",        youtubeId:"yY7vL5k8pFll", moods:[3],   desc:"Regency romance and scandal.",                                      poster:"https://picsum.photos/seed/bridgerton4/800/450",  ramenPair:"Lavender miso"},
-  {id:24, title:"The Gentlemen",              youtubeId:"zZ8vL5k8pGmm", moods:[2,4], desc:"British crime meets cannabis empire.",                               poster:"https://picsum.photos/seed/thegentlemen/800/450", ramenPair:"Gentleman's spicy ramen"},
-  {id:25, title:"Furiosa: A Mad Max Saga",    youtubeId:"cC1vL5k8pJnn", moods:[1,4], desc:"The origin of Furiosa.",                                            poster:"https://picsum.photos/seed/furiosa/800/450",      ramenPair:"Wasteland spicy ramen"},
-  {id:26, title:"Deadpool & Wolverine",       youtubeId:"eE3vL5k8pLoo", moods:[2,4], desc:"The merc with a mouth meets the Wolverine.",                        poster:"https://picsum.photos/seed/deadpool3/800/450",    ramenPair:"Chaotic tantanmen"},
-  {id:27, title:"Inside Out 2",               youtubeId:"LEjhY15eCx0", moods:[0,3],  desc:"Emotions, memories, and growing up — beautifully.",                 poster:"https://picsum.photos/seed/insideout2/800/450",   ramenPair:"Comfort shio ramen"},
-  {id:28, title:"Beetlejuice Beetlejuice",    youtubeId:"jJ8vL5k8pQpp", moods:[2],   desc:"The afterlife is back and weirder than ever.",                      poster:"https://picsum.photos/seed/beetlejuice2/800/450", ramenPair:"Ghostly fun ramen"},
-  {id:29, title:"Twisters",                   youtubeId:"fF4vL5k8pMqq", moods:[4],   desc:"Chasing the storm of the century.",                                 poster:"https://picsum.photos/seed/twisters/800/450",     ramenPair:"Stormy ramen"},
-  {id:30, title:"My Neighbour Totoro",        youtubeId:"92a7spsPDmk",  moods:[0,3], desc:"Studio Ghibli's masterpiece of wonder and warmth.",                  poster:"https://picsum.photos/seed/totoro/800/450",       ramenPair:"Gentle miso — simple and pure"},
-  {id:31, title:"Spirited Away",              youtubeId:"ByXuk9QqQkk",  moods:[0,5], desc:"A child lost in a spirit world. Timeless Ghibli magic.",            poster:"https://picsum.photos/seed/spiritedaway/800/450", ramenPair:"Yuzu shoyu — delicate"},
-  {id:32, title:"Princess Mononoke",          youtubeId:"4OiMOHRDs14",  moods:[1,5], desc:"War between humans and forest gods.",                               poster:"https://picsum.photos/seed/mononoke/800/450",     ramenPair:"Forest mushroom ramen"},
-  {id:33, title:"Parasite",                   youtubeId:"5xH0HfJHsaY",  moods:[5],   desc:"Class warfare, masterfully executed.",                              poster:"https://picsum.photos/seed/parasite/800/450",     ramenPair:"Jjapaguri ram-don"},
-  {id:34, title:"Interstellar",               youtubeId:"zSWdZVtXT7E",  moods:[1,5], desc:"Space, time, love — on a cosmic scale.",                            poster:"https://picsum.photos/seed/interstellar/800/450", ramenPair:"Black tonkotsu — deep and dark"},
-  {id:35, title:"Past Lives",                 youtubeId:"kA7-d921fxs",  moods:[3,5], desc:"Love across decades. Quiet heartbreak.",                            poster:"https://picsum.photos/seed/pastlives/800/450",    ramenPair:"Cold soba alongside warm shio"},
-  {id:36, title:"Poor Things",                youtubeId:"RlbR5N6veqw",  moods:[2,5], desc:"A woman reborn. Absurdist, brilliant, bizarre.",                    poster:"https://picsum.photos/seed/poorthings/800/450",   ramenPair:"Wild mushroom tsukemen"},
-  {id:37, title:"Anatomy of a Fall",          youtubeId:"QCwMhFMyKIM",  moods:[5],   desc:"Did she? A courtroom thriller of total uncertainty.",               poster:"https://picsum.photos/seed/anatomyfall/800/450",  ramenPair:"French onion ramen — rich"},
-  {id:38, title:"Everything Everywhere All At Once", youtubeId:"wxN1T1uxQ2g", moods:[0,2,5], desc:"A laundromat owner saves the multiverse.", poster:"https://picsum.photos/seed/eeaao/800/450", ramenPair:"Everything ramen — all toppings"},
-  {id:39, title:"Perfect Days",               youtubeId:"3bzDmWFfOp0",  moods:[0,5], desc:"Tokyo janitor finds beauty in routine. Wim Wenders at his best.",  poster:"https://picsum.photos/seed/perfectdays/800/450",  ramenPair:"Simple shio — nothing wasted"},
-  {id:40, title:"Drive My Car",               youtubeId:"1Eo9MyHVUCU",  moods:[0,5], desc:"Grief, memory, Chekhov — a three-hour masterwork.",                 poster:"https://picsum.photos/seed/drivemycar/800/450",   ramenPair:"Quiet miso — long and slow"},
-  {id:41, title:"Aftersun",                   youtubeId:"sB1QXMS0fsg",  moods:[5],   desc:"A holiday memory that unravels slowly. Devastating.",               poster:"https://picsum.photos/seed/aftersun/800/450",     ramenPair:"Salty shoyu — tears in the broth"},
-  {id:42, title:"Oppenheimer",                youtubeId:"uYPbbksJxIg",  moods:[1,5], desc:"The man who changed the world and destroyed it.",                   poster:"https://picsum.photos/seed/oppenheimer/800/450",  ramenPair:"Atomic dark tonkotsu"}
+ 
+/* ═══════════════════ MOODS ═══════════════════ */
+const MOODS=[
+  {id:0,icon:"🌙",name:"Chill Drift",    sub:"calm · float · breathe",  color:"#14b8a6",bg:"rgba(20,184,166,0.09)"},
+  {id:1,icon:"🌌",name:"Epic Worlds",    sub:"scale · destiny · awe",   color:"#6366f1",bg:"rgba(99,102,241,0.09)"},
+  {id:2,icon:"🍋",name:"Laugh Deeply",   sub:"joy · absurd · light",    color:"#f59e0b",bg:"rgba(245,158,11,0.09)"},
+  {id:3,icon:"🌸",name:"Romantic Escape",sub:"longing · beauty · love", color:"#e8749a",bg:"rgba(232,116,154,0.09)"},
+  {id:4,icon:"⚡",name:"Heart Racing",   sub:"action · edge · thrill",  color:"#ef4444",bg:"rgba(239,68,68,0.09)"},
+  {id:5,icon:"🕯",name:"Quiet Truths",   sub:"deep · still · real",     color:"#64748b",bg:"rgba(100,116,139,0.09)"}
 ];
-
-// ═══════════════════════════════════════════════
-//  PROCEDURAL GENERATOR (endless feel)
-// ═══════════════════════════════════════════════
-const proceduralTitles = [
-  ["The Last","Empire","Silence","Signal","Garden","Monarch","Threshold","Echo"],
-  ["Echoes of","Crimson","Neon","Lost","Hidden","Eternal","Burning","Frozen"],
-  ["Rise of","Shadow","Light","Storm","Void","Dream","Blade","Shore"],
-  ["Fall of","Legacy","Kingdom","Memory","Stars","Dust","Glass","Rain"]
-];
-const ramenPairs = [
-  "Bold tonkotsu with chili threads","Yuzu shio — fragrant and clean","Spicy miso with corn","Late-night black garlic ramen",
-  "Creamy tsukemen with katsu","Light chicken paitan","Cold soba with dipping broth","Forest mushroom shoyu"
-];
-
-function genProcedural(idx, forceMood){
-  const t = proceduralTitles[idx % 4];
-  const title = t[0] + " " + t[1 + (idx % (t.length-1))];
-  return {
-    id: 5000 + idx,
-    title,
-    youtubeId: "dQw4w9WgXcQ",
-    moods: [forceMood !== undefined ? forceMood : Math.floor(Math.random()*6)],
-    desc: "An unforgettable journey perfectly matched to your current mood.",
-    poster: `https://picsum.photos/seed/${title.replace(/\s/g,'')}/800/450`,
-    ramenPair: ramenPairs[idx % ramenPairs.length]
-  };
-}
-
-// ═══════════════════════════════════════════════
-//  MOODS
-// ═══════════════════════════════════════════════
-const MOODS = [
-  {id:0, icon:"🌙", name:"Chill Drift",      sub:"calm · float · breathe",   color:"#14b8a6", bg:"rgba(20,184,166,0.09)"},
-  {id:1, icon:"🌌", name:"Epic Worlds",       sub:"scale · destiny · awe",    color:"#6366f1", bg:"rgba(99,102,241,0.09)"},
-  {id:2, icon:"🍋", name:"Laugh Deeply",      sub:"joy · absurd · light",     color:"#f59e0b", bg:"rgba(245,158,11,0.09)"},
-  {id:3, icon:"🌸", name:"Romantic Escape",   sub:"longing · beauty · love",  color:"#e8749a", bg:"rgba(232,116,154,0.09)"},
-  {id:4, icon:"⚡", name:"Heart Racing",      sub:"action · edge · thrill",   color:"#ef4444", bg:"rgba(239,68,68,0.09)"},
-  {id:5, icon:"🕯", name:"Quiet Truths",      sub:"deep · still · real",      color:"#64748b", bg:"rgba(100,116,139,0.09)"}
-];
-
+ 
+/* ═══════════════════ STATE ═══════════════════ */
+let UP = {name:null,loggedIn:false,favFilm:null,foodPref:'ramen',gender:'female',
+          watchLater:[],communityPosts:[],totalDonated:0,moodSelections:0,currentFilmId:null};
+let guestUses=0, currentMood=null;
+ 
 function renderMoods(){
-  const grid = document.getElementById('mood-grid');
-  grid.innerHTML = MOODS.map(m => `
-    <div class="mood-btn" id="mood-${m.id}" onclick="selectMood(${m.id})"
-      style="--mood-bg: ${m.bg}">
+  const g=document.getElementById('mood-grid');
+  g.innerHTML=MOODS.map(m=>`
+    <div class="mood-btn" id="mood-${m.id}" onclick="selectMood(${m.id})" style="--mood-bg:${m.bg}">
       <span class="mood-icon">${m.icon}</span>
       <div class="mood-label">${m.name}</div>
       <div class="mood-sublabel">${m.sub}</div>
-    </div>
-  `).join('');
+    </div>`).join('');
 }
-
+ 
 function selectMood(id){
-  if(checkGuestLimit()) return;
-  currentMood = id;
-  userProfile.moodSelections = (userProfile.moodSelections || 0) + 1;
-
-  // Update active mood button
-  document.querySelectorAll('.mood-btn').forEach(b => b.classList.remove('active'));
-  document.getElementById('mood-' + id).classList.add('active');
-
-  // Sync accent
-  const m = MOODS.find(x => x.id === id);
-  currentAccent = m.color;
-  document.documentElement.style.setProperty('--accent', currentAccent);
-  document.documentElement.style.setProperty('--deep-pink', m.color);
-
-  const ps = document.getElementById('personalized-section');
+  if(checkGuestLimit())return;
+  currentMood=id;
+  UP.moodSelections=(UP.moodSelections||0)+1;
+  document.querySelectorAll('.mood-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('mood-'+id).classList.add('active');
+  const m=MOODS.find(x=>x.id===id);
+  document.documentElement.style.setProperty('--accent',m.color);
+  document.documentElement.style.setProperty('--theme-primary',m.color);
+  const ps=document.getElementById('personalized-section');
   ps.classList.add('visible');
-
-  const display = document.getElementById('mood-name-display');
-  display.textContent = `· ${m.icon} ${m.name}`;
-
+  document.getElementById('mood-name-display').textContent=`· ${m.icon} ${m.name}`;
   renderRecs();
-
-  if(userProfile.moodSelections >= 2){
-    document.getElementById('donation-nudge').classList.add('visible');
-  }
-
-  ps.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  if(UP.moodSelections>=2) document.getElementById('donation-nudge').classList.add('visible');
+  ps.scrollIntoView({behavior:'smooth',block:'start'});
 }
-
-// ═══════════════════════════════════════════════
-//  RENDER RECOMMENDATIONS
-// ═══════════════════════════════════════════════
-function getFilmsForMood(mood, count){
-  let base = contentDB.filter(c => c.moods.includes(mood));
-  let extra = contentDB.filter(c => !c.moods.includes(mood));
-  let pool = [...base.sort(()=>0.5-Math.random()), ...extra.sort(()=>0.5-Math.random())];
-  while(pool.length < count){
-    pool.push(genProcedural(pool.length, mood));
-  }
-  return pool.slice(0, count);
+ 
+/* ═══════════════════ RECS ═══════════════════ */
+function getFilms(mood,count){
+  let base=DB.filter(c=>c.moods.includes(mood));
+  let extra=DB.filter(c=>!c.moods.includes(mood));
+  let pool=[...base.sort(()=>0.5-Math.random()),...extra.sort(()=>0.5-Math.random())];
+  return pool.slice(0,count);
 }
-
-function filmCardHTML(item){
-  const moodData = MOODS[item.moods[0]] || MOODS[0];
-  return `
-    <div class="film-card">
-      <div class="film-poster-wrap">
-        <img src="${item.poster}" alt="${item.title}" loading="lazy" onerror="this.src='https://picsum.photos/seed/${item.id}/800/450'">
-        <div class="film-mood-badge">${moodData.icon} ${moodData.name}</div>
-      </div>
-      <div class="film-body">
-        <div class="film-title">${item.title}</div>
-        <p class="film-desc">${item.desc}</p>
-        <div class="film-ramen">🍜 ${item.ramenPair}</div>
-        <div class="film-actions">
-          <button class="film-btn-play" onclick="playTrailer(${item.id})">▶ Play trailer</button>
-          <button class="film-btn-save" onclick="addToWatchLater(${item.id})">Save</button>
-        </div>
+ 
+function filmCard(item){
+  const m=MOODS[item.moods[0]]||MOODS[0];
+  const pc=PLATFORMS[item.platform]||'badge-prime';
+  const saved=UP.watchLater.some(i=>i.id===item.id);
+  const tags=(item.tags||[]).map(t=>`<span class="film-tag">${t}</span>`).join('');
+  return `<div class="film-card">
+    <div class="film-poster-wrap">
+      <img src="https://picsum.photos/seed/${item.id}mood/800/450" alt="${item.title}" loading="lazy">
+      <div class="film-mood-badge">${m.icon} ${m.name}</div>
+      <div class="film-stream-badge ${pc}">${item.platform}</div>
+    </div>
+    <div class="film-body">
+      <div class="film-title">${item.title}</div>
+      <p class="film-desc">${item.desc}</p>
+      <div class="film-meta">${tags}</div>
+      <div class="film-ramen">🍜 ${item.ramen}</div>
+      <div class="film-actions">
+        <button class="film-btn-play" onclick="playTrailer(${item.id})">▶ Watch trailer</button>
+        <button class="film-btn-save ${saved?'saved':''}" id="save-btn-${item.id}" onclick="addToWatchLater(${item.id})">
+          ${saved?'✓ Saved':'Save'}
+        </button>
       </div>
     </div>
-  `;
+  </div>`;
 }
-
+ 
 function renderRecs(){
-  const grid = document.getElementById('recs-grid');
-  const films = getFilmsForMood(currentMood, 8);
-  grid.innerHTML = films.map(filmCardHTML).join('');
+  const g=document.getElementById('recs-grid');
+  const films=getFilms(currentMood,8);
+  g.innerHTML=films.map(filmCard).join('');
 }
-
 function refreshRecs(){
-  const grid = document.getElementById('recs-grid');
-  grid.style.opacity = '0.3';
-  grid.style.transform = 'translateY(8px)';
-  setTimeout(()=>{
-    renderRecs();
-    grid.style.transition = 'opacity 0.4s, transform 0.4s';
-    grid.style.opacity = '1';
-    grid.style.transform = 'translateY(0)';
-    setTimeout(()=>{ grid.style.transition = ''; },500);
-  }, 320);
+  const g=document.getElementById('recs-grid');
+  g.style.opacity='0.3'; g.style.transform='translateY(8px)';
+  setTimeout(()=>{ renderRecs(); g.style.transition='opacity 0.4s,transform 0.4s'; g.style.opacity='1'; g.style.transform='translateY(0)'; setTimeout(()=>{g.style.transition='';},500); },320);
 }
-
-// ═══════════════════════════════════════════════
-//  TRAILER
-// ═══════════════════════════════════════════════
+ 
+/* ═══════════════════ TRAILER ═══════════════════ */
 function playTrailer(id){
-  let item = contentDB.find(c => c.id === id) || genProcedural(id - 5000, currentMood);
-  userProfile.currentFilmId = id;
-  document.getElementById('modal-title').textContent = item.title;
-  document.getElementById('youtube-player').src =
-    `https://www.youtube.com/embed/${item.youtubeId}?autoplay=1&rel=0&modestbranding=1`;
-  document.getElementById('full-link').href =
-    `https://www.youtube.com/watch?v=${item.youtubeId}`;
+  const item=DB.find(c=>c.id===id);
+  if(!item)return;
+  UP.currentFilmId=id;
+  document.getElementById('modal-title').textContent=item.title;
+  document.getElementById('youtube-player').src=`https://www.youtube.com/embed/${item.yt}?autoplay=1&rel=0&modestbranding=1`;
+  document.getElementById('full-link').href=item.link||`https://www.netflix.com/search?q=${encodeURIComponent(item.title)}`;
+  document.getElementById('full-link').textContent=`Watch on ${item.platform||'streaming'}`;
   openModal('trailer-modal');
 }
 function hideTrailer(){
-  document.getElementById('youtube-player').src = '';
+  document.getElementById('youtube-player').src='';
   closeModal('trailer-modal');
 }
-
-// ═══════════════════════════════════════════════
-//  WATCH LATER
-// ═══════════════════════════════════════════════
+ 
+/* ═══════════════════ WATCH LATER ═══════════════════ */
 function addToWatchLater(id){
-  if(!userProfile.loggedIn){ showProfileModal(); return; }
-  let item = contentDB.find(c => c.id === id);
-  if(!item) item = genProcedural(id - 5000, currentMood);
-  if(!userProfile.watchLater.some(i => i.id === id)){
-    userProfile.watchLater.unshift(item);
-    saveProfile();
+  if(!UP.loggedIn){showProfileModal();return;}
+  const item=DB.find(c=>c.id===id);
+  if(!item)return;
+  if(!UP.watchLater.some(i=>i.id===id)){
+    UP.watchLater.unshift(item); saveProfile();
+    const btn=document.getElementById('save-btn-'+id);
+    if(btn){ btn.classList.add('saved'); btn.textContent='✓ Saved'; }
     showToast(`${item.title} saved to your world`);
   } else {
-    showToast('Already saved');
+    showToast('Already in your world');
   }
 }
 function addToWatchLaterCurrent(){
   hideTrailer();
-  if(userProfile.currentFilmId) addToWatchLater(userProfile.currentFilmId);
-  else if(!userProfile.loggedIn) showProfileModal();
+  if(UP.currentFilmId) addToWatchLater(UP.currentFilmId);
+  else if(!UP.loggedIn) showProfileModal();
 }
-
-// ═══════════════════════════════════════════════
-//  GUEST LIMIT
-// ═══════════════════════════════════════════════
+ 
+/* ═══════════════════ GUEST LIMIT ═══════════════════ */
 function checkGuestLimit(){
-  if(!userProfile.loggedIn){
+  if(!UP.loggedIn){
     guestUses++;
-    updateGuestBar();
-    if(guestUses > 3){ showProfileModal(); return true; }
+    const bar=document.getElementById('guest-bar');
+    const left=Math.max(0,3-guestUses);
+    document.getElementById('swipes-left').textContent=left;
+    document.getElementById('dot-1').classList.toggle('used',guestUses>=1);
+    document.getElementById('dot-2').classList.toggle('used',guestUses>=2);
+    document.getElementById('dot-3').classList.toggle('used',guestUses>=3);
+    if(guestUses>=1) bar.classList.add('visible');
+    if(guestUses>3){showGenderModal();return true;}
   }
   return false;
 }
-function updateGuestBar(){
-  const bar = document.getElementById('guest-bar');
-  const left = Math.max(0, 3 - guestUses);
-  document.getElementById('swipes-left').textContent = left;
-  document.getElementById('dot-1').classList.toggle('used', guestUses >= 1);
-  document.getElementById('dot-2').classList.toggle('used', guestUses >= 2);
-  document.getElementById('dot-3').classList.toggle('used', guestUses >= 3);
-  if(guestUses >= 1) bar.classList.add('visible');
+ 
+/* ═══════════════════ GENDER / THEME ═══════════════════ */
+function selectGender(g){
+  UP.gender=g;
+  document.querySelectorAll('.gender-btn').forEach(b=>b.classList.remove('sel'));
+  document.querySelector('.gender-btn.'+g)?.classList.add('sel');
+  if(g==='male'){
+    document.body.classList.add('theme-male');
+    petals=[];
+  } else {
+    document.body.classList.remove('theme-male');
+    petals=[];
+  }
+  if(g==='nb'){
+    document.documentElement.style.setProperty('--theme-primary','#7c3aed');
+    document.documentElement.style.setProperty('--theme-secondary','#c4b5fd');
+    document.documentElement.style.setProperty('--deep-pink','#7c3aed');
+  }
+  closeModal('gender-modal');
+  setTimeout(()=>showProfileModal(),200);
 }
-
-// ═══════════════════════════════════════════════
-//  PROFILE
-// ═══════════════════════════════════════════════
-function saveProfile(){ localStorage.setItem('moodProfile', JSON.stringify(userProfile)); }
+function showGenderModal(){ openModal('gender-modal'); }
+ 
+/* ═══════════════════ PROFILE ═══════════════════ */
+function saveProfile(){ try{localStorage.setItem('moodProfileV2',JSON.stringify(UP));}catch(e){} }
 function loadProfile(){
-  const s = localStorage.getItem('moodProfile');
-  if(s) userProfile = JSON.parse(s);
-  document.getElementById('user-name').textContent =
-    userProfile.loggedIn && userProfile.name ? userProfile.name : 'Guest';
+  try{
+    const s=localStorage.getItem('moodProfileV2');
+    if(s) UP=JSON.parse(s);
+    if(UP.gender==='male') document.body.classList.add('theme-male');
+  }catch(e){}
+  document.getElementById('user-name').textContent=UP.loggedIn&&UP.name?UP.name:'Guest';
 }
 function createProfile(){
-  const name = document.getElementById('profile-name').value.trim();
-  if(!name){ showToast('Please enter your name'); return; }
-  userProfile.name = name;
-  userProfile.favFilm = document.getElementById('profile-fav').value.trim() || 'Spirited Away';
-  userProfile.foodPref = document.getElementById('profile-food').value.trim() || 'ramen';
-  userProfile.loggedIn = true;
-  saveProfile();
-  hideProfileModal();
-  document.getElementById('user-name').textContent = userProfile.name;
-  guestUses = 0;
+  const name=document.getElementById('profile-name').value.trim();
+  if(!name){showToast('Please enter your name');return;}
+  UP.name=name;
+  UP.favFilm=document.getElementById('profile-fav').value.trim()||'Spirited Away';
+  UP.foodPref=document.getElementById('profile-food').value.trim()||'ramen';
+  UP.loggedIn=true;
+  saveProfile(); hideProfileModal();
+  document.getElementById('user-name').textContent=UP.name;
+  guestUses=0;
   document.getElementById('guest-bar').classList.remove('visible');
-  if(currentMood !== null) renderRecs();
-  showToast(`Welcome, ${userProfile.name} ✦ Unlimited unlocked`);
+  if(currentMood!==null) renderRecs();
+  showToast(`Welcome, ${UP.name} ✦ Unlimited unlocked`);
 }
-function showProfileModal(){
-  document.getElementById('donate-header').textContent =
-    userProfile.loggedIn && userProfile.name ? `Thank you, ${userProfile.name}` : 'Thank you, visionary';
-  openModal('profile-modal');
-}
+function showProfileModal(){ openModal('profile-modal'); }
 function hideProfileModal(){ closeModal('profile-modal'); }
-
-// ═══════════════════════════════════════════════
-//  DONATE
-// ═══════════════════════════════════════════════
+ 
+/* ═══════════════════ DONATE ═══════════════════ */
 function showDonateModal(){
-  if(userProfile.loggedIn && userProfile.name)
-    document.getElementById('donate-header').textContent = `Thank you, ${userProfile.name}`;
+  if(UP.loggedIn&&UP.name) document.getElementById('donate-header').textContent=`Thank you, ${UP.name}`;
   openModal('donate-modal');
 }
 function hideDonateModal(){ closeModal('donate-modal'); }
 function setAmount(v){
-  document.getElementById('donate-amount').value = v;
-  document.querySelectorAll('.amount-btn').forEach(b=>{
-    b.classList.toggle('selected', b.textContent === 'R'+v);
-  });
+  document.getElementById('donate-amount').value=v;
+  document.querySelectorAll('.amount-btn').forEach(b=>b.classList.toggle('selected',b.textContent==='R'+v));
 }
 function processDonation(){
-  const amount = parseFloat(document.getElementById('donate-amount').value) || 100;
-  userProfile.totalDonated = (userProfile.totalDonated||0) + amount;
-  userProfile.donationStreak = (userProfile.donationStreak||0) + 1;
-  if(userProfile.loggedIn) saveProfile();
-  document.getElementById('paypal-amount').textContent = 'R' + amount;
-  hideDonateModal();
-  openModal('paypal-modal');
+  const amt=parseFloat(document.getElementById('donate-amount').value)||100;
+  UP.totalDonated=(UP.totalDonated||0)+amt;
+  if(UP.loggedIn) saveProfile();
+  document.getElementById('paypal-amount').textContent='R'+amt;
+  hideDonateModal(); openModal('paypal-modal');
 }
 function hidePaypalModal(){ closeModal('paypal-modal'); }
 function copyPaypalDetails(){
-  const amt = document.getElementById('paypal-amount').textContent;
+  const amt=document.getElementById('paypal-amount').textContent;
   navigator.clipboard.writeText(`PayPal ${amt} to alextresor44@icloud.com`).then(()=>{
-    showToast('Details copied · thank you for keeping the bowl warm 🌸');
-  });
+    showToast('Copied · thank you for keeping the bowl warm 🌸');
+    window.open('https://www.paypal.com/paypalme/alextresor44','_blank');
+  }).catch(()=>{showToast('alextresor44@icloud.com · PayPal');});
 }
-
-// ═══════════════════════════════════════════════
-//  COMMUNITY
-// ═══════════════════════════════════════════════
-const simulatedPosts = [
-  {text:"Dune: Part Two after midnight ramen. Sand visuals + spice = perfection.",user:"Saki T.",time:"9m ago"},
-  {text:"Challengers + miso. Pure tension and joy in every scene.",user:"Thabo M.",time:"24m ago"},
-  {text:"The Brutalist left me speechless. Shoyu and slow evenings.",user:"Emma L.",time:"51m ago"},
-  {text:"Perfect Days is a masterpiece. Tokyo, ramen, and simplicity.",user:"Hiroshi K.",time:"1h ago"},
-  {text:"Spirited Away never gets old. Yuzu shio, every time.",user:"Yuna C.",time:"2h ago"}
+ 
+/* ═══════════════════ COMMUNITY ═══════════════════ */
+const POSTS=[
+  {text:"Dune: Part Two after midnight ramen. The sand visuals + deep tonkotsu = the perfect pairing. I cried twice.",user:"Saki T.",time:"9m ago"},
+  {text:"Challengers consumed my entire weekend. The tennis, the tension, the miso. Chef's kiss.",user:"Thabo M.",time:"24m ago"},
+  {text:"The Brutalist is 3.5 hours and I barely breathed. Shoyu ramen in silence afterwards.",user:"Emma L.",time:"51m ago"},
+  {text:"Your Name on rainy Sunday. Cherry blossom miso. Why did no one warn me about this film.",user:"Yuna C.",time:"1h ago"},
+  {text:"Frieren is genuinely the most beautiful anime I've ever seen. Slow. Perfect. Eat while watching.",user:"Hiroshi K.",time:"2h ago"},
+  {text:"Attack on Titan finale. I needed a whole bowl of tonkotsu just to recover.",user:"Zanele M.",time:"3h ago"},
+  {text:"Delicious in Dungeon is pure serotonin. I made ramen while watching characters make food. Meta.",user:"Priya S.",time:"4h ago"}
 ];
-
+function renderCommunity(){
+  const feed=document.getElementById('community-feed');
+  const all=[...UP.communityPosts,...POSTS];
+  feed.innerHTML=all.map(p=>`
+    <div class="post-card">
+      <p class="post-text">"${p.text}"</p>
+      <div class="post-meta"><span>— ${p.user}</span><span>${p.time}</span></div>
+    </div>`).join('');
+}
 function renderLeaderboard(){
-  const c = document.getElementById('leaderboard');
-  const data = [
-    {name:"Saki T.",amount:520},
-    {name:"Thabo M.",amount:390},
-    {name:"Emma L.",amount:260},
-    {name: userProfile.loggedIn&&userProfile.name ? userProfile.name : "You", amount: userProfile.totalDonated||80}
+  const c=document.getElementById('leaderboard');
+  const data=[
+    {name:"Saki T.",amt:520},{name:"Thabo M.",amt:390},{name:"Emma L.",amt:260},
+    {name:UP.loggedIn&&UP.name?UP.name:"You",amt:UP.totalDonated||80}
   ];
-  c.innerHTML = data.map(d=>`
+  c.innerHTML=data.map(d=>`
     <div class="vis-card">
       <div class="vis-name">${d.name}</div>
-      <div class="vis-amount">R${d.amount} · visionary</div>
-    </div>
-  `).join('');
+      <div class="vis-amount">R${d.amt} · visionary</div>
+    </div>`).join('');
 }
-
-function renderCommunity(){
-  const feed = document.getElementById('community-feed');
-  const all = [...simulatedPosts, ...userProfile.communityPosts];
-  feed.innerHTML = all.map(p=>`
-    <div class="post-card">
-      <p class="post-text">${p.text}</p>
-      <div class="post-meta"><span>— ${p.user}</span><span>${p.time}</span></div>
-    </div>
-  `).join('');
-}
-
 function postToCommunity(){
-  if(!userProfile.loggedIn){ showProfileModal(); return; }
-  const inp = document.getElementById('community-input');
-  if(!inp.value.trim()) return;
-  userProfile.communityPosts.unshift({text:inp.value, user:userProfile.name, time:"just now"});
-  saveProfile();
-  inp.value = '';
-  renderCommunity();
+  if(!UP.loggedIn){showProfileModal();return;}
+  const inp=document.getElementById('community-input');
+  if(!inp.value.trim())return;
+  UP.communityPosts.unshift({text:inp.value,user:UP.name,time:"just now"});
+  saveProfile(); inp.value=''; renderCommunity();
 }
-
-function viewAllDonors(){ showToast('Hall of Visionaries — the humans keeping every bowl warm 🌸'); }
-
-// ═══════════════════════════════════════════════
-//  PLAYLISTS
-// ═══════════════════════════════════════════════
+ 
+/* ═══════════════════ PLAYLISTS ═══════════════════ */
 function renderPlaylists(){
-  const saved = document.getElementById('playlists-grid');
-  saved.innerHTML = userProfile.watchLater.length
-    ? userProfile.watchLater.map(item=>`
-        <div class="film-card">
-          <div class="film-poster-wrap">
-            <img src="${item.poster}" alt="${item.title}" loading="lazy">
-          </div>
-          <div class="film-body">
-            <div class="film-title">${item.title}</div>
-            <p class="film-desc">${item.desc}</p>
-            <div class="film-ramen">🍜 ${item.ramenPair||''}</div>
-          </div>
+  const saved=document.getElementById('playlists-grid');
+  saved.innerHTML=UP.watchLater.length
+    ?UP.watchLater.map(item=>`
+      <div class="film-card" onclick="playTrailer(${item.id})">
+        <div class="film-poster-wrap">
+          <img src="https://picsum.photos/seed/${item.id}mood/800/450" alt="${item.title}" loading="lazy">
+          <div class="film-stream-badge ${PLATFORMS[item.platform]||'badge-prime'}">${item.platform||''}</div>
         </div>
-      `).join('')
-    : '<div class="saved-empty">Your world is empty. Save films that move you.</div>';
-
-  const weekly = document.getElementById('weekly-picks');
-  const picks = contentDB.sort(()=>0.5-Math.random()).slice(0,8);
-  weekly.innerHTML = picks.map(item=>`
+        <div class="film-body">
+          <div class="film-title">${item.title}</div>
+          <p class="film-desc">${item.desc}</p>
+          <div class="film-ramen">🍜 ${item.ramen||''}</div>
+        </div>
+      </div>`).join('')
+    :'<div class="saved-empty">Your world is empty. Choose a mood and save what moves you.</div>';
+ 
+  const weekly=document.getElementById('weekly-picks');
+  const picks=DB.sort(()=>0.5-Math.random()).slice(0,8);
+  weekly.innerHTML=picks.map(item=>`
     <div class="film-card" onclick="playTrailer(${item.id})">
       <div class="film-poster-wrap">
-        <img src="${item.poster}" alt="${item.title}" loading="lazy">
-        <div class="film-mood-badge">${MOODS[item.moods[0]]?.icon || ''} ${MOODS[item.moods[0]]?.name || ''}</div>
+        <img src="https://picsum.photos/seed/${item.id}mood/800/450" alt="${item.title}" loading="lazy">
+        <div class="film-mood-badge">${MOODS[item.moods[0]]?.icon||''} ${MOODS[item.moods[0]]?.name||''}</div>
+        <div class="film-stream-badge ${PLATFORMS[item.platform]||'badge-prime'}">${item.platform}</div>
       </div>
       <div class="film-body">
         <div class="film-title">${item.title}</div>
-        <div class="film-ramen">🍜 ${item.ramenPair}</div>
+        <div class="film-ramen">🍜 ${item.ramen}</div>
       </div>
-    </div>
-  `).join('');
+    </div>`).join('');
 }
-
 function suggestNewShow(){
-  const t = prompt('Suggest a show or film for the community:');
-  if(t) showToast(`Thank you · "${t}" added to the suggestion pool`);
+  const t=prompt('Suggest a show or film:');
+  if(t) showToast(`"${t}" added to the suggestion pool ✦`);
 }
-
-// ═══════════════════════════════════════════════
-//  NAVIGATION
-// ═══════════════════════════════════════════════
+ 
+/* ═══════════════════ NAV ═══════════════════ */
 function navigateTo(page){
   ['discover','community','playlists'].forEach(p=>{
-    document.getElementById(p).style.display = p===page ? 'block' : 'none';
-    const link = document.getElementById('nav-'+p);
-    if(link) link.classList.toggle('active', p===page);
+    document.getElementById(p).style.display=p===page?'block':'none';
+    const l=document.getElementById('nav-'+p);
+    if(l) l.classList.toggle('active',p===page);
   });
-  if(page==='community'){ renderCommunity(); renderLeaderboard(); }
+  if(page==='community'){renderCommunity();renderLeaderboard();}
   if(page==='playlists') renderPlaylists();
   window.scrollTo({top:0,behavior:'smooth'});
 }
-
-// ═══════════════════════════════════════════════
-//  MODAL HELPERS
-// ═══════════════════════════════════════════════
-function openModal(id){
-  const m = document.getElementById(id);
-  m.classList.add('open');
-}
-function closeModal(id){
-  document.getElementById(id).classList.remove('open');
-}
-
-// ═══════════════════════════════════════════════
-//  TOAST
-// ═══════════════════════════════════════════════
+ 
+/* ═══════════════════ MODAL HELPERS ═══════════════════ */
+function openModal(id){ document.getElementById(id).classList.add('open'); }
+function closeModal(id){ document.getElementById(id).classList.remove('open'); }
+ 
+/* ═══════════════════ TOAST ═══════════════════ */
 function showToast(msg){
-  let t = document.getElementById('toast');
-  if(!t){
-    t = document.createElement('div');
-    t.id = 'toast';
-    t.style.cssText = `
-      position:fixed; bottom:7rem; left:50%; transform:translateX(-50%);
-      background:rgba(26,26,26,0.92); color:white; padding:0.65rem 1.4rem;
-      border-radius:100px; font-size:0.82rem; z-index:999; opacity:0;
-      backdrop-filter:blur(20px); transition:opacity 0.25s;
-      font-family:'DM Sans',sans-serif; letter-spacing:0.02em;
-      white-space:nowrap; pointer-events:none;
-    `;
-    document.body.appendChild(t);
-  }
-  t.textContent = msg;
-  t.style.opacity = '1';
-  clearTimeout(t._timer);
-  t._timer = setTimeout(()=>{ t.style.opacity='0'; }, 3000);
+  const t=document.getElementById('toast');
+  t.textContent=msg; t.style.opacity='1';
+  clearTimeout(t._t); t._t=setTimeout(()=>{t.style.opacity='0';},3200);
 }
-
-// ═══════════════════════════════════════════════
-//  SHARE + EXPLAIN
-// ═══════════════════════════════════════════════
+ 
+/* ═══════════════════ UTILS ═══════════════════ */
 function copyShareLink(){
-  const ref = userProfile.name ? userProfile.name.toLowerCase().replace(/\s/g,'-') : 'guest';
+  const ref=UP.name?UP.name.toLowerCase().replace(/\s/g,'-'):'guest';
   navigator.clipboard.writeText(`https://mood.ai/ref/${ref}`).then(()=>{
     showToast('Link copied · every friend earns you VIP 🌸');
-  });
+  }).catch(()=>showToast('Share mood.ai with your friends 🌸'));
 }
 function explainAI(){
-  showToast('Mood maps your emotional state, taste data, and community signals — then finds the perfect match in 0.03s');
+  showToast('Mood maps emotional state + taste signals + circadian data → perfect match in 0.03s');
 }
-
-// ═══════════════════════════════════════════════
-//  BOOT
-// ═══════════════════════════════════════════════
-window.addEventListener('load', ()=>{
-  loadProfile();
-  renderMoods();
-  navigateTo('discover');
-  const g = localStorage.getItem('moodGuestUses');
-  if(g) guestUses = parseInt(g);
+ 
+/* ═══════════════════ BOOT ═══════════════════ */
+window.addEventListener('load',()=>{
+  loadProfile(); renderMoods(); navigateTo('discover');
+  const g=localStorage.getItem('moodGuest'); if(g) guestUses=parseInt(g);
+  if(!UP.loggedIn && !localStorage.getItem('seenGender')){ setTimeout(()=>{ openModal('gender-modal'); localStorage.setItem('seenGender','1'); },2500); }
 });
-
-window.addEventListener('beforeunload', ()=>{
-  localStorage.setItem('moodGuestUses', guestUses);
-});
+window.addEventListener('beforeunload',()=>{ localStorage.setItem('moodGuest',guestUses); });
 </script>
 </body>
 </html>
