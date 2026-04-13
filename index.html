@@ -8,26 +8,19 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=Space+Grotesk:wght@500;600&display=swap');
-        
         body { font-family: 'Inter', system-ui, sans-serif; background: #ffffff; overflow-x: hidden; }
         .heading { font-family: 'Space Grotesk', sans-serif; }
-        
         .nav { backdrop-filter: blur(24px); }
-        
         .dynamic-bg {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: -1;
             background: radial-gradient(circle at var(--mouse-x, 50%) var(--mouse-y, 50%), 
-                        rgba(168,196,184,0.1) 0%, rgba(209,196,233,0.08) 50%, transparent 80%);
+                        rgba(168,196,184,0.12) 0%, rgba(209,196,233,0.09) 50%, transparent 80%);
         }
-        
-        canvas#particle-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: -1; opacity: 0.7; }
-        
+        canvas#particle-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: -1; opacity: 0.85; }
         .mood-card { transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1); }
         .mood-card:hover { transform: translateY(-8px); box-shadow: 0 40px 80px -20px rgb(168 196 184 / 0.25); }
-        
         .content-card { transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
         .content-card:hover { transform: scale(1.04); }
-        
         .modal { animation: modalPop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1); }
         @keyframes modalPop { 0% { opacity: 0; transform: scale(0.95); } 100% { opacity: 1; transform: scale(1); } }
     </style>
@@ -56,7 +49,7 @@
         </div>
     </nav>
 
-    <!-- DISCOVER SECTION -->
+    <!-- DISCOVER -->
     <div id="discover" class="max-w-screen-2xl mx-auto px-10 pt-20 pb-24">
         <div class="max-w-2xl mx-auto text-center">
             <h2 class="heading text-7xl leading-none tracking-[-3px] font-semibold mb-6">
@@ -98,7 +91,7 @@
         </div>
     </div>
 
-    <!-- TRAILER MODAL (autoplay fixed) -->
+    <!-- TRAILER MODAL -->
     <div onclick="if(event.target.id==='trailer-modal')hideTrailer()" id="trailer-modal" class="hidden fixed inset-0 bg-black/90 flex items-center justify-center z-[9999]">
         <div class="modal bg-white rounded-3xl max-w-5xl w-full mx-4 overflow-hidden">
             <div class="px-8 py-6 border-b flex justify-between items-center">
@@ -116,7 +109,7 @@
         </div>
     </div>
 
-    <!-- PROFILE MODAL -->
+    <!-- PROFILE ONBOARDING (auto-shows for guests) -->
     <div onclick="if(event.target.id==='profile-modal')hideProfileModal()" id="profile-modal" class="hidden fixed inset-0 bg-black/70 flex items-center justify-center z-[9999]">
         <div class="modal bg-white rounded-3xl max-w-lg w-full mx-4 p-10">
             <h3 class="heading text-4xl text-center mb-2">Create your mood profile</h3>
@@ -152,7 +145,7 @@
     </footer>
 
     <script>
-        // Blueberry particle system (more visible pops)
+        // Blueberry particle splashes (more visible)
         const canvas = document.getElementById('particle-canvas');
         const ctx = canvas.getContext('2d');
         let particles = [];
@@ -160,25 +153,14 @@
             constructor() {
                 this.x = Math.random() * canvas.width;
                 this.y = Math.random() * canvas.height;
-                this.size = Math.random() * 14 + 8;
-                this.speedX = (Math.random() - 0.5) * 2;
-                this.speedY = (Math.random() - 0.5) * 2;
+                this.size = Math.random() * 16 + 8;
+                this.speedX = (Math.random() - 0.5) * 3;
+                this.speedY = (Math.random() - 0.5) * 3;
                 this.color = ['#a8c4b8', '#d1c4e9', '#f0d9c8'][Math.floor(Math.random()*3)];
                 this.alpha = 1;
             }
-            update() {
-                this.x += this.speedX;
-                this.y += this.speedY;
-                this.alpha -= 0.012;
-                this.size *= 0.98;
-            }
-            draw() {
-                ctx.globalAlpha = this.alpha;
-                ctx.fillStyle = this.color;
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                ctx.fill();
-            }
+            update() { this.x += this.speedX; this.y += this.speedY; this.alpha -= 0.015; this.size *= 0.98; }
+            draw() { ctx.globalAlpha = this.alpha; ctx.fillStyle = this.color; ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.fill(); }
         }
         function animateParticles() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -187,8 +169,7 @@
                 particles[i].draw();
                 if (particles[i].alpha <= 0 || particles[i].size <= 0) particles.splice(i, 1);
             }
-            // More frequent pops
-            if (Math.random() < 0.8) particles.push(new Particle());
+            if (Math.random() < 1.2) particles.push(new Particle()); // more frequent
             requestAnimationFrame(animateParticles);
         }
         function resizeCanvas() {
@@ -196,17 +177,20 @@
             canvas.height = window.innerHeight;
         }
 
-        // App logic
+        // App data
         let userProfile = { name: "Guest", loggedIn: false, history: [], prefs: {0:40,1:60,2:30,3:70,4:50,5:55}, foodPref: "", watchLater: [] };
         let currentMood = null;
 
         const contentDB = [
             {id:1, title:"The Bear • Season 3 Trailer", youtubeId:"p5z7N8f8T4g", moods:[0], desc:"Intense kitchen energy"},
             {id:2, title:"Dune: Prophecy • Official Trailer", youtubeId:"Y9y8tV8l8zQ", moods:[1], desc:"Epic worlds"},
-            {id:3, title:"Only Murders in the Building • S4 Trailer", youtubeId:"4u3g1rLq3pA", moods:[2], desc:"Cozy mystery laughs"},
+            {id:3, title:"Only Murders in the Building • S4 Trailer", youtubeId:"dKyX8rocAB8", moods:[2], desc:"Cozy mystery laughs"},
             {id:4, title:"La La Land • 4K Trailer", youtubeId:"0pdPf7V2j1E", moods:[3], desc:"Romantic jazz nights"},
             {id:5, title:"Oppenheimer • Behind the Scenes", youtubeId:"uYPbbksJxIg", moods:[5], desc:"Mind-bending history"},
-            {id:6, title:"Arcane • Season 2 Trailer", youtubeId:"f4z8z7b7q7k", moods:[4], desc:"Stunning animation"}
+            {id:6, title:"Arcane • Season 2 Trailer", youtubeId:"f4z8z7b7q7k", moods:[4], desc:"Stunning animation"},
+            {id:7, title:"The Bear • Season 3 Official Trailer", youtubeId:"p5z7N8f8T4g", moods:[0], desc:"Kitchen chaos & family"},
+            {id:8, title:"Only Murders S4 Trailer 2", youtubeId:"dKyX8rocAB8", moods:[2], desc:"Laughs & murder"},
+            {id:9, title:"Dune Prophecy Trailer", youtubeId:"Y9y8tV8l8zQ", moods:[1], desc:"Desert epic"}
         ];
 
         function saveProfile() { localStorage.setItem('moodProfile', JSON.stringify(userProfile)); }
@@ -250,6 +234,8 @@
             const container = document.getElementById('recs-grid');
             container.innerHTML = '';
             let filtered = contentDB.filter(item => item.moods.includes(currentMood));
+            // Show at least 3 cards
+            if (filtered.length < 3) filtered = [...filtered, ...contentDB.slice(0, 3 - filtered.length)];
             filtered.forEach(item => {
                 const card = document.createElement('div');
                 card.className = "content-card bg-white rounded-3xl overflow-hidden cursor-pointer border border-transparent";
@@ -271,13 +257,10 @@
         function playTrailer(id) {
             const item = contentDB.find(c => c.id === id);
             document.getElementById('modal-title').textContent = item.title;
-            
             const iframe = document.getElementById('youtube-player');
-            iframe.src = `https://www.youtube.com/embed/${item.youtubeId}?autoplay=1&mute=1&rel=0&modestbranding=1`;
-            
+            iframe.src = `https://www.youtube.com/embed/${item.youtubeId}?autoplay=1&mute=1&rel=0`;
             const fullLink = document.getElementById('full-link');
             fullLink.href = `https://www.youtube.com/watch?v=${item.youtubeId}`;
-            
             document.getElementById('trailer-modal').classList.remove('hidden');
             document.getElementById('trailer-modal').classList.add('flex');
         }
@@ -320,7 +303,9 @@
             resizeCanvas();
             animateParticles();
             window.addEventListener('resize', resizeCanvas);
-            console.log('%c🌫️ mood v4 – autoplay + blueberry splashes fixed', 'color:#a8c4b8; font-size:14px');
+            // Auto-show onboarding for guests on first visit
+            if (!userProfile.loggedIn) setTimeout(() => showProfileModal(), 1200);
+            console.log('%c🌫️ mood v5 – fixed autoplay + visible blueberry splashes', 'color:#a8c4b8; font-size:14px');
         };
     </script>
 </body>
