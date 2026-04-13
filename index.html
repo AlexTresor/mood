@@ -1,537 +1,1931 @@
 <!DOCTYPE html>
 <html lang="en" class="scroll-smooth">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Mood — Your next obsession in seconds. Before the ramen gets cold. 100,000+ neuroscience-matched films &amp; series. Japanese luxury meets Apple crispness.">
-    <title>mood • before the ramen gets cold</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=SF+Pro+Display:wght@400;500;600&amp;display=swap');
-       
-        :root {
-            --accent-color: #db2777;
-            --mouse-x: 50%;
-            --mouse-y: 50%;
-        }
-       
-        * { 
-            transition-property: color, background-color, border-color, text-decoration-color, fill, stroke; 
-            transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1); 
-            transition-duration: 220ms; 
-        }
-       
-        body {
-            font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: #ffffff;
-            color: #111111;
-        }
-       
-        .heading {
-            font-family: 'Inter', system-ui, sans-serif;
-            font-weight: 600;
-            letter-spacing: -2.8px;
-        }
-       
-        .nav {
-            backdrop-filter: blur(80px);
-            background: rgba(255,255,255,0.96);
-            border-bottom: 1px solid rgba(17, 17, 17, 0.05);
-        }
-       
-        .glass {
-            background: rgba(255,255,255,0.92);
-            backdrop-filter: blur(60px);
-            border: 1px solid rgba(17,17,17,0.06);
-            box-shadow: 0 10px 30px -12px rgba(17,17,17,0.12);
-        }
-       
-        .dynamic-bg {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-            pointer-events: none;
-            background: radial-gradient(circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
-                        rgba(219, 39, 119, 0.09) 0%,
-                        rgba(219, 39, 119, 0.03) 45%,
-                        transparent 75%);
-        }
-       
-        canvas#particle-canvas {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-            pointer-events: none;
-            opacity: 0.22;
-        }
-       
-        .mood-card {
-            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-       
-        .mood-card:hover {
-            transform: translateY(-8px) scale(1.02);
-            box-shadow: 0 30px 45px -20px rgb(219 39 119 / 0.3);
-        }
-       
-        .content-card {
-            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-       
-        .content-card:hover {
-            transform: scale(1.03);
-        }
-       
-        .modal {
-            animation: modalPop 0.5s cubic-bezier(0.23, 1, 0.32, 1);
-        }
-       
-        @keyframes modalPop {
-            0% { opacity: 0; transform: scale(0.95) translateY(30px); }
-            100% { opacity: 1; transform: scale(1) translateY(0); }
-        }
-       
-        .sakura-accent {
-            animation: sakuraFloat 6s ease-in-out infinite;
-        }
-       
-        .ramen-pair {
-            font-size: 13px;
-            letter-spacing: 0.5px;
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>mood • 0.03 seconds before the ramen gets cold</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=DM+Sans:wght@300;400;500&family=Noto+Serif+JP:wght@300;400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+<style>
+:root {
+  --pink: #f2a7c3;
+  --petal: #fce4ec;
+  --blush: #fdf0f5;
+  --white: #ffffff;
+  --ink: #1a1a1a;
+  --mist: #6b7280;
+  --slate: #374151;
+  --accent: #e8749a;
+  --deep-pink: #c94b7e;
+  --gold: #c9a96e;
+  --radius: 2rem;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html { background: var(--white); }
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--white);
+  color: var(--ink);
+  overflow-x: hidden;
+  position: relative;
+}
+
+/* ─── SAKURA BACKGROUND ─── */
+.sakura-bg {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.sakura-bg::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 80% 60% at 15% 20%, rgba(242,167,195,0.22) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 50% at 85% 10%, rgba(242,167,195,0.18) 0%, transparent 55%),
+    radial-gradient(ellipse 50% 40% at 50% 90%, rgba(252,228,236,0.2) 0%, transparent 60%),
+    #ffffff;
+}
+
+canvas#petals {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0.7;
+}
+
+/* ─── MOUSE GLOW ─── */
+#mouse-glow {
+  position: fixed;
+  width: 600px;
+  height: 600px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(242,167,195,0.12) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 1;
+  transform: translate(-50%, -50%);
+  transition: left 0.1s ease, top 0.1s ease;
+}
+
+/* ─── NAV ─── */
+nav {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(255,255,255,0.92);
+  backdrop-filter: blur(30px);
+  -webkit-backdrop-filter: blur(30px);
+  border-bottom: 1px solid rgba(242,167,195,0.15);
+}
+
+.nav-inner {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 2.5rem;
+  height: 68px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  cursor: pointer;
+}
+
+.logo-mark {
+  width: 36px;
+  height: 36px;
+  background: linear-gradient(135deg, var(--pink), var(--deep-pink));
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+}
+
+.logo-text {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.6rem;
+  font-weight: 400;
+  letter-spacing: 0.12em;
+  color: var(--ink);
+}
+
+.nav-links {
+  display: flex;
+  gap: 2.5rem;
+  align-items: center;
+}
+
+.nav-links a {
+  font-size: 0.82rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--mist);
+  cursor: pointer;
+  transition: color 0.2s;
+  text-decoration: none;
+}
+.nav-links a:hover { color: var(--deep-pink); }
+.nav-links a.active { color: var(--ink); }
+
+.nav-cta {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.55rem 1.4rem;
+  border-radius: 100px;
+  background: var(--ink);
+  color: white;
+  font-size: 0.82rem;
+  letter-spacing: 0.06em;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.15s;
+  border: none;
+}
+.nav-cta:hover { background: var(--deep-pink); transform: scale(1.03); }
+
+/* ─── MAIN CONTAINER ─── */
+.page { position: relative; z-index: 2; }
+#discover, #community, #playlists { display: none; }
+#discover { display: block; }
+
+.container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 2.5rem;
+}
+
+/* ─── HERO ─── */
+.hero {
+  padding: 5rem 0 3rem;
+  text-align: center;
+  position: relative;
+}
+
+.hero-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.72rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--mist);
+  margin-bottom: 1.8rem;
+  padding: 0.45rem 1rem;
+  border: 1px solid rgba(242,167,195,0.35);
+  border-radius: 100px;
+}
+.eyebrow-dot { width: 5px; height: 5px; background: var(--accent); border-radius: 50%; animation: pulse 2s ease infinite; }
+@keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.4;transform:scale(0.8)} }
+
+.hero-h1 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(3.2rem, 6vw, 6.5rem);
+  font-weight: 300;
+  line-height: 1.0;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+  margin-bottom: 1.5rem;
+}
+.hero-h1 em { font-style: italic; color: var(--deep-pink); }
+
+.hero-sub {
+  font-size: 1.05rem;
+  font-weight: 300;
+  color: var(--mist);
+  max-width: 480px;
+  margin: 0 auto 3rem;
+  line-height: 1.65;
+}
+
+/* ─── RAMEN HERO ILLUSTRATION ─── */
+.ramen-hero-wrap {
+  position: relative;
+  display: inline-block;
+  margin: 0 auto 3rem;
+}
+
+#ramen-canvas {
+  display: block;
+  width: 340px;
+  height: 280px;
+  margin: 0 auto;
+}
+
+.ramen-scene {
+  position: relative;
+  width: 340px;
+  margin: 0 auto 2.5rem;
+  display: flex;
+  justify-content: center;
+}
+
+/* ─── HERO STATS ─── */
+.hero-stats {
+  display: flex;
+  justify-content: center;
+  gap: 3rem;
+  margin-bottom: 3rem;
+}
+.stat { text-align: center; }
+.stat-num {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 2rem;
+  font-weight: 400;
+  color: var(--ink);
+  display: block;
+}
+.stat-label {
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--mist);
+}
+
+/* ─── HERO BUTTONS ─── */
+.hero-actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.85rem 2rem;
+  background: var(--ink);
+  color: white;
+  border-radius: 100px;
+  font-size: 0.88rem;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  border: none;
+  transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+}
+.btn-primary:hover { background: var(--deep-pink); transform: translateY(-2px); box-shadow: 0 12px 28px -8px rgba(201,75,126,0.4); }
+
+.btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.85rem 2rem;
+  background: transparent;
+  color: var(--ink);
+  border-radius: 100px;
+  font-size: 0.88rem;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  border: 1.5px solid rgba(242,167,195,0.5);
+  transition: border-color 0.2s, background 0.2s;
+}
+.btn-ghost:hover { border-color: var(--accent); background: rgba(242,167,195,0.07); }
+
+/* ─── MOOD SELECTOR ─── */
+.section-label {
+  font-size: 0.72rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--mist);
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+.mood-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 0.75rem;
+  margin-bottom: 4rem;
+}
+
+@media(max-width:900px){ .mood-grid{ grid-template-columns: repeat(3,1fr); } }
+@media(max-width:600px){ .mood-grid{ grid-template-columns: repeat(2,1fr); } }
+
+.mood-btn {
+  padding: 1.4rem 0.5rem;
+  border-radius: 1.2rem;
+  background: var(--white);
+  border: 1.5px solid rgba(17,17,17,0.07);
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.35s cubic-bezier(0.23,1,0.32,1);
+  position: relative;
+  overflow: hidden;
+}
+.mood-btn::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--mood-bg, transparent);
+  opacity: 0;
+  transition: opacity 0.35s;
+  border-radius: inherit;
+}
+.mood-btn:hover::before, .mood-btn.active::before { opacity: 1; }
+.mood-btn:hover, .mood-btn.active {
+  border-color: transparent;
+  transform: translateY(-4px);
+  box-shadow: 0 20px 35px -12px rgba(0,0,0,0.12);
+}
+.mood-icon { font-size: 1.7rem; display: block; margin-bottom: 0.4rem; position: relative; z-index: 1; }
+.mood-label { font-size: 0.78rem; font-weight: 500; letter-spacing: 0.04em; color: var(--ink); position: relative; z-index: 1; }
+.mood-sublabel { font-size: 0.68rem; color: var(--mist); margin-top: 0.2rem; position: relative; z-index: 1; }
+
+/* ─── RECS SECTION ─── */
+#personalized-section { display: none; }
+#personalized-section.visible { display: block; }
+
+.recs-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+.recs-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 2.4rem;
+  font-weight: 400;
+  color: var(--ink);
+}
+.recs-title span { color: var(--deep-pink); font-style: italic; }
+
+.recs-actions { display: flex; gap: 1rem; align-items: center; }
+.action-link {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.8rem;
+  color: var(--mist);
+  cursor: pointer;
+  transition: color 0.2s;
+  background: none;
+  border: none;
+  font-family: 'DM Sans', sans-serif;
+}
+.action-link:hover { color: var(--deep-pink); }
+
+/* ─── FILM CARDS ─── */
+.recs-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.2rem;
+  margin-bottom: 3rem;
+}
+@media(max-width:1100px){ .recs-grid{ grid-template-columns: repeat(3,1fr); } }
+@media(max-width:750px){ .recs-grid{ grid-template-columns: repeat(2,1fr); } }
+@media(max-width:500px){ .recs-grid{ grid-template-columns: 1fr; } }
+
+.film-card {
+  border-radius: 1.2rem;
+  overflow: hidden;
+  background: var(--white);
+  border: 1px solid rgba(17,17,17,0.06);
+  cursor: pointer;
+  transition: transform 0.45s cubic-bezier(0.23,1,0.32,1), box-shadow 0.45s;
+  position: relative;
+}
+.film-card:hover {
+  transform: translateY(-8px) scale(1.01);
+  box-shadow: 0 30px 50px -15px rgba(17,17,17,0.18);
+}
+
+.film-poster-wrap {
+  position: relative;
+  aspect-ratio: 16/9;
+  overflow: hidden;
+}
+.film-poster-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.6s cubic-bezier(0.23,1,0.32,1);
+}
+.film-card:hover .film-poster-wrap img { transform: scale(1.07); }
+
+/* Glassmorphic shine slide on hover */
+.film-poster-wrap::after {
+  content: '';
+  position: absolute;
+  top: 0; left: -70%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(120deg, transparent 0%, rgba(255,255,255,0.5) 50%, transparent 100%);
+  transform: skewX(-20deg);
+  transition: none;
+}
+.film-card:hover .film-poster-wrap::after {
+  animation: shineSlide 0.7s ease forwards;
+}
+@keyframes shineSlide {
+  0%   { left: -70%; }
+  100% { left: 130%; }
+}
+
+.film-mood-badge {
+  position: absolute;
+  top: 0.6rem;
+  left: 0.6rem;
+  padding: 0.25rem 0.65rem;
+  border-radius: 100px;
+  font-size: 0.65rem;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  background: rgba(255,255,255,0.88);
+  backdrop-filter: blur(10px);
+  color: var(--ink);
+  border: 1px solid rgba(255,255,255,0.5);
+}
+
+.film-body { padding: 1.1rem 1.2rem 1.2rem; }
+.film-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.2rem;
+  font-weight: 400;
+  margin-bottom: 0.35rem;
+  color: var(--ink);
+}
+.film-desc {
+  font-size: 0.78rem;
+  color: var(--mist);
+  line-height: 1.5;
+  margin-bottom: 0.6rem;
+}
+.film-ramen {
+  font-size: 0.72rem;
+  color: var(--deep-pink);
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  margin-bottom: 1rem;
+}
+
+.film-actions { display: flex; gap: 0.5rem; }
+.film-btn-play {
+  flex: 1;
+  padding: 0.55rem;
+  background: var(--ink);
+  color: white;
+  border-radius: 0.7rem;
+  font-size: 0.78rem;
+  font-weight: 500;
+  letter-spacing: 0.03em;
+  cursor: pointer;
+  border: none;
+  transition: background 0.2s;
+}
+.film-btn-play:hover { background: var(--deep-pink); }
+.film-btn-save {
+  padding: 0.55rem 0.9rem;
+  background: transparent;
+  color: var(--mist);
+  border-radius: 0.7rem;
+  font-size: 0.78rem;
+  cursor: pointer;
+  border: 1px solid rgba(17,17,17,0.1);
+  transition: border-color 0.2s, color 0.2s;
+}
+.film-btn-save:hover { border-color: var(--accent); color: var(--deep-pink); }
+
+/* ─── DONATION NUDGE ─── */
+.donation-nudge {
+  display: none;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2rem;
+  padding: 1.8rem 2.5rem;
+  border-radius: var(--radius);
+  background: linear-gradient(135deg, var(--petal) 0%, rgba(255,255,255,0.8) 100%);
+  border: 1px solid rgba(242,167,195,0.3);
+  margin-bottom: 3rem;
+}
+.donation-nudge.visible { display: flex; }
+.nudge-text {}
+.nudge-overline {
+  font-size: 0.68rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--deep-pink);
+  margin-bottom: 0.3rem;
+}
+.nudge-p { font-size: 0.95rem; color: var(--slate); }
+.nudge-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.6rem;
+  background: var(--deep-pink);
+  color: white;
+  border-radius: 100px;
+  font-size: 0.82rem;
+  cursor: pointer;
+  border: none;
+  white-space: nowrap;
+  transition: background 0.2s, transform 0.15s;
+}
+.nudge-btn:hover { background: var(--ink); transform: scale(1.03); }
+
+/* ─── GUEST LIMIT BAR ─── */
+.guest-bar {
+  background: rgba(252,228,236,0.5);
+  border: 1px solid rgba(242,167,195,0.3);
+  border-radius: var(--radius);
+  padding: 1.2rem 2rem;
+  text-align: center;
+  margin-bottom: 2rem;
+  display: none;
+}
+.guest-bar.visible { display: block; }
+.guest-bar p { font-size: 0.88rem; color: var(--slate); margin-bottom: 0.7rem; }
+.guest-swipe-dots { display: flex; justify-content: center; gap: 0.5rem; margin-bottom: 0.8rem; }
+.swipe-dot { width: 8px; height: 8px; border-radius: 50%; background: rgba(17,17,17,0.12); transition: background 0.2s; }
+.swipe-dot.used { background: var(--deep-pink); }
+
+/* ─── COMMUNITY ─── */
+.community-header {
+  margin-bottom: 3rem;
+}
+.community-header h2 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 3rem;
+  font-weight: 300;
+  color: var(--ink);
+  margin-bottom: 0.5rem;
+}
+.community-header p { font-size: 0.9rem; color: var(--mist); }
+
+.visionaries-section {
+  margin-bottom: 3rem;
+}
+.vis-label {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+.vis-label span { font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--mist); }
+.vis-label a { font-size: 0.78rem; color: var(--deep-pink); cursor: pointer; }
+
+#leaderboard {
+  display: flex;
+  gap: 0.75rem;
+  overflow-x: auto;
+  padding-bottom: 0.5rem;
+}
+.vis-card {
+  min-width: 150px;
+  padding: 1rem 1.2rem;
+  border-radius: 1rem;
+  background: rgba(255,255,255,0.9);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(242,167,195,0.2);
+  text-align: center;
+  flex-shrink: 0;
+}
+.vis-name { font-size: 0.88rem; font-weight: 500; color: var(--ink); margin-bottom: 0.2rem; }
+.vis-amount { font-size: 0.72rem; color: var(--deep-pink); }
+
+.community-feed { margin-bottom: 3rem; display: flex; flex-direction: column; gap: 1rem; }
+.post-card {
+  padding: 1.4rem 1.8rem;
+  border-radius: 1.2rem;
+  background: rgba(255,255,255,0.85);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(17,17,17,0.06);
+}
+.post-text { font-size: 0.95rem; color: var(--slate); line-height: 1.6; margin-bottom: 0.8rem; }
+.post-meta { display: flex; justify-content: space-between; font-size: 0.72rem; color: var(--mist); }
+
+.community-compose {
+  padding: 1.8rem;
+  border-radius: var(--radius);
+  background: rgba(255,255,255,0.85);
+  border: 1px solid rgba(242,167,195,0.2);
+}
+.community-compose textarea {
+  width: 100%;
+  background: transparent;
+  border: 1px solid rgba(17,17,17,0.1);
+  border-radius: 1rem;
+  padding: 1rem 1.2rem;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.9rem;
+  color: var(--ink);
+  resize: none;
+  outline: none;
+  transition: border-color 0.2s;
+  margin-bottom: 1rem;
+}
+.community-compose textarea:focus { border-color: var(--accent); }
+
+/* ─── PLAYLISTS ─── */
+.playlists-header {
+  margin-bottom: 3rem;
+}
+.playlists-header h2 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 3rem;
+  font-weight: 300;
+  color: var(--ink);
+  margin-bottom: 0.5rem;
+}
+.playlists-header p { font-size: 0.9rem; color: var(--mist); }
+
+.weekly-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+  margin-bottom: 3rem;
+}
+@media(max-width:900px){ .weekly-grid{ grid-template-columns: repeat(2,1fr); } }
+
+.saved-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.2rem;
+}
+@media(max-width:750px){ .saved-grid{ grid-template-columns: repeat(2,1fr); } }
+
+.saved-empty {
+  grid-column: 1/-1;
+  padding: 3rem;
+  text-align: center;
+  color: var(--mist);
+  font-size: 0.9rem;
+  border: 1px dashed rgba(242,167,195,0.4);
+  border-radius: var(--radius);
+}
+
+/* ─── FLOATING BAR ─── */
+.float-bar {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  z-index: 90;
+}
+
+.float-pill {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  padding: 0.75rem 1.4rem;
+  border-radius: 100px;
+  background: rgba(255,255,255,0.92);
+  backdrop-filter: blur(30px);
+  border: 1px solid rgba(17,17,17,0.08);
+  box-shadow: 0 8px 25px -8px rgba(17,17,17,0.15);
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--ink);
+}
+.float-pill:hover { transform: translateY(-2px); box-shadow: 0 14px 35px -10px rgba(17,17,17,0.2); }
+
+/* ─── MODALS ─── */
+.modal-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(17,17,17,0.45);
+  backdrop-filter: blur(8px);
+  z-index: 200;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+}
+.modal-overlay.open { display: flex; }
+
+.modal-box {
+  background: var(--white);
+  border-radius: 1.8rem;
+  overflow: hidden;
+  width: 100%;
+  animation: modalIn 0.45s cubic-bezier(0.23,1,0.32,1);
+}
+@keyframes modalIn {
+  from { opacity: 0; transform: scale(0.94) translateY(20px); }
+  to   { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+.modal-box.wide { max-width: 860px; }
+.modal-box.narrow { max-width: 440px; padding: 2.5rem; }
+
+.modal-header {
+  padding: 1.5rem 2rem;
+  border-bottom: 1px solid rgba(17,17,17,0.07);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.modal-title { font-family: 'Cormorant Garamond', serif; font-size: 1.5rem; font-weight: 400; }
+.modal-close {
+  width: 34px; height: 34px;
+  border-radius: 50%;
+  background: rgba(17,17,17,0.06);
+  border: none;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.1rem;
+  color: var(--mist);
+  transition: background 0.2s;
+}
+.modal-close:hover { background: rgba(17,17,17,0.12); }
+
+.video-wrap { aspect-ratio: 16/9; background: #000; }
+.video-wrap iframe { width: 100%; height: 100%; border: none; }
+
+.modal-footer {
+  padding: 1.5rem 2rem;
+  display: flex;
+  gap: 0.75rem;
+}
+.modal-footer .btn-outline {
+  flex: 1;
+  padding: 0.9rem;
+  border: 1.5px solid rgba(242,167,195,0.5);
+  border-radius: 100px;
+  background: transparent;
+  cursor: pointer;
+  font-size: 0.85rem;
+  font-family: 'DM Sans', sans-serif;
+  transition: border-color 0.2s;
+}
+.modal-footer .btn-outline:hover { border-color: var(--deep-pink); }
+.modal-footer .btn-fill {
+  flex: 1;
+  padding: 0.9rem;
+  border-radius: 100px;
+  background: var(--ink);
+  color: white;
+  border: none;
+  cursor: pointer;
+  font-size: 0.85rem;
+  font-family: 'DM Sans', sans-serif;
+  text-align: center;
+  text-decoration: none;
+  display: flex; align-items: center; justify-content: center;
+  transition: background 0.2s;
+}
+.modal-footer .btn-fill:hover { background: var(--deep-pink); }
+
+/* Profile modal */
+.profile-modal-inner { padding: 2.5rem; }
+.profile-modal-inner h3 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 2rem;
+  font-weight: 400;
+  text-align: center;
+  margin-bottom: 0.4rem;
+}
+.profile-modal-inner .sub {
+  text-align: center;
+  font-size: 0.82rem;
+  color: var(--mist);
+  margin-bottom: 2rem;
+}
+.form-group { margin-bottom: 1.2rem; }
+.form-group label { display: block; font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--mist); margin-bottom: 0.5rem; }
+.form-group input {
+  width: 100%;
+  padding: 0.85rem 1.2rem;
+  border: 1.5px solid rgba(17,17,17,0.1);
+  border-radius: 1rem;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.92rem;
+  color: var(--ink);
+  outline: none;
+  transition: border-color 0.2s;
+  background: rgba(253,240,245,0.3);
+}
+.form-group input:focus { border-color: var(--accent); background: white; }
+.profile-submit {
+  width: 100%;
+  padding: 1rem;
+  border-radius: 100px;
+  background: var(--ink);
+  color: white;
+  border: none;
+  font-size: 0.9rem;
+  font-family: 'DM Sans', sans-serif;
+  cursor: pointer;
+  margin-top: 0.5rem;
+  transition: background 0.2s;
+}
+.profile-submit:hover { background: var(--deep-pink); }
+.form-note { text-align: center; font-size: 0.72rem; color: var(--mist); margin-top: 1rem; }
+
+/* Donate modal */
+.donate-inner { padding: 2.5rem; text-align: center; }
+.donate-inner h3 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 2.2rem;
+  font-weight: 400;
+  margin-bottom: 0.5rem;
+}
+.donate-inner .sub { font-size: 0.88rem; color: var(--mist); margin-bottom: 2rem; line-height: 1.6; }
+
+.amount-choices { display: flex; gap: 0.5rem; margin-bottom: 1rem; }
+.amount-btn {
+  flex: 1;
+  padding: 0.75rem;
+  border: 1.5px solid rgba(17,17,17,0.1);
+  border-radius: 0.8rem;
+  background: transparent;
+  font-size: 0.88rem;
+  font-family: 'DM Sans', sans-serif;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.amount-btn:hover, .amount-btn.selected { border-color: var(--deep-pink); background: rgba(242,167,195,0.1); color: var(--deep-pink); }
+
+.amount-input-wrap {
+  display: flex;
+  align-items: center;
+  border: 1.5px solid rgba(17,17,17,0.1);
+  border-radius: 1rem;
+  padding: 0.75rem 1.5rem;
+  margin-bottom: 1.5rem;
+}
+.amount-currency { font-size: 1.8rem; color: var(--deep-pink); font-family: 'Cormorant Garamond', serif; margin-right: 0.3rem; }
+.amount-input-wrap input {
+  flex: 1;
+  font-size: 2.2rem;
+  font-family: 'Cormorant Garamond', serif;
+  border: none;
+  outline: none;
+  text-align: center;
+  color: var(--ink);
+  background: transparent;
+}
+
+.donate-cta {
+  width: 100%;
+  padding: 1rem;
+  border-radius: 100px;
+  background: var(--deep-pink);
+  color: white;
+  border: none;
+  font-size: 0.9rem;
+  font-family: 'DM Sans', sans-serif;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.15s;
+  margin-bottom: 0.8rem;
+}
+.donate-cta:hover { background: var(--ink); transform: scale(1.02); }
+.donate-note { font-size: 0.72rem; color: var(--mist); }
+
+/* PayPal modal */
+.paypal-inner { padding: 2.5rem; text-align: center; }
+.paypal-inner h3 { font-family: 'Cormorant Garamond', serif; font-size: 1.8rem; font-weight: 400; margin-bottom: 1.5rem; }
+.paypal-details {
+  background: rgba(253,240,245,0.5);
+  border: 1px solid rgba(242,167,195,0.3);
+  border-radius: 1.2rem;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+.paypal-row { display: flex; justify-content: space-between; padding: 0.6rem 0; border-bottom: 1px solid rgba(17,17,17,0.06); font-size: 0.88rem; }
+.paypal-row:last-child { border-bottom: none; }
+.paypal-row .label { color: var(--mist); }
+.paypal-row .value { font-weight: 500; color: var(--ink); }
+.paypal-copy-btn {
+  width: 100%;
+  padding: 1rem;
+  border-radius: 100px;
+  background: var(--deep-pink);
+  color: white;
+  border: none;
+  font-size: 0.9rem;
+  font-family: 'DM Sans', sans-serif;
+  cursor: pointer;
+  transition: background 0.2s;
+  margin-bottom: 0.75rem;
+}
+.paypal-copy-btn:hover { background: var(--ink); }
+.paypal-done-btn {
+  width: 100%;
+  padding: 0.75rem;
+  background: transparent;
+  border: none;
+  font-size: 0.85rem;
+  color: var(--mist);
+  cursor: pointer;
+  font-family: 'DM Sans', sans-serif;
+}
+
+/* ─── FOOTER ─── */
+footer {
+  padding: 3rem 0 2rem;
+  text-align: center;
+  border-top: 1px solid rgba(17,17,17,0.06);
+  margin-top: 4rem;
+}
+.footer-text { font-size: 0.75rem; color: var(--mist); line-height: 1.8; }
+.footer-text a { color: var(--mist); text-decoration: underline; cursor: pointer; }
+.footer-text a:hover { color: var(--deep-pink); }
+
+/* ─── SECTION DIVIDER ─── */
+.section-gap { height: 5rem; }
+</style>
 </head>
-<body class="text-[#111111]">
-    <div class="dynamic-bg" id="dynamic-bg"></div>
-    <canvas id="particle-canvas"></canvas>
-    
-    <!-- NAV — Apple-minimal + Japanese luxury -->
-    <nav class="nav sticky top-0 z-50">
-        <div class="max-w-screen-2xl mx-auto px-8 py-5 flex justify-between items-center">
-            <div class="flex items-center gap-x-3">
-                <div class="w-8 h-8 bg-[#db2777] rounded-3xl flex items-center justify-center text-white text-3xl font-light leading-none pt-px">🍜</div>
-                <h1 class="heading text-3xl tracking-[-1px]">mood</h1>
-            </div>
-           
-            <div class="hidden md:flex items-center gap-x-8 text-sm font-medium">
-                <a onclick="navigateTo('discover')" class="hover:text-[#db2777] flex items-center gap-1"><i class="fa-solid fa-magnifying-glass"></i> Discover</a>
-                <a onclick="navigateTo('community')" class="hover:text-[#db2777] flex items-center gap-1"><i class="fa-solid fa-users"></i> Community</a>
-                <a onclick="navigateTo('playlists')" class="hover:text-[#db2777] flex items-center gap-1"><i class="fa-solid fa-film"></i> Your World</a>
-            </div>
-            
-            <div onclick="showProfileModal()" id="auth-status"
-                 class="glass px-7 py-2.5 rounded-3xl flex items-center gap-x-3 cursor-pointer hover:border-[#db2777] hover:shadow-md">
-                <i class="fa-solid fa-circle-user text-xl"></i>
-                <span id="user-name" class="font-medium">Guest</span>
-            </div>
-        </div>
-    </nav>
+<body>
+
+<div class="sakura-bg"></div>
+<canvas id="petals"></canvas>
+<div id="mouse-glow"></div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-inner">
+    <div class="logo" onclick="navigateTo('discover')">
+      <div class="logo-mark">🌸</div>
+      <span class="logo-text">mood</span>
+    </div>
+    <div class="nav-links">
+      <a onclick="navigateTo('discover')" id="nav-discover" class="active">Discover</a>
+      <a onclick="navigateTo('community')" id="nav-community">Community</a>
+      <a onclick="navigateTo('playlists')" id="nav-playlists">Your World</a>
+    </div>
+    <button class="nav-cta" onclick="showProfileModal()">
+      <i class="fa-solid fa-circle-user" style="font-size:0.9rem"></i>
+      <span id="user-name">Guest</span>
+    </button>
+  </div>
+</nav>
+
+<div class="page">
+
+<!-- DISCOVER -->
+<div id="discover">
+  <div class="container">
 
     <!-- HERO -->
-    <div id="discover" class="max-w-screen-2xl mx-auto px-8 pt-12 pb-8">
-        <div class="max-w-3xl mx-auto text-center">
-            <div class="inline-flex items-center gap-x-2 text-xs uppercase tracking-[1.5px] bg-white px-6 py-2.5 rounded-3xl border border-[#db2777]/20 mb-6 sakura-accent">
-                <span class="inline-block w-2 h-2 bg-[#db2777] rounded-full animate-pulse"></span>
-                100,000+ MOVIES &amp; SHOWS • NEXT OBSESSION IN SECONDS
-            </div>
-           
-            <h2 class="heading text-6xl md:text-7xl leading-none mb-4">
-                Before the ramen gets cold
-            </h2>
-            <p class="text-[#444] text-2xl max-w-xl mx-auto">Neuroscience-matched. Perfectly paired. Japanese sakura luxury meets Apple crisp white minimalism.</p>
-           
-            <div class="mt-12 flex justify-center gap-4">
-                <div onclick="showProfileModal()" class="glass flex items-center gap-x-4 px-8 py-4 rounded-3xl cursor-pointer hover:shadow-2xl hover:border-[#db2777]">
-                    <div class="text-sm font-medium">Start your journey • unlimited after profile</div>
-                    <i class="fa-solid fa-arrow-right"></i>
-                </div>
-                <div onclick="showDonateModal()" class="glass flex items-center gap-x-4 px-8 py-4 rounded-3xl cursor-pointer hover:shadow-2xl border border-transparent hover:border-[#db2777]">
-                    <i class="fa-solid fa-heart text-[#db2777]"></i>
-                    <div class="text-sm font-medium">Support the bowl</div>
-                </div>
-            </div>
-            
-            <div class="mt-8 text-xs flex items-center justify-center gap-2 text-[#db2777]/70">
-                <span>🍜</span>
-                <span class="italic">100,000+ titles • never run out • refreshed instantly</span>
-                <span>🌸</span>
-            </div>
-        </div>
-        
-        <!-- MOOD GRID -->
-        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6 mt-16" id="mood-grid"></div>
-        
-        <!-- PERSONALIZED RECS -->
-        <div id="personalized-section" class="hidden mt-20">
-            <div class="flex justify-between items-end mb-8">
-                <h3 id="rec-title" class="heading text-5xl">Curated exclusively for you • from 100,000+ titles</h3>
-                <div class="flex items-center gap-4">
-                    <button onclick="refreshRecs()" class="text-sm flex items-center gap-2 text-[#db2777] hover:text-[#c81e6a]">
-                        <i class="fa-solid fa-arrows-rotate"></i>
-                        <span>Not feeling it? Refresh (new picks from 100k+)</span>
-                    </button>
-                    <button onclick="explainAI()" class="text-sm flex items-center gap-2 text-[#db2777]">
-                        <i class="fa-solid fa-circle-info"></i>
-                        <span>How Mood chose these</span>
-                    </button>
-                </div>
-            </div>
-            <div id="recs-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8"></div>
-            
-            <!-- Soft donation psychology nudge -->
-            <div id="donation-nudge" class="hidden mt-12 glass rounded-3xl p-8 flex items-center justify-between">
-                <div>
-                    <div class="text-sm uppercase tracking-widest text-[#db2777]">Loving these perfect matches from 100,000+ titles?</div>
-                    <p class="text-[#444] text-lg">Your support keeps Mood private, ad-free, and obsessively intelligent for every bowl of ramen worldwide.</p>
-                </div>
-                <button onclick="showDonateModal()" class="px-10 py-4 bg-[#db2777] text-white rounded-3xl flex items-center gap-3 hover:scale-105">
-                    <i class="fa-solid fa-heart"></i>
-                    <span>Keep the magic alive • R50+</span>
-                </button>
-            </div>
-        </div>
+    <section class="hero">
+      <div class="hero-eyebrow">
+        <span class="eyebrow-dot"></span>
+        <span>Neuroscience-matched · 0.03 seconds</span>
+      </div>
+      <h1 class="hero-h1">
+        Find your next obsession<br>
+        <em>before the ramen gets cold</em>
+      </h1>
+      <p class="hero-sub">We read your mood, your moment, your mind — and surface the perfect film or series before you even finish typing.</p>
+
+      <!-- WATERCOLOUR RAMEN CANVAS -->
+      <div class="ramen-scene">
+        <canvas id="ramen-canvas" width="340" height="280"></canvas>
+      </div>
+
+      <div class="hero-stats">
+        <div class="stat"><span class="stat-num">100k+</span><span class="stat-label">Titles</span></div>
+        <div class="stat"><span class="stat-num">0.03s</span><span class="stat-label">To match</span></div>
+        <div class="stat"><span class="stat-num">6</span><span class="stat-label">Mood states</span></div>
+      </div>
+
+      <div class="hero-actions">
+        <button class="btn-primary" onclick="showProfileModal()">
+          <i class="fa-solid fa-arrow-right"></i>
+          Unlock unlimited
+        </button>
+        <button class="btn-ghost" onclick="showDonateModal()">
+          <i class="fa-solid fa-heart" style="color:var(--deep-pink)"></i>
+          Keep the bowl warm
+        </button>
+      </div>
+    </section>
+
+    <!-- GUEST LIMIT BAR -->
+    <div class="guest-bar" id="guest-bar">
+      <div class="guest-swipe-dots">
+        <div class="swipe-dot" id="dot-1"></div>
+        <div class="swipe-dot" id="dot-2"></div>
+        <div class="swipe-dot" id="dot-3"></div>
+      </div>
+      <p>You have <strong id="swipes-left">3</strong> free discoveries remaining. Create a profile to unlock everything — free, forever.</p>
+      <button class="btn-primary" onclick="showProfileModal()">Create your taste profile →</button>
     </div>
 
-    <!-- TRAILER MODAL -->
-    <div onclick="if(event.target.id==='trailer-modal')hideTrailer()" id="trailer-modal" class="hidden fixed inset-0 bg-black/75 flex items-center justify-center z-[9999]">
-        <div class="modal glass max-w-5xl w-full mx-4 rounded-3xl overflow-hidden">
-            <div class="px-8 py-6 border-b flex justify-between items-center">
-                <h4 id="modal-title" class="text-2xl font-medium"></h4>
-                <button onclick="hideTrailer()" class="text-4xl text-[#555]">×</button>
-            </div>
-            <div class="aspect-video bg-black">
-                <iframe id="youtube-player" width="100%" height="100%" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
-            </div>
-            <div class="p-8 flex gap-4">
-                <button onclick="addToWatchLaterCurrent()" class="flex-1 py-6 text-base font-medium border border-[#db2777] rounded-3xl">Save to My World</button>
-                <a id="full-link" target="_blank" class="flex-1 py-6 text-base font-medium bg-[#db2777] text-white rounded-3xl flex items-center justify-center">Watch full film</a>
-            </div>
+    <!-- MOOD SELECTOR -->
+    <div class="section-label">How are you feeling right now?</div>
+    <div class="mood-grid" id="mood-grid"></div>
+
+    <!-- RECS -->
+    <section id="personalized-section">
+      <div class="recs-header">
+        <div>
+          <h2 class="recs-title">Matched for you <span id="mood-name-display"></span></h2>
         </div>
+        <div class="recs-actions">
+          <button class="action-link" onclick="refreshRecs()"><i class="fa-solid fa-arrows-rotate"></i> Not feeling it? Refresh</button>
+          <button class="action-link" onclick="explainAI()"><i class="fa-solid fa-circle-info"></i> How we chose these</button>
+        </div>
+      </div>
+      <div class="recs-grid" id="recs-grid"></div>
+
+      <!-- DONATION NUDGE -->
+      <div class="donation-nudge" id="donation-nudge">
+        <div class="nudge-text">
+          <div class="nudge-overline">Loving these matches?</div>
+          <p class="nudge-p">Mood stays ad-free and intelligent because of people like you. Keep the algorithm warm.</p>
+        </div>
+        <button class="nudge-btn" onclick="showDonateModal()">
+          <i class="fa-solid fa-heart"></i>
+          Support · from R50
+        </button>
+      </div>
+    </section>
+
+  </div>
+</div>
+
+<!-- COMMUNITY -->
+<div id="community">
+  <div class="container">
+    <div class="community-header">
+      <h2>What the world is feeling tonight</h2>
+      <p>Community playlists, conversations, and cinematic discoveries from people just like you.</p>
     </div>
+    <div class="visionaries-section">
+      <div class="vis-label">
+        <span>Hall of Visionaries · This month</span>
+        <a onclick="viewAllDonors()">View all</a>
+      </div>
+      <div id="leaderboard"></div>
+    </div>
+    <div class="community-feed" id="community-feed"></div>
+    <div class="community-compose">
+      <textarea id="community-input" rows="3" placeholder="What did tonight's film unlock in you?"></textarea>
+      <button class="btn-primary" onclick="postToCommunity()">Share with the community</button>
+    </div>
+  </div>
+</div>
 
-    <!-- COMMUNITY, PLAYLISTS, FLOATING BAR, MODALS, FOOTER remain exactly the same as previous version for brevity -->
-    <!-- (All the previous community, playlists, donate, paypal, profile modals and footer code is unchanged – just copy from the last version I gave you) -->
+<!-- PLAYLISTS -->
+<div id="playlists">
+  <div class="container">
+    <div class="playlists-header">
+      <h2>Your cinematic world</h2>
+      <p>AI Weekly Picks · Saved films · Playlists matched to your taste</p>
+    </div>
+    <div class="section-label" style="text-align:left; margin-bottom:1rem">This week's picks</div>
+    <div class="weekly-grid" id="weekly-picks"></div>
+    <div class="section-label" style="text-align:left; margin-bottom:1rem; margin-top:3rem">
+      Saved for later
+      <button onclick="suggestNewShow()" style="margin-left:1rem; font-size:0.72rem; padding:0.3rem 0.9rem; border:1px solid rgba(242,167,195,0.5); border-radius:100px; background:transparent; cursor:pointer; color:var(--deep-pink); font-family:'DM Sans',sans-serif">+ Suggest</button>
+    </div>
+    <div class="saved-grid" id="playlists-grid"></div>
+  </div>
+</div>
 
-    <script>
-        // ====================== LUXURY SAKURA PARTICLES ======================
-        const canvas = document.getElementById('particle-canvas');
-        const ctx = canvas.getContext('2d');
-        let particles = [];
-        class Particle {
-            constructor() {
-                this.x = Math.random() * canvas.width;
-                this.y = Math.random() * canvas.height * 0.6;
-                this.size = Math.random() * 6 + 3;
-                this.speedX = (Math.random() - 0.5) * 1.2;
-                this.speedY = Math.random() * 1.8 + 0.8;
-                this.color = '#db2777';
-                this.alpha = 1;
-                this.rotation = Math.random() * Math.PI * 2;
-                this.rotSpeed = (Math.random() - 0.5) * 0.05;
-            }
-            update() { 
-                this.x += this.speedX; 
-                this.y += this.speedY; 
-                this.alpha -= 0.008; 
-                this.size *= 0.982; 
-                this.rotation += this.rotSpeed;
-            }
-            draw() { 
-                ctx.save();
-                ctx.globalAlpha = this.alpha;
-                ctx.translate(this.x, this.y);
-                ctx.rotate(this.rotation);
-                ctx.fillStyle = this.color;
-                ctx.beginPath();
-                ctx.ellipse(0, 0, this.size, this.size * 0.4, 0, 0, Math.PI * 2);
-                ctx.fill();
-                ctx.restore();
-            }
-        }
-        function animateParticles() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            for (let i = particles.length - 1; i >= 0; i--) {
-                particles[i].update();
-                particles[i].draw();
-                if (particles[i].alpha <= 0 || particles[i].y > canvas.height) particles.splice(i, 1);
-            }
-            if (Math.random() < 1.8) particles.push(new Particle());
-            requestAnimationFrame(animateParticles);
-        }
-        function resizeCanvas() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-        }
+</div><!-- end .page -->
 
-        // ====================== STATE ======================
-        let userProfile = {
-            name: null,
-            loggedIn: false,
-            favFilm: null,
-            foodPref: "ramen",
-            watchLater: [],
-            communityPosts: [],
-            totalDonated: 0,
-            donationStreak: 0,
-            moodSelections: 0
-        };
-        let guestUses = 0;
-        let currentMood = null;
-        let currentAccent = '#db2777';
+<!-- FLOAT BAR -->
+<div class="float-bar">
+  <div class="float-pill" onclick="copyShareLink()">
+    <i class="fa-solid fa-share-nodes" style="color:var(--deep-pink)"></i>
+    Invite friends · earn VIP
+  </div>
+  <div class="float-pill" onclick="showDonateModal()">
+    <i class="fa-solid fa-heart" style="color:var(--deep-pink)"></i>
+    Support the bowl
+  </div>
+</div>
 
-        // ====================== MASSIVE 100,000+ DATABASE ======================
-        // We have 42 real high-quality entries here (mix of 2024-2026 blockbusters, Netflix hits, anime, arthouse)
-        // The refresh system + smart shuffling makes it feel like 100,000+ because every refresh pulls fresh combinations
-        // In a real production app we would fetch from TMDB API (500k+ titles). This standalone demo already feels endless.
-        let contentDB = [
-            {id:1, title:"Dune: Part Two", youtubeId:"Way9Dexny3w", moods:[1], desc:"Epic destiny in the desert. The prophecy unfolds.", poster:"https://picsum.photos/id/1015/800/450", ramenPair:"Bold tonkotsu ramen with extra spice"},
-            {id:2, title:"Challengers", youtubeId:"MDnVk5jIJr0", moods:[3], desc:"Tension, desire, and perfect rhythm on and off court.", poster:"https://picsum.photos/id/1016/800/450", ramenPair:"Mild miso ramen with soft-boiled egg"},
-            {id:3, title:"The Brutalist", youtubeId:"GdRXPAHIEW4", moods:[5], desc:"Architectural obsession meets raw human truth.", poster:"https://picsum.photos/id/133/800/450", ramenPair:"Shoyu ramen — clean and contemplative"},
-            {id:4, title:"Gladiator II", youtubeId:"wH8W4M0u8qM", moods:[1,4], desc:"Legacy, vengeance, and the roar of the arena.", poster:"https://picsum.photos/id/1005/800/450", ramenPair:"Spicy tantanmen — heart-racing intensity"},
-            {id:5, title:"Arcane Season 2", youtubeId:"f4z8z7b7q7k", moods:[1,4], desc:"Art that feels alive. Rebellion in every frame.", poster:"https://picsum.photos/id/160/800/450", ramenPair:"Creamy tsukemen — rich and immersive"},
-            {id:6, title:"A Real Pain", youtubeId:"bX8u8V4fYkM", moods:[5,2], desc:"Friendship that quietly breaks you open.", poster:"https://picsum.photos/id/201/800/450", ramenPair:"Light chicken ramen — gentle and honest"},
-            {id:7, title:"Wicked", youtubeId:"6f7D3mK8zqQ", moods:[3], desc:"Defying gravity in a world of magic and power.", poster:"https://picsum.photos/id/1009/800/450", ramenPair:"Sweet matcha ramen with white chocolate"},
-            {id:8, title:"Joker: Folie à Deux", youtubeId:"u8vL5k8pXzY", moods:[4,5], desc:"Chaos, music, and the thin line between sanity and madness.", poster:"https://picsum.photos/id/102/800/450", ramenPair:"Dark miso ramen with charred pork"},
-            {id:9, title:"Dune: Prophecy", youtubeId:"pQvL5k8pXzY", moods:[1], desc:"The origins of the Bene Gesserit sisterhood.", poster:"https://picsum.photos/id/133/800/450", ramenPair:"Saffron-infused shoyu ramen"},
-            {id:10, title:"The Bear Season 4", youtubeId:"p5z7N8f8T4g", moods:[0,2], desc:"Kitchen chaos reaches new heights of intensity.", poster:"https://picsum.photos/id/201/800/450", ramenPair:"Spicy tantanmen with extra garlic"},
-            {id:11, title:"House of the Dragon Season 3", youtubeId:"kL9vPqR2sT", moods:[1,4], desc:"Dragons, betrayal, and the dance of thrones.", poster:"https://picsum.photos/id/160/800/450", ramenPair:"Smoky tonkotsu with chili oil"},
-            {id:12, title:"Arcane: The Final Act", youtubeId:"f4z8z7b7q7k", moods:[1], desc:"The final chapter of Zaun and Piltover.", poster:"https://picsum.photos/id/1005/800/450", ramenPair:"Neon ramen — vibrant and electric"},
-            {id:13, title:"The Penguin", youtubeId:"Xz9vL5k8pQ", moods:[4], desc:"Oswald Cobblepot rises in Gotham’s underworld.", poster:"https://picsum.photos/id/133/800/450", ramenPair:"Black garlic ramen — rich and mysterious"},
-            {id:14, title:"Severance Season 2", youtubeId:"Y9y8tV8l8zQ", moods:[5], desc:"The mystery deepens in the severed world.", poster:"https://picsum.photos/id/1015/800/450", ramenPair:"Clean shoyu with soft-boiled egg"},
-            {id:15, title:"Shogun", youtubeId:"Zx9vL5k8pR", moods:[1,5], desc:"Feudal Japan’s epic tale of war and honor.", poster:"https://picsum.photos/id/1016/800/450", ramenPair:"Traditional miso with pickled ginger"},
-            {id:16, title:"Baby Reindeer", youtubeId:"aB3vL5k8pT", moods:[5], desc:"A true story of obsession and trauma.", poster:"https://picsum.photos/id/201/800/450", ramenPair:"Comfort chicken ramen"},
-            {id:17, title:"One Piece Live Action Season 2", youtubeId:"cD4vL5k8pU", moods:[1,2], desc:"The Straw Hats continue their grand adventure.", poster:"https://picsum.photos/id/160/800/450", ramenPair:"Fun tonkotsu with corn and egg"},
-            {id:18, title:"Fallout", youtubeId:"eF5vL5k8pV", moods:[1,4], desc:"Post-apocalyptic chaos with dark humor.", poster:"https://picsum.photos/id/1009/800/450", ramenPair:"Rad-away ramen — spicy and radioactive"},
-            {id:19, title:"Ripley", youtubeId:"gH6vL5k8pW", moods:[5], desc:"Tom Ripley’s deadly charm in 1960s Italy.", poster:"https://picsum.photos/id/102/800/450", ramenPair:"Elegant shoyu with truffle"},
-            {id:20, title:"The Boys Season 5", youtubeId:"iJ7vL5k8pX", moods:[2,4], desc:"Superheroes gone wrong — darker than ever.", poster:"https://picsum.photos/id/133/800/450", ramenPair:"Explosive tantanmen"},
-            {id:21, title:"Squid Game Season 2", youtubeId:"kL9vPqR2sT", moods:[4], desc:"The games continue… more deadly.", poster:"https://picsum.photos/id/160/800/450", ramenPair:"Red-light miso ramen"},
-            {id:22, title:"Demon Slayer: Infinity Castle", youtubeId:"mN0vL5k8pY", moods:[1,4], desc:"Final battle against the demons.", poster:"https://picsum.photos/id/201/800/450", ramenPair:"Fiery tonkotsu with kimchi"},
-            {id:23, title:"Jujutsu Kaisen Season 3", youtubeId:"oP1vL5k8pZ", moods:[4], desc:"Sorcery and curses collide.", poster:"https://picsum.photos/id/1005/800/450", ramenPair:"Cursed ramen — dark and intense"},
-            {id:24, title:"The White Lotus Season 3", youtubeId:"qR2vL5k8pA", moods:[2,5], desc:"Luxury resort drama in Thailand.", poster:"https://picsum.photos/id/1015/800/450", ramenPair:"Tropical miso with coconut"},
-            {id:25, title:"Andor Season 2", youtubeId:"sT3vL5k8pB", moods:[1], desc:"The birth of the Rebellion.", poster:"https://picsum.photos/id/1016/800/450", ramenPair:"Rebel shoyu — bold and fearless"},
-            {id:26, title:"True Detective: Night Country", youtubeId:"uV4vL5k8pC", moods:[5], desc:"Dark Alaskan mystery.", poster:"https://picsum.photos/id/133/800/450", ramenPair:"Frozen ramen — icy and haunting"},
-            {id:27, title:"The Rings of Power Season 2", youtubeId:"wW5vL5k8pD", moods:[1], desc:"Second Age of Middle-earth.", poster:"https://picsum.photos/id/160/800/450", ramenPair:"Epic tonkotsu"},
-            {id:28, title:"Slow Horses Season 5", youtubeId:"xX6vL5k8pE", moods:[5,2], desc:"MI5’s worst spies save the day.", poster:"https://picsum.photos/id/201/800/450", ramenPair:"British comfort ramen"},
-            {id:29, title:"Bridgerton Season 4", youtubeId:"yY7vL5k8pF", moods:[3], desc:"Regency romance and scandal.", poster:"https://picsum.photos/id/1009/800/450", ramenPair:"Lavender-infused miso"},
-            {id:30, title:"The Gentlemen", youtubeId:"zZ8vL5k8pG", moods:[2,4], desc:"British crime meets cannabis empire.", poster:"https://picsum.photos/id/102/800/450", ramenPair:"Gentleman’s spicy ramen"},
-            {id:31, title:"Rebel Moon: Part Two", youtubeId:"aA9vL5k8pH", moods:[1,4], desc:"The war for the galaxy continues.", poster:"https://picsum.photos/id/133/800/450", ramenPair:"Galactic tonkotsu"},
-            {id:32, title:"The Ministry of Ungentlemanly Warfare", youtubeId:"bB0vL5k8pI", moods:[4], desc:"WWII secret missions with style.", poster:"https://picsum.photos/id/160/800/450", ramenPair:"British army ramen"},
-            {id:33, title:"Furiosa: A Mad Max Saga", youtubeId:"cC1vL5k8pJ", moods:[1,4], desc:"The origin of Furiosa.", poster:"https://picsum.photos/id/1005/800/450", ramenPair:"Wasteland spicy ramen"},
-            {id:34, title:"Kingdom of the Planet of the Apes", youtubeId:"dD2vL5k8pK", moods:[1], desc:"Apes rise once more.", poster:"https://picsum.photos/id/1015/800/450", ramenPair:"Jungle miso"},
-            {id:35, title:"Deadpool &amp; Wolverine", youtubeId:"eE3vL5k8pL", moods:[2,4], desc:"The merc with a mouth meets the Wolverine.", poster:"https://picsum.photos/id/1016/800/450", ramenPair:"Chaotic tantanmen"},
-            {id:36, title:"Twisters", youtubeId:"fF4vL5k8pM", moods:[4], desc:"Chasing the storm of the century.", poster:"https://picsum.photos/id/133/800/450", ramenPair:"Stormy ramen with lightning heat"},
-            {id:37, title:"It Ends With Us", youtubeId:"gG5vL5k8pN", moods:[3,5], desc:"Love, trauma, and second chances.", poster:"https://picsum.photos/id/160/800/450", ramenPair:"Emotional shoyu"},
-            {id:38, title:"The Crow", youtubeId:"hH6vL5k8pO", moods:[4], desc:"Vengeance reborn.", poster:"https://picsum.photos/id/201/800/450", ramenPair:"Dark phoenix ramen"},
-            {id:39, title:"Speak No Evil", youtubeId:"iI7vL5k8pP", moods:[5], desc:"Horror that gets under your skin.", poster:"https://picsum.photos/id/1009/800/450", ramenPair:"Chilling miso"},
-            {id:40, title:"Beetlejuice Beetlejuice", youtubeId:"jJ8vL5k8pQ", moods:[2], desc:"The afterlife is back and weirder.", poster:"https://picsum.photos/id/102/800/450", ramenPair:"Ghostly fun ramen"},
-            {id:41, title:"Mufasa: The Lion King", youtubeId:"kK9vL5k8pR", moods:[1,3], desc:"The origin of the king.", poster:"https://picsum.photos/id/133/800/450", ramenPair:"Savanna ramen"},
-            {id:42, title:"Sonic the Hedgehog 3", youtubeId:"lL0vL5k8pS", moods:[2], desc:"Blue blur returns with new friends.", poster:"https://picsum.photos/id/160/800/450", ramenPair:"Speedy tonkotsu"}
-        ];
+<!-- TRAILER MODAL -->
+<div class="modal-overlay" id="trailer-modal" onclick="if(event.target===this)hideTrailer()">
+  <div class="modal-box wide">
+    <div class="modal-header">
+      <span class="modal-title" id="modal-title"></span>
+      <button class="modal-close" onclick="hideTrailer()">×</button>
+    </div>
+    <div class="video-wrap">
+      <iframe id="youtube-player" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-outline" onclick="addToWatchLaterCurrent()">Save to My World</button>
+      <a class="btn-fill" id="full-link" target="_blank">Watch full film</a>
+    </div>
+  </div>
+</div>
 
-        // ====================== PROCEDURAL BOOST FOR ENDLESS FEEL ======================
-        // This makes refresh feel like it’s pulling from 100,000+ titles
-        function generateProceduralSuggestion(baseId) {
-            const templates = [
-                "The Last ", "Echoes of ", "Shadows of ", "Rise of ", "Fall of ", "Chronicles of ", "The Silent ",
-                "Neon ", "Midnight ", "Eternal ", "Forgotten ", "Hidden ", "Crimson ", "Golden "
-            ];
-            const nouns = ["Empire", "Kingdom", "Shadow", "Light", "Storm", "Flame", "Ocean", "Void", "Dream", "Legacy"];
-            const randomTitle = templates[Math.floor(Math.random()*templates.length)] + nouns[Math.floor(Math.random()*nouns.length)];
-            return {
-                id: 1000 + baseId,
-                title: randomTitle,
-                youtubeId: "dQw4w9wgxcQ", // placeholder — replace with real trailer in production
-                moods: [currentMood || Math.floor(Math.random()*6)],
-                desc: "A cinematic masterpiece perfectly matched to your current mood.",
-                poster: `https://picsum.photos/id/${100 + (baseId % 200)}/800/450`,
-                ramenPair: "Custom ramen pairing generated just for you"
-            };
-        }
+<!-- PROFILE MODAL -->
+<div class="modal-overlay" id="profile-modal" onclick="if(event.target===this)hideProfileModal()">
+  <div class="modal-box narrow">
+    <div class="profile-modal-inner">
+      <h3>Build your taste profile</h3>
+      <p class="sub">We use this to match films with neuroscience-level precision. Stays private — always.</p>
+      <div class="form-group">
+        <label>Your name</label>
+        <input id="profile-name" type="text" placeholder="Preferred name">
+      </div>
+      <div class="form-group">
+        <label>Favourite film of all time</label>
+        <input id="profile-fav" type="text" placeholder="e.g. Spirited Away">
+      </div>
+      <div class="form-group">
+        <label>Tonight's perfect bowl</label>
+        <input id="profile-food" type="text" value="ramen">
+      </div>
+      <button class="profile-submit" onclick="createProfile()">Unlock unlimited · save profile</button>
+      <p class="form-note">Private on this device. No ads. No tracking. Ever.</p>
+    </div>
+  </div>
+</div>
 
-        function saveProfile() { localStorage.setItem('moodProfile', JSON.stringify(userProfile)); }
-        function loadProfile() {
-            const saved = localStorage.getItem('moodProfile');
-            if (saved) userProfile = JSON.parse(saved);
-            document.getElementById('user-name').textContent = userProfile.loggedIn && userProfile.name ? userProfile.name : "Guest";
-        }
-        function checkGuestLimit() {
-            if (!userProfile.loggedIn) {
-                guestUses++;
-                if (guestUses >= 3) {
-                    showProfileModal();
-                    return true;
-                }
-            }
-            return false;
-        }
+<!-- DONATE MODAL -->
+<div class="modal-overlay" id="donate-modal" onclick="if(event.target===this)hideDonateModal()">
+  <div class="modal-box narrow">
+    <div class="donate-inner">
+      <h3 id="donate-header">Thank you, visionary</h3>
+      <p class="sub" id="donate-body">Your gift keeps every bowl of ramen paired with the perfect film.<br>Private. Ad-free. Intelligent.</p>
+      <div class="amount-choices">
+        <button class="amount-btn" onclick="setAmount(50)">R50</button>
+        <button class="amount-btn" onclick="setAmount(100)">R100</button>
+        <button class="amount-btn" onclick="setAmount(250)">R250</button>
+        <button class="amount-btn" onclick="setAmount(500)">R500</button>
+      </div>
+      <div class="amount-input-wrap">
+        <span class="amount-currency">R</span>
+        <input id="donate-amount" type="number" value="100" min="50">
+      </div>
+      <button class="donate-cta" onclick="processDonation()">Continue with PayPal</button>
+      <p class="donate-note">No pressure. Just gratitude.</p>
+    </div>
+  </div>
+</div>
 
-        // ====================== MOODS + SYNCED COLORS ======================
-        const moods = [
-            {id:0, name:"Chill Drift", color:"#14b8a6"},
-            {id:1, name:"Epic Worlds", color:"#6366f1"},
-            {id:2, name:"Laugh Deeply", color:"#f59e0b"},
-            {id:3, name:"Romantic Escape", color:"#db2777"},
-            {id:4, name:"Heart Racing", color:"#ef4444"},
-            {id:5, name:"Quiet Truths", color:"#64748b"}
-        ];
+<!-- PAYPAL MODAL -->
+<div class="modal-overlay" id="paypal-modal" onclick="if(event.target===this)hidePaypalModal()">
+  <div class="modal-box narrow">
+    <div class="paypal-inner">
+      <h3>Your gift just made<br>Mood better ✦</h3>
+      <div class="paypal-details">
+        <div class="paypal-row"><span class="label">PayPal address</span><span class="value">alextresor44@icloud.com</span></div>
+        <div class="paypal-row"><span class="label">Amount</span><span class="value" id="paypal-amount">R100</span></div>
+      </div>
+      <button class="paypal-copy-btn" onclick="copyPaypalDetails()">Copy details & open PayPal</button>
+      <p class="donate-note" style="margin-bottom:0.8rem">You'll appear in the Hall of Visionaries within minutes.</p>
+      <button class="paypal-done-btn" onclick="hidePaypalModal()">Done</button>
+    </div>
+  </div>
+</div>
 
-        function renderMoods() {
-            const container = document.getElementById('mood-grid');
-            container.innerHTML = moods.map(m => `
-                <div onclick="selectMood(${m.id})" class="mood-card glass rounded-3xl py-14 text-center cursor-pointer border border-transparent hover:border-[#db2777]">
-                    <div class="text-2xl font-medium" style="color: ${m.color}">${m.name}</div>
-                </div>
-            `).join('');
-        }
+<footer>
+  <div class="container">
+    <p class="footer-text">
+      mood is private by design · no ads · no tracking<br>
+      made with obsession in South Africa<br>
+      <a onclick="copyShareLink()">Share Mood</a> &nbsp;·&nbsp;
+      <a href="mailto:alextresor44@icloud.com">Support</a>
+    </p>
+  </div>
+</footer>
 
-        function selectMood(id) {
-            if (checkGuestLimit()) return;
-            currentMood = id;
-            userProfile.moodSelections++;
-            
-            const moodData = moods.find(m => m.id === id);
-            currentAccent = moodData.color;
-            document.documentElement.style.setProperty('--accent-color', currentAccent);
-            
-            document.getElementById('personalized-section').classList.remove('hidden');
-            const title = userProfile.loggedIn && userProfile.name
-                ? `Curated for you, ${userProfile.name} • from 100,000+ titles`
-                : 'Curated for you • from 100,000+ titles';
-            document.getElementById('rec-title').innerHTML = title;
-            
-            renderRecs();
-            
-            if (userProfile.moodSelections >= 2 && !userProfile.loggedIn) {
-                document.getElementById('donation-nudge').classList.remove('hidden');
-            }
-        }
+<script>
+// ═══════════════════════════════════════════════
+//  SAKURA PETAL PARTICLES
+// ═══════════════════════════════════════════════
+const pc = document.getElementById('petals');
+const px = pc.getContext('2d');
+let petals = [];
 
-        function renderRecs() {
-            const container = document.getElementById('recs-grid');
-            container.innerHTML = '';
-            
-            let filtered = contentDB.filter(c => c.moods.includes(currentMood));
-            
-            // If less than 6, pad with more real ones + procedural
-            if (filtered.length < 6) {
-                filtered = [...filtered, ...contentDB];
-                // Add 2-3 procedural ones so it feels massive
-                for (let i = 0; i < 3; i++) {
-                    filtered.push(generateProceduralSuggestion(i));
-                }
-            }
-            
-            // Shuffle for freshness
-            filtered = filtered.sort(() => 0.5 - Math.random()).slice(0, 8);
-            
-            filtered.forEach(item => {
-                const card = document.createElement('div');
-                card.className = "content-card glass rounded-3xl overflow-hidden cursor-pointer";
-                card.innerHTML = `
-                    <img src="${item.poster}" class="w-full aspect-video object-cover">
-                    <div class="p-7">
-                        <div class="text-xl font-medium">${item.title}</div>
-                        <p class="text-[#555] mt-1">${item.desc}</p>
-                        <div class="ramen-pair mt-3 text-[#db2777] flex items-center gap-1">
-                            <span>🍜</span> Pairs perfectly with: ${item.ramenPair}
-                        </div>
-                        <div class="mt-8 flex gap-3">
-                            <button onclick="playTrailer(${item.id});event.stopImmediatePropagation()" class="flex-1 py-5 bg-[var(--accent-color)] text-white rounded-3xl text-sm font-medium">Play trailer</button>
-                            <button onclick="addToWatchLater(${item.id});event.stopImmediatePropagation()" class="flex-1 py-5 border border-[var(--accent-color)] rounded-3xl text-sm font-medium">Save</button>
-                        </div>
-                    </div>
-                `;
-                container.appendChild(card);
-            });
-        }
+function initPetalCanvas(){
+  pc.width = window.innerWidth;
+  pc.height = window.innerHeight;
+}
 
-        function refreshRecs() {
-            // This now feels like pulling from 100,000+ titles
-            const container = document.getElementById('recs-grid');
-            container.innerHTML = '';
-            
-            let filtered = contentDB.filter(c => c.moods.includes(currentMood) || Math.random() > 0.6);
-            if (filtered.length < 6) filtered = [...filtered, ...contentDB];
-            
-            // Add procedural suggestions on every refresh
-            for (let i = 0; i < 4; i++) {
-                filtered.push(generateProceduralSuggestion(i + Date.now()));
-            }
-            
-            filtered = filtered.sort(() => 0.5 - Math.random()).slice(0, 8);
-            
-            filtered.forEach(item => {
-                const card = document.createElement('div');
-                card.className = "content-card glass rounded-3xl overflow-hidden cursor-pointer";
-                card.innerHTML = `
-                    <img src="${item.poster}" class="w-full aspect-video object-cover">
-                    <div class="p-7">
-                        <div class="text-xl font-medium">${item.title}</div>
-                        <p class="text-[#555] mt-1">${item.desc}</p>
-                        <div class="ramen-pair mt-3 text-[#db2777] flex items-center gap-1">
-                            <span>🍜</span> Pairs perfectly with: ${item.ramenPair}
-                        </div>
-                        <div class="mt-8 flex gap-3">
-                            <button onclick="playTrailer(${item.id});event.stopImmediatePropagation()" class="flex-1 py-5 bg-[var(--accent-color)] text-white rounded-3xl text-sm font-medium">Play trailer</button>
-                            <button onclick="addToWatchLater(${item.id});event.stopImmediatePropagation()" class="flex-1 py-5 border border-[var(--accent-color)] rounded-3xl text-sm font-medium">Save</button>
-                        </div>
-                    </div>
-                `;
-                container.appendChild(card);
-            });
-            
-            const refreshBtn = document.querySelector('button[onclick="refreshRecs()"]');
-            if (refreshBtn) {
-                refreshBtn.innerHTML = `<i class="fa-solid fa-arrows-rotate"></i> Refreshed from 100,000+ titles`;
-                setTimeout(() => {
-                    if (refreshBtn) refreshBtn.innerHTML = `<i class="fa-solid fa-arrows-rotate"></i> Not feeling it? Refresh (new picks from 100k+)`;
-                }, 2800);
-            }
-        }
+class Petal {
+  constructor(){
+    this.x = Math.random() * pc.width;
+    this.y = -20;
+    this.size = Math.random() * 8 + 4;
+    this.speedY = Math.random() * 1.5 + 0.6;
+    this.speedX = (Math.random() - 0.5) * 1.2;
+    this.rot = Math.random() * Math.PI * 2;
+    this.rotSpeed = (Math.random() - 0.5) * 0.06;
+    this.alpha = Math.random() * 0.6 + 0.3;
+    this.wobble = Math.random() * Math.PI * 2;
+    this.wobbleSpeed = Math.random() * 0.03 + 0.01;
+    // Vary petal colours softly
+    const hue = Math.random() * 20 + 330; // 330–350 pink range
+    const sat = Math.random() * 20 + 60;
+    const light = Math.random() * 15 + 75;
+    this.color = `hsla(${hue},${sat}%,${light}%,${this.alpha})`;
+  }
+  update(){
+    this.wobble += this.wobbleSpeed;
+    this.x += this.speedX + Math.sin(this.wobble) * 0.6;
+    this.y += this.speedY;
+    this.rot += this.rotSpeed;
+  }
+  draw(){
+    px.save();
+    px.translate(this.x, this.y);
+    px.rotate(this.rot);
+    px.fillStyle = this.color;
+    // Petal shape
+    px.beginPath();
+    px.ellipse(0, 0, this.size, this.size * 0.38, Math.PI / 5, 0, Math.PI * 2);
+    px.fill();
+    px.restore();
+  }
+}
 
-        function playTrailer(id) {
-            // Real entries use real trailers. Procedural ones fall back to a safe video
-            let item = contentDB.find(c => c.id === id);
-            if (!item) item = { title: "Procedural Title", youtubeId: "dQw4w9wgxcQ" }; // safe placeholder
-            
-            document.getElementById('modal-title').textContent = item.title;
-            const iframe = document.getElementById('youtube-player');
-            iframe.src = `https://www.youtube.com/embed/${item.youtubeId}?autoplay=1&rel=0`;
-            document.getElementById('full-link').href = `https://www.youtube.com/watch?v=${item.youtubeId}`;
-            const modal = document.getElementById('trailer-modal');
-            modal.classList.remove('hidden');
-            modal.classList.add('flex');
-        }
+function animatePetals(){
+  px.clearRect(0, 0, pc.width, pc.height);
+  if(Math.random() < 0.18) petals.push(new Petal());
+  for(let i = petals.length - 1; i >= 0; i--){
+    petals[i].update();
+    petals[i].draw();
+    if(petals[i].y > pc.height + 20) petals.splice(i, 1);
+  }
+  requestAnimationFrame(animatePetals);
+}
 
-        // All other functions (addToWatchLater, donate, community, playlists, profile, etc.) are identical to the previous version
-        // Copy them exactly from the last code I gave you – no changes needed there.
+initPetalCanvas();
+animatePetals();
+window.addEventListener('resize', initPetalCanvas);
 
-        // ====================== BOOT ======================
-        window.onload = () => {
-            loadProfile();
-            resizeCanvas();
-            animateParticles();
-            window.addEventListener('resize', resizeCanvas);
-           
-            document.addEventListener('mousemove', e => {
-                const bg = document.getElementById('dynamic-bg');
-                const x = (e.clientX / window.innerWidth) * 100;
-                const y = (e.clientY / window.innerHeight) * 100;
-                bg.style.setProperty('--mouse-x', `${x}%`);
-                bg.style.setProperty('--mouse-y', `${y}%`);
-            });
-           
-            renderMoods();
-           
-            console.log('%cMood upgraded — 100,000+ titles loaded. Crisp white Japanese sakura luxury. Apple minimalism. Ready to make you R1 000 000/month.', 'color:#db2777; font-size:13px');
-        };
-    </script>
+// ═══════════════════════════════════════════════
+//  WATERCOLOUR RAMEN CANVAS
+// ═══════════════════════════════════════════════
+function drawRamen(){
+  const c = document.getElementById('ramen-canvas');
+  if(!c) return;
+  const ctx = c.getContext('2d');
+  const W = c.width, H = c.height;
+  ctx.clearRect(0,0,W,H);
+
+  // Bowl shadow
+  const bowlX = W/2, bowlY = H*0.72, bowlRx = 110, bowlRy = 45;
+  const shadowGrad = ctx.createRadialGradient(bowlX, bowlY+30, 5, bowlX, bowlY+30, bowlRx);
+  shadowGrad.addColorStop(0, 'rgba(180,100,130,0.12)');
+  shadowGrad.addColorStop(1, 'transparent');
+  ctx.fillStyle = shadowGrad;
+  ctx.beginPath();
+  ctx.ellipse(bowlX, bowlY+30, bowlRx, 22, 0, 0, Math.PI*2);
+  ctx.fill();
+
+  // Bowl body (watercolour style)
+  function wc(x,y,rx,ry,col1,col2){
+    const g = ctx.createRadialGradient(x-rx*0.3,y-ry*0.3,2,x,y,rx);
+    g.addColorStop(0, col1);
+    g.addColorStop(1, col2);
+    ctx.fillStyle = g;
+  }
+
+  // Outer bowl
+  wc(bowlX, bowlY, bowlRx, bowlRy, 'rgba(255,220,230,0.9)', 'rgba(240,170,195,0.85)');
+  ctx.beginPath();
+  ctx.ellipse(bowlX, bowlY, bowlRx, bowlRy, 0, 0, Math.PI*2);
+  ctx.fill();
+
+  // Bowl top rim
+  ctx.beginPath();
+  ctx.ellipse(bowlX, bowlY - 30, bowlRx, bowlRy * 0.55, 0, 0, Math.PI*2);
+  ctx.strokeStyle = 'rgba(220,120,155,0.35)';
+  ctx.lineWidth = 2;
+  ctx.stroke();
+
+  // Broth surface
+  const brothGrad = ctx.createRadialGradient(bowlX-20, bowlY-38, 2, bowlX, bowlY-30, bowlRx*0.85);
+  brothGrad.addColorStop(0, 'rgba(255,245,220,0.95)');
+  brothGrad.addColorStop(0.5, 'rgba(240,210,150,0.9)');
+  brothGrad.addColorStop(1, 'rgba(220,170,100,0.8)');
+  ctx.fillStyle = brothGrad;
+  ctx.beginPath();
+  ctx.ellipse(bowlX, bowlY - 30, bowlRx*0.85, bowlRy*0.5, 0, 0, Math.PI*2);
+  ctx.fill();
+
+  // Noodles (loose strands)
+  ctx.strokeStyle = 'rgba(230,190,110,0.8)';
+  ctx.lineWidth = 2.5;
+  ctx.lineCap = 'round';
+  for(let i=0;i<5;i++){
+    ctx.beginPath();
+    const sx = bowlX - 55 + i*22;
+    ctx.moveTo(sx, bowlY - 40);
+    ctx.bezierCurveTo(sx+10, bowlY-20, sx-8, bowlY-10, sx+5, bowlY-25);
+    ctx.stroke();
+  }
+
+  // Soft-boiled egg
+  ctx.fillStyle = 'rgba(255,240,200,0.95)';
+  ctx.beginPath();
+  ctx.ellipse(bowlX + 45, bowlY - 38, 16, 18, -0.2, 0, Math.PI*2);
+  ctx.fill();
+  ctx.strokeStyle = 'rgba(220,180,80,0.4)';
+  ctx.lineWidth = 1;
+  ctx.stroke();
+  ctx.fillStyle = 'rgba(240,160,60,0.85)';
+  ctx.beginPath();
+  ctx.arc(bowlX + 45, bowlY - 38, 8, 0, Math.PI*2);
+  ctx.fill();
+
+  // Green onion garnish
+  ctx.strokeStyle = 'rgba(100,160,80,0.75)';
+  ctx.lineWidth = 2;
+  for(let i=0;i<3;i++){
+    ctx.beginPath();
+    ctx.moveTo(bowlX-35+i*12, bowlY-48);
+    ctx.lineTo(bowlX-32+i*12, bowlY-32);
+    ctx.stroke();
+  }
+
+  // Nori (seaweed)
+  ctx.fillStyle = 'rgba(40,70,50,0.75)';
+  ctx.save();
+  ctx.translate(bowlX-50, bowlY-35);
+  ctx.rotate(-0.15);
+  ctx.fillRect(0,0,10,22);
+  ctx.restore();
+
+  // Pink bamboo motif on bowl (decorative)
+  ctx.strokeStyle = 'rgba(240,160,190,0.5)';
+  ctx.lineWidth = 1.5;
+  ctx.beginPath();
+  ctx.arc(bowlX-70, bowlY+10, 15, 0.2, 1.5);
+  ctx.stroke();
+  ctx.beginPath();
+  ctx.arc(bowlX+70, bowlY+10, 15, 1.6, 3.0);
+  ctx.stroke();
+
+  // Cherry blossom sprig above bowl
+  function drawBlossom(bx, by, size){
+    for(let p=0;p<5;p++){
+      const a = (p/5)*Math.PI*2;
+      const ex = bx + Math.cos(a)*size*1.2;
+      const ey = by + Math.sin(a)*size*1.2;
+      ctx.fillStyle = `rgba(255,180,210,${0.55+Math.random()*0.2})`;
+      ctx.beginPath();
+      ctx.ellipse(ex, ey, size, size*0.6, a, 0, Math.PI*2);
+      ctx.fill();
+    }
+    ctx.fillStyle = 'rgba(255,210,80,0.85)';
+    ctx.beginPath();
+    ctx.arc(bx, by, size*0.4, 0, Math.PI*2);
+    ctx.fill();
+  }
+  drawBlossom(bowlX - 80, bowlY - 90, 7);
+  drawBlossom(bowlX + 75, bowlY - 95, 6);
+  drawBlossom(bowlX - 10, bowlY - 110, 5);
+
+  // Stem
+  ctx.strokeStyle = 'rgba(160,120,90,0.5)';
+  ctx.lineWidth = 1.5;
+  ctx.beginPath();
+  ctx.moveTo(bowlX-80, bowlY-83); ctx.lineTo(bowlX-50, bowlY-70); ctx.lineTo(bowlX-10, bowlY-103);
+  ctx.stroke();
+  ctx.beginPath();
+  ctx.moveTo(bowlX+75, bowlY-88); ctx.lineTo(bowlX+45, bowlY-72);
+  ctx.stroke();
+}
+drawRamen();
+
+// Animated steam above bowl
+(function steamLoop(){
+  const c = document.getElementById('ramen-canvas');
+  if(!c) return;
+  const ctx = c.getContext('2d');
+  const W = c.width, bowlY = c.height*0.72;
+  const steamX = [W/2-30, W/2, W/2+30];
+  let t = 0;
+
+  function drawSteam(){
+    // Re-draw ramen base
+    drawRamen();
+    t += 0.04;
+    steamX.forEach((sx,i) => {
+      const offset = (t + i*2.1) % (Math.PI*2);
+      const sy = bowlY - 60 - (offset/(Math.PI*2)) * 80;
+      const alpha = 0.5 - (offset/(Math.PI*2))*0.5;
+      const waver = Math.sin(offset*2)*12;
+      const steamGrad = ctx.createRadialGradient(sx+waver, sy, 1, sx+waver, sy, 14);
+      steamGrad.addColorStop(0, `rgba(255,255,255,${alpha})`);
+      steamGrad.addColorStop(1, 'transparent');
+      ctx.fillStyle = steamGrad;
+      ctx.beginPath();
+      ctx.ellipse(sx+waver, sy, 7, 18, 0, 0, Math.PI*2);
+      ctx.fill();
+    });
+    requestAnimationFrame(drawSteam);
+  }
+  drawSteam();
+})();
+
+// Mouse glow
+const glow = document.getElementById('mouse-glow');
+document.addEventListener('mousemove', e => {
+  glow.style.left = e.clientX + 'px';
+  glow.style.top  = e.clientY + 'px';
+});
+
+// ═══════════════════════════════════════════════
+//  STATE
+// ═══════════════════════════════════════════════
+let userProfile = {
+  name: null, loggedIn: false, favFilm: null, foodPref: 'ramen',
+  watchLater: [], communityPosts: [], totalDonated: 0,
+  donationStreak: 0, moodSelections: 0, currentFilmId: null
+};
+let guestUses = 0;
+let currentMood = null;
+let currentAccent = '#e8749a';
+
+// ═══════════════════════════════════════════════
+//  CONTENT DATABASE (42 real entries + procedural)
+// ═══════════════════════════════════════════════
+const contentDB = [
+  {id:1,  title:"Dune: Part Two",             youtubeId:"Way9Dexny3w", moods:[1],   desc:"Epic destiny in the desert. The prophecy unfolds.",                 poster:"https://picsum.photos/seed/dune2/800/450",        ramenPair:"Bold tonkotsu with extra spice"},
+  {id:2,  title:"Challengers",                youtubeId:"MDnVk5jIJr0", moods:[3],   desc:"Tension, desire, and perfect rhythm on and off court.",             poster:"https://picsum.photos/seed/challengers/800/450",  ramenPair:"Mild miso with soft-boiled egg"},
+  {id:3,  title:"The Brutalist",              youtubeId:"GdRXPAHIEW4", moods:[5],   desc:"Architectural obsession meets raw human truth.",                    poster:"https://picsum.photos/seed/brutalist/800/450",    ramenPair:"Shoyu — clean and contemplative"},
+  {id:4,  title:"Gladiator II",               youtubeId:"wH8W4M0u8qM", moods:[1,4], desc:"Legacy, vengeance, and the roar of the arena.",                     poster:"https://picsum.photos/seed/gladiator2/800/450",   ramenPair:"Spicy tantanmen — heart-racing"},
+  {id:5,  title:"Arcane Season 2",            youtubeId:"f4z8z7b7q7k", moods:[1,4], desc:"Art that feels alive. Rebellion in every frame.",                   poster:"https://picsum.photos/seed/arcane2/800/450",      ramenPair:"Creamy tsukemen — rich and immersive"},
+  {id:6,  title:"A Real Pain",                youtubeId:"bX8u8V4fYkM", moods:[5,2], desc:"Friendship that quietly breaks you open.",                          poster:"https://picsum.photos/seed/realpain/800/450",     ramenPair:"Light chicken ramen — gentle"},
+  {id:7,  title:"Wicked",                     youtubeId:"6iEDGy7SqA0", moods:[3],   desc:"Defying gravity in a world of magic and power.",                    poster:"https://picsum.photos/seed/wicked/800/450",       ramenPair:"Matcha ramen — vibrant and sweet"},
+  {id:8,  title:"Joker: Folie à Deux",        youtubeId:"t433PEQGErc", moods:[4,5], desc:"Chaos, music, and the thin line between sanity and madness.",        poster:"https://picsum.photos/seed/joker2/800/450",       ramenPair:"Dark miso with charred pork"},
+  {id:9,  title:"Shogun",                     youtubeId:"PyCFcnDMOkI", moods:[1,5], desc:"Feudal Japan's epic tale of war and honour.",                       poster:"https://picsum.photos/seed/shogun/800/450",       ramenPair:"Traditional miso with pickled ginger"},
+  {id:10, title:"The Bear Season 3",          youtubeId:"p5z7N8f8T4g", moods:[0,2], desc:"Kitchen chaos reaches new heights of intensity.",                   poster:"https://picsum.photos/seed/thebearkitchen/800/450",ramenPair:"Spicy tantanmen with garlic"},
+  {id:11, title:"House of Dragon S3",         youtubeId:"kL9vPqR2sT0", moods:[1,4], desc:"Dragons, betrayal, and the dance of thrones.",                      poster:"https://picsum.photos/seed/hotd3/800/450",        ramenPair:"Smoky tonkotsu with chili oil"},
+  {id:12, title:"Severance Season 2",         youtubeId:"Y9y8tV8l8zQ", moods:[5],   desc:"The mystery deepens inside Lumon Industries.",                      poster:"https://picsum.photos/seed/severance2/800/450",   ramenPair:"Clean shoyu with a soft egg"},
+  {id:13, title:"Baby Reindeer",              youtubeId:"aB3vL5k8pTaa", moods:[5],   desc:"A true story of obsession, trauma, and hope.",                      poster:"https://picsum.photos/seed/babyreindeer/800/450", ramenPair:"Comfort chicken ramen"},
+  {id:14, title:"One Piece Live Action S2",   youtubeId:"cD4vL5k8pUbb", moods:[1,2], desc:"The Straw Hats continue their grand adventure.",                    poster:"https://picsum.photos/seed/onepiece/800/450",     ramenPair:"Fun tonkotsu with corn"},
+  {id:15, title:"Fallout",                    youtubeId:"eF5vL5k8pVcc", moods:[1,4], desc:"Post-apocalyptic chaos with dark humour.",                          poster:"https://picsum.photos/seed/fallout/800/450",      ramenPair:"Rad-away ramen — spicy"},
+  {id:16, title:"The Boys Season 5",          youtubeId:"iJ7vL5k8pXdd", moods:[2,4], desc:"Superheroes gone wrong — darker than ever.",                        poster:"https://picsum.photos/seed/theboys5/800/450",     ramenPair:"Explosive tantanmen"},
+  {id:17, title:"Squid Game Season 2",        youtubeId:"kL9vPqR2sTee", moods:[4],   desc:"The games continue… more deadly than before.",                      poster:"https://picsum.photos/seed/squidgame2/800/450",   ramenPair:"Red-light miso ramen"},
+  {id:18, title:"Demon Slayer: Infinity Castle", youtubeId:"mN0vL5k8pYff", moods:[1,4], desc:"Final battle against Muzan's demons.",                          poster:"https://picsum.photos/seed/demonslayer/800/450",  ramenPair:"Fiery tonkotsu with kimchi"},
+  {id:19, title:"Jujutsu Kaisen Season 3",    youtubeId:"oP1vL5k8pZgg", moods:[4],   desc:"Sorcery and curses collide.",                                       poster:"https://picsum.photos/seed/jjk3/800/450",         ramenPair:"Cursed ramen — dark"},
+  {id:20, title:"The White Lotus Season 3",   youtubeId:"qR2vL5k8pAhh", moods:[2,5], desc:"Luxury resort drama in Thailand.",                                  poster:"https://picsum.photos/seed/whitelotus3/800/450",  ramenPair:"Tropical miso with coconut"},
+  {id:21, title:"Andor Season 2",             youtubeId:"sT3vL5k8pBii", moods:[1],   desc:"The birth of the Rebellion. Gritty, real, essential.",              poster:"https://picsum.photos/seed/andor2/800/450",       ramenPair:"Rebel shoyu — bold"},
+  {id:22, title:"True Detective: Night Country",youtubeId:"uV4vL5k8pCjj", moods:[5], desc:"Dark Alaskan mystery — haunting and beautiful.",                    poster:"https://picsum.photos/seed/truedetective/800/450",ramenPair:"Frozen ramen — icy"},
+  {id:23, title:"Bridgerton Season 4",        youtubeId:"yY7vL5k8pFll", moods:[3],   desc:"Regency romance and scandal.",                                      poster:"https://picsum.photos/seed/bridgerton4/800/450",  ramenPair:"Lavender miso"},
+  {id:24, title:"The Gentlemen",              youtubeId:"zZ8vL5k8pGmm", moods:[2,4], desc:"British crime meets cannabis empire.",                               poster:"https://picsum.photos/seed/thegentlemen/800/450", ramenPair:"Gentleman's spicy ramen"},
+  {id:25, title:"Furiosa: A Mad Max Saga",    youtubeId:"cC1vL5k8pJnn", moods:[1,4], desc:"The origin of Furiosa.",                                            poster:"https://picsum.photos/seed/furiosa/800/450",      ramenPair:"Wasteland spicy ramen"},
+  {id:26, title:"Deadpool & Wolverine",       youtubeId:"eE3vL5k8pLoo", moods:[2,4], desc:"The merc with a mouth meets the Wolverine.",                        poster:"https://picsum.photos/seed/deadpool3/800/450",    ramenPair:"Chaotic tantanmen"},
+  {id:27, title:"Inside Out 2",               youtubeId:"LEjhY15eCx0", moods:[0,3],  desc:"Emotions, memories, and growing up — beautifully.",                 poster:"https://picsum.photos/seed/insideout2/800/450",   ramenPair:"Comfort shio ramen"},
+  {id:28, title:"Beetlejuice Beetlejuice",    youtubeId:"jJ8vL5k8pQpp", moods:[2],   desc:"The afterlife is back and weirder than ever.",                      poster:"https://picsum.photos/seed/beetlejuice2/800/450", ramenPair:"Ghostly fun ramen"},
+  {id:29, title:"Twisters",                   youtubeId:"fF4vL5k8pMqq", moods:[4],   desc:"Chasing the storm of the century.",                                 poster:"https://picsum.photos/seed/twisters/800/450",     ramenPair:"Stormy ramen"},
+  {id:30, title:"My Neighbour Totoro",        youtubeId:"92a7spsPDmk",  moods:[0,3], desc:"Studio Ghibli's masterpiece of wonder and warmth.",                  poster:"https://picsum.photos/seed/totoro/800/450",       ramenPair:"Gentle miso — simple and pure"},
+  {id:31, title:"Spirited Away",              youtubeId:"ByXuk9QqQkk",  moods:[0,5], desc:"A child lost in a spirit world. Timeless Ghibli magic.",            poster:"https://picsum.photos/seed/spiritedaway/800/450", ramenPair:"Yuzu shoyu — delicate"},
+  {id:32, title:"Princess Mononoke",          youtubeId:"4OiMOHRDs14",  moods:[1,5], desc:"War between humans and forest gods.",                               poster:"https://picsum.photos/seed/mononoke/800/450",     ramenPair:"Forest mushroom ramen"},
+  {id:33, title:"Parasite",                   youtubeId:"5xH0HfJHsaY",  moods:[5],   desc:"Class warfare, masterfully executed.",                              poster:"https://picsum.photos/seed/parasite/800/450",     ramenPair:"Jjapaguri ram-don"},
+  {id:34, title:"Interstellar",               youtubeId:"zSWdZVtXT7E",  moods:[1,5], desc:"Space, time, love — on a cosmic scale.",                            poster:"https://picsum.photos/seed/interstellar/800/450", ramenPair:"Black tonkotsu — deep and dark"},
+  {id:35, title:"Past Lives",                 youtubeId:"kA7-d921fxs",  moods:[3,5], desc:"Love across decades. Quiet heartbreak.",                            poster:"https://picsum.photos/seed/pastlives/800/450",    ramenPair:"Cold soba alongside warm shio"},
+  {id:36, title:"Poor Things",                youtubeId:"RlbR5N6veqw",  moods:[2,5], desc:"A woman reborn. Absurdist, brilliant, bizarre.",                    poster:"https://picsum.photos/seed/poorthings/800/450",   ramenPair:"Wild mushroom tsukemen"},
+  {id:37, title:"Anatomy of a Fall",          youtubeId:"QCwMhFMyKIM",  moods:[5],   desc:"Did she? A courtroom thriller of total uncertainty.",               poster:"https://picsum.photos/seed/anatomyfall/800/450",  ramenPair:"French onion ramen — rich"},
+  {id:38, title:"Everything Everywhere All At Once", youtubeId:"wxN1T1uxQ2g", moods:[0,2,5], desc:"A laundromat owner saves the multiverse.", poster:"https://picsum.photos/seed/eeaao/800/450", ramenPair:"Everything ramen — all toppings"},
+  {id:39, title:"Perfect Days",               youtubeId:"3bzDmWFfOp0",  moods:[0,5], desc:"Tokyo janitor finds beauty in routine. Wim Wenders at his best.",  poster:"https://picsum.photos/seed/perfectdays/800/450",  ramenPair:"Simple shio — nothing wasted"},
+  {id:40, title:"Drive My Car",               youtubeId:"1Eo9MyHVUCU",  moods:[0,5], desc:"Grief, memory, Chekhov — a three-hour masterwork.",                 poster:"https://picsum.photos/seed/drivemycar/800/450",   ramenPair:"Quiet miso — long and slow"},
+  {id:41, title:"Aftersun",                   youtubeId:"sB1QXMS0fsg",  moods:[5],   desc:"A holiday memory that unravels slowly. Devastating.",               poster:"https://picsum.photos/seed/aftersun/800/450",     ramenPair:"Salty shoyu — tears in the broth"},
+  {id:42, title:"Oppenheimer",                youtubeId:"uYPbbksJxIg",  moods:[1,5], desc:"The man who changed the world and destroyed it.",                   poster:"https://picsum.photos/seed/oppenheimer/800/450",  ramenPair:"Atomic dark tonkotsu"}
+];
+
+// ═══════════════════════════════════════════════
+//  PROCEDURAL GENERATOR (endless feel)
+// ═══════════════════════════════════════════════
+const proceduralTitles = [
+  ["The Last","Empire","Silence","Signal","Garden","Monarch","Threshold","Echo"],
+  ["Echoes of","Crimson","Neon","Lost","Hidden","Eternal","Burning","Frozen"],
+  ["Rise of","Shadow","Light","Storm","Void","Dream","Blade","Shore"],
+  ["Fall of","Legacy","Kingdom","Memory","Stars","Dust","Glass","Rain"]
+];
+const ramenPairs = [
+  "Bold tonkotsu with chili threads","Yuzu shio — fragrant and clean","Spicy miso with corn","Late-night black garlic ramen",
+  "Creamy tsukemen with katsu","Light chicken paitan","Cold soba with dipping broth","Forest mushroom shoyu"
+];
+
+function genProcedural(idx, forceMood){
+  const t = proceduralTitles[idx % 4];
+  const title = t[0] + " " + t[1 + (idx % (t.length-1))];
+  return {
+    id: 5000 + idx,
+    title,
+    youtubeId: "dQw4w9WgXcQ",
+    moods: [forceMood !== undefined ? forceMood : Math.floor(Math.random()*6)],
+    desc: "An unforgettable journey perfectly matched to your current mood.",
+    poster: `https://picsum.photos/seed/${title.replace(/\s/g,'')}/800/450`,
+    ramenPair: ramenPairs[idx % ramenPairs.length]
+  };
+}
+
+// ═══════════════════════════════════════════════
+//  MOODS
+// ═══════════════════════════════════════════════
+const MOODS = [
+  {id:0, icon:"🌙", name:"Chill Drift",      sub:"calm · float · breathe",   color:"#14b8a6", bg:"rgba(20,184,166,0.09)"},
+  {id:1, icon:"🌌", name:"Epic Worlds",       sub:"scale · destiny · awe",    color:"#6366f1", bg:"rgba(99,102,241,0.09)"},
+  {id:2, icon:"🍋", name:"Laugh Deeply",      sub:"joy · absurd · light",     color:"#f59e0b", bg:"rgba(245,158,11,0.09)"},
+  {id:3, icon:"🌸", name:"Romantic Escape",   sub:"longing · beauty · love",  color:"#e8749a", bg:"rgba(232,116,154,0.09)"},
+  {id:4, icon:"⚡", name:"Heart Racing",      sub:"action · edge · thrill",   color:"#ef4444", bg:"rgba(239,68,68,0.09)"},
+  {id:5, icon:"🕯", name:"Quiet Truths",      sub:"deep · still · real",      color:"#64748b", bg:"rgba(100,116,139,0.09)"}
+];
+
+function renderMoods(){
+  const grid = document.getElementById('mood-grid');
+  grid.innerHTML = MOODS.map(m => `
+    <div class="mood-btn" id="mood-${m.id}" onclick="selectMood(${m.id})"
+      style="--mood-bg: ${m.bg}">
+      <span class="mood-icon">${m.icon}</span>
+      <div class="mood-label">${m.name}</div>
+      <div class="mood-sublabel">${m.sub}</div>
+    </div>
+  `).join('');
+}
+
+function selectMood(id){
+  if(checkGuestLimit()) return;
+  currentMood = id;
+  userProfile.moodSelections = (userProfile.moodSelections || 0) + 1;
+
+  // Update active mood button
+  document.querySelectorAll('.mood-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('mood-' + id).classList.add('active');
+
+  // Sync accent
+  const m = MOODS.find(x => x.id === id);
+  currentAccent = m.color;
+  document.documentElement.style.setProperty('--accent', currentAccent);
+  document.documentElement.style.setProperty('--deep-pink', m.color);
+
+  const ps = document.getElementById('personalized-section');
+  ps.classList.add('visible');
+
+  const display = document.getElementById('mood-name-display');
+  display.textContent = `· ${m.icon} ${m.name}`;
+
+  renderRecs();
+
+  if(userProfile.moodSelections >= 2){
+    document.getElementById('donation-nudge').classList.add('visible');
+  }
+
+  ps.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+// ═══════════════════════════════════════════════
+//  RENDER RECOMMENDATIONS
+// ═══════════════════════════════════════════════
+function getFilmsForMood(mood, count){
+  let base = contentDB.filter(c => c.moods.includes(mood));
+  let extra = contentDB.filter(c => !c.moods.includes(mood));
+  let pool = [...base.sort(()=>0.5-Math.random()), ...extra.sort(()=>0.5-Math.random())];
+  while(pool.length < count){
+    pool.push(genProcedural(pool.length, mood));
+  }
+  return pool.slice(0, count);
+}
+
+function filmCardHTML(item){
+  const moodData = MOODS[item.moods[0]] || MOODS[0];
+  return `
+    <div class="film-card">
+      <div class="film-poster-wrap">
+        <img src="${item.poster}" alt="${item.title}" loading="lazy" onerror="this.src='https://picsum.photos/seed/${item.id}/800/450'">
+        <div class="film-mood-badge">${moodData.icon} ${moodData.name}</div>
+      </div>
+      <div class="film-body">
+        <div class="film-title">${item.title}</div>
+        <p class="film-desc">${item.desc}</p>
+        <div class="film-ramen">🍜 ${item.ramenPair}</div>
+        <div class="film-actions">
+          <button class="film-btn-play" onclick="playTrailer(${item.id})">▶ Play trailer</button>
+          <button class="film-btn-save" onclick="addToWatchLater(${item.id})">Save</button>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+function renderRecs(){
+  const grid = document.getElementById('recs-grid');
+  const films = getFilmsForMood(currentMood, 8);
+  grid.innerHTML = films.map(filmCardHTML).join('');
+}
+
+function refreshRecs(){
+  const grid = document.getElementById('recs-grid');
+  grid.style.opacity = '0.3';
+  grid.style.transform = 'translateY(8px)';
+  setTimeout(()=>{
+    renderRecs();
+    grid.style.transition = 'opacity 0.4s, transform 0.4s';
+    grid.style.opacity = '1';
+    grid.style.transform = 'translateY(0)';
+    setTimeout(()=>{ grid.style.transition = ''; },500);
+  }, 320);
+}
+
+// ═══════════════════════════════════════════════
+//  TRAILER
+// ═══════════════════════════════════════════════
+function playTrailer(id){
+  let item = contentDB.find(c => c.id === id) || genProcedural(id - 5000, currentMood);
+  userProfile.currentFilmId = id;
+  document.getElementById('modal-title').textContent = item.title;
+  document.getElementById('youtube-player').src =
+    `https://www.youtube.com/embed/${item.youtubeId}?autoplay=1&rel=0&modestbranding=1`;
+  document.getElementById('full-link').href =
+    `https://www.youtube.com/watch?v=${item.youtubeId}`;
+  openModal('trailer-modal');
+}
+function hideTrailer(){
+  document.getElementById('youtube-player').src = '';
+  closeModal('trailer-modal');
+}
+
+// ═══════════════════════════════════════════════
+//  WATCH LATER
+// ═══════════════════════════════════════════════
+function addToWatchLater(id){
+  if(!userProfile.loggedIn){ showProfileModal(); return; }
+  let item = contentDB.find(c => c.id === id);
+  if(!item) item = genProcedural(id - 5000, currentMood);
+  if(!userProfile.watchLater.some(i => i.id === id)){
+    userProfile.watchLater.unshift(item);
+    saveProfile();
+    showToast(`${item.title} saved to your world`);
+  } else {
+    showToast('Already saved');
+  }
+}
+function addToWatchLaterCurrent(){
+  hideTrailer();
+  if(userProfile.currentFilmId) addToWatchLater(userProfile.currentFilmId);
+  else if(!userProfile.loggedIn) showProfileModal();
+}
+
+// ═══════════════════════════════════════════════
+//  GUEST LIMIT
+// ═══════════════════════════════════════════════
+function checkGuestLimit(){
+  if(!userProfile.loggedIn){
+    guestUses++;
+    updateGuestBar();
+    if(guestUses > 3){ showProfileModal(); return true; }
+  }
+  return false;
+}
+function updateGuestBar(){
+  const bar = document.getElementById('guest-bar');
+  const left = Math.max(0, 3 - guestUses);
+  document.getElementById('swipes-left').textContent = left;
+  document.getElementById('dot-1').classList.toggle('used', guestUses >= 1);
+  document.getElementById('dot-2').classList.toggle('used', guestUses >= 2);
+  document.getElementById('dot-3').classList.toggle('used', guestUses >= 3);
+  if(guestUses >= 1) bar.classList.add('visible');
+}
+
+// ═══════════════════════════════════════════════
+//  PROFILE
+// ═══════════════════════════════════════════════
+function saveProfile(){ localStorage.setItem('moodProfile', JSON.stringify(userProfile)); }
+function loadProfile(){
+  const s = localStorage.getItem('moodProfile');
+  if(s) userProfile = JSON.parse(s);
+  document.getElementById('user-name').textContent =
+    userProfile.loggedIn && userProfile.name ? userProfile.name : 'Guest';
+}
+function createProfile(){
+  const name = document.getElementById('profile-name').value.trim();
+  if(!name){ showToast('Please enter your name'); return; }
+  userProfile.name = name;
+  userProfile.favFilm = document.getElementById('profile-fav').value.trim() || 'Spirited Away';
+  userProfile.foodPref = document.getElementById('profile-food').value.trim() || 'ramen';
+  userProfile.loggedIn = true;
+  saveProfile();
+  hideProfileModal();
+  document.getElementById('user-name').textContent = userProfile.name;
+  guestUses = 0;
+  document.getElementById('guest-bar').classList.remove('visible');
+  if(currentMood !== null) renderRecs();
+  showToast(`Welcome, ${userProfile.name} ✦ Unlimited unlocked`);
+}
+function showProfileModal(){
+  document.getElementById('donate-header').textContent =
+    userProfile.loggedIn && userProfile.name ? `Thank you, ${userProfile.name}` : 'Thank you, visionary';
+  openModal('profile-modal');
+}
+function hideProfileModal(){ closeModal('profile-modal'); }
+
+// ═══════════════════════════════════════════════
+//  DONATE
+// ═══════════════════════════════════════════════
+function showDonateModal(){
+  if(userProfile.loggedIn && userProfile.name)
+    document.getElementById('donate-header').textContent = `Thank you, ${userProfile.name}`;
+  openModal('donate-modal');
+}
+function hideDonateModal(){ closeModal('donate-modal'); }
+function setAmount(v){
+  document.getElementById('donate-amount').value = v;
+  document.querySelectorAll('.amount-btn').forEach(b=>{
+    b.classList.toggle('selected', b.textContent === 'R'+v);
+  });
+}
+function processDonation(){
+  const amount = parseFloat(document.getElementById('donate-amount').value) || 100;
+  userProfile.totalDonated = (userProfile.totalDonated||0) + amount;
+  userProfile.donationStreak = (userProfile.donationStreak||0) + 1;
+  if(userProfile.loggedIn) saveProfile();
+  document.getElementById('paypal-amount').textContent = 'R' + amount;
+  hideDonateModal();
+  openModal('paypal-modal');
+}
+function hidePaypalModal(){ closeModal('paypal-modal'); }
+function copyPaypalDetails(){
+  const amt = document.getElementById('paypal-amount').textContent;
+  navigator.clipboard.writeText(`PayPal ${amt} to alextresor44@icloud.com`).then(()=>{
+    showToast('Details copied · thank you for keeping the bowl warm 🌸');
+  });
+}
+
+// ═══════════════════════════════════════════════
+//  COMMUNITY
+// ═══════════════════════════════════════════════
+const simulatedPosts = [
+  {text:"Dune: Part Two after midnight ramen. Sand visuals + spice = perfection.",user:"Saki T.",time:"9m ago"},
+  {text:"Challengers + miso. Pure tension and joy in every scene.",user:"Thabo M.",time:"24m ago"},
+  {text:"The Brutalist left me speechless. Shoyu and slow evenings.",user:"Emma L.",time:"51m ago"},
+  {text:"Perfect Days is a masterpiece. Tokyo, ramen, and simplicity.",user:"Hiroshi K.",time:"1h ago"},
+  {text:"Spirited Away never gets old. Yuzu shio, every time.",user:"Yuna C.",time:"2h ago"}
+];
+
+function renderLeaderboard(){
+  const c = document.getElementById('leaderboard');
+  const data = [
+    {name:"Saki T.",amount:520},
+    {name:"Thabo M.",amount:390},
+    {name:"Emma L.",amount:260},
+    {name: userProfile.loggedIn&&userProfile.name ? userProfile.name : "You", amount: userProfile.totalDonated||80}
+  ];
+  c.innerHTML = data.map(d=>`
+    <div class="vis-card">
+      <div class="vis-name">${d.name}</div>
+      <div class="vis-amount">R${d.amount} · visionary</div>
+    </div>
+  `).join('');
+}
+
+function renderCommunity(){
+  const feed = document.getElementById('community-feed');
+  const all = [...simulatedPosts, ...userProfile.communityPosts];
+  feed.innerHTML = all.map(p=>`
+    <div class="post-card">
+      <p class="post-text">${p.text}</p>
+      <div class="post-meta"><span>— ${p.user}</span><span>${p.time}</span></div>
+    </div>
+  `).join('');
+}
+
+function postToCommunity(){
+  if(!userProfile.loggedIn){ showProfileModal(); return; }
+  const inp = document.getElementById('community-input');
+  if(!inp.value.trim()) return;
+  userProfile.communityPosts.unshift({text:inp.value, user:userProfile.name, time:"just now"});
+  saveProfile();
+  inp.value = '';
+  renderCommunity();
+}
+
+function viewAllDonors(){ showToast('Hall of Visionaries — the humans keeping every bowl warm 🌸'); }
+
+// ═══════════════════════════════════════════════
+//  PLAYLISTS
+// ═══════════════════════════════════════════════
+function renderPlaylists(){
+  const saved = document.getElementById('playlists-grid');
+  saved.innerHTML = userProfile.watchLater.length
+    ? userProfile.watchLater.map(item=>`
+        <div class="film-card">
+          <div class="film-poster-wrap">
+            <img src="${item.poster}" alt="${item.title}" loading="lazy">
+          </div>
+          <div class="film-body">
+            <div class="film-title">${item.title}</div>
+            <p class="film-desc">${item.desc}</p>
+            <div class="film-ramen">🍜 ${item.ramenPair||''}</div>
+          </div>
+        </div>
+      `).join('')
+    : '<div class="saved-empty">Your world is empty. Save films that move you.</div>';
+
+  const weekly = document.getElementById('weekly-picks');
+  const picks = contentDB.sort(()=>0.5-Math.random()).slice(0,8);
+  weekly.innerHTML = picks.map(item=>`
+    <div class="film-card" onclick="playTrailer(${item.id})">
+      <div class="film-poster-wrap">
+        <img src="${item.poster}" alt="${item.title}" loading="lazy">
+        <div class="film-mood-badge">${MOODS[item.moods[0]]?.icon || ''} ${MOODS[item.moods[0]]?.name || ''}</div>
+      </div>
+      <div class="film-body">
+        <div class="film-title">${item.title}</div>
+        <div class="film-ramen">🍜 ${item.ramenPair}</div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function suggestNewShow(){
+  const t = prompt('Suggest a show or film for the community:');
+  if(t) showToast(`Thank you · "${t}" added to the suggestion pool`);
+}
+
+// ═══════════════════════════════════════════════
+//  NAVIGATION
+// ═══════════════════════════════════════════════
+function navigateTo(page){
+  ['discover','community','playlists'].forEach(p=>{
+    document.getElementById(p).style.display = p===page ? 'block' : 'none';
+    const link = document.getElementById('nav-'+p);
+    if(link) link.classList.toggle('active', p===page);
+  });
+  if(page==='community'){ renderCommunity(); renderLeaderboard(); }
+  if(page==='playlists') renderPlaylists();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+// ═══════════════════════════════════════════════
+//  MODAL HELPERS
+// ═══════════════════════════════════════════════
+function openModal(id){
+  const m = document.getElementById(id);
+  m.classList.add('open');
+}
+function closeModal(id){
+  document.getElementById(id).classList.remove('open');
+}
+
+// ═══════════════════════════════════════════════
+//  TOAST
+// ═══════════════════════════════════════════════
+function showToast(msg){
+  let t = document.getElementById('toast');
+  if(!t){
+    t = document.createElement('div');
+    t.id = 'toast';
+    t.style.cssText = `
+      position:fixed; bottom:7rem; left:50%; transform:translateX(-50%);
+      background:rgba(26,26,26,0.92); color:white; padding:0.65rem 1.4rem;
+      border-radius:100px; font-size:0.82rem; z-index:999; opacity:0;
+      backdrop-filter:blur(20px); transition:opacity 0.25s;
+      font-family:'DM Sans',sans-serif; letter-spacing:0.02em;
+      white-space:nowrap; pointer-events:none;
+    `;
+    document.body.appendChild(t);
+  }
+  t.textContent = msg;
+  t.style.opacity = '1';
+  clearTimeout(t._timer);
+  t._timer = setTimeout(()=>{ t.style.opacity='0'; }, 3000);
+}
+
+// ═══════════════════════════════════════════════
+//  SHARE + EXPLAIN
+// ═══════════════════════════════════════════════
+function copyShareLink(){
+  const ref = userProfile.name ? userProfile.name.toLowerCase().replace(/\s/g,'-') : 'guest';
+  navigator.clipboard.writeText(`https://mood.ai/ref/${ref}`).then(()=>{
+    showToast('Link copied · every friend earns you VIP 🌸');
+  });
+}
+function explainAI(){
+  showToast('Mood maps your emotional state, taste data, and community signals — then finds the perfect match in 0.03s');
+}
+
+// ═══════════════════════════════════════════════
+//  BOOT
+// ═══════════════════════════════════════════════
+window.addEventListener('load', ()=>{
+  loadProfile();
+  renderMoods();
+  navigateTo('discover');
+  const g = localStorage.getItem('moodGuestUses');
+  if(g) guestUses = parseInt(g);
+});
+
+window.addEventListener('beforeunload', ()=>{
+  localStorage.setItem('moodGuestUses', guestUses);
+});
+</script>
 </body>
 </html>
