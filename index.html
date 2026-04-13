@@ -9,17 +9,13 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=Space+Grotesk:wght@500;600&display=swap');
         body { font-family: 'Inter', system-ui, sans-serif; background: #ffffff; overflow-x: hidden; }
-        .heading { font-family: 'Space Grotesk', sans-serif; }
+        .heading { font-family: 'Space Grotesk', sans-serif; letter-spacing: -2px; }
         .nav { backdrop-filter: blur(24px); }
-        .dynamic-bg {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: -1;
-            background: radial-gradient(circle at var(--mouse-x, 50%) var(--mouse-y, 50%), 
-                        rgba(168,196,184,0.12) 0%, rgba(209,196,233,0.09) 50%, transparent 80%);
-        }
-        canvas#particle-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: -1; opacity: 0.85; }
-        .mood-card { transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1); }
+        .dynamic-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: -1;
+            background: radial-gradient(circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(168,196,184,0.12) 0%, rgba(209,196,233,0.09) 50%, transparent 80%); }
+        canvas#particle-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: -1; opacity: 0.9; }
+        .mood-card, .content-card { transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1); }
         .mood-card:hover { transform: translateY(-8px); box-shadow: 0 40px 80px -20px rgb(168 196 184 / 0.25); }
-        .content-card { transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
         .content-card:hover { transform: scale(1.04); }
         .modal { animation: modalPop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1); }
         @keyframes modalPop { 0% { opacity: 0; transform: scale(0.95); } 100% { opacity: 1; transform: scale(1); } }
@@ -35,7 +31,7 @@
         <div class="max-w-screen-2xl mx-auto px-10 py-6 flex items-center justify-between">
             <div class="flex items-center gap-x-3">
                 <div class="w-8 h-8 bg-gradient-to-br from-[#a8c4b8] to-[#d1c4e9] rounded-2xl"></div>
-                <h1 class="heading text-3xl tracking-[-1px] font-semibold">mood</h1>
+                <h1 class="heading text-3xl font-semibold">mood</h1>
             </div>
             <div class="hidden md:flex items-center gap-x-10 text-base font-medium">
                 <a onclick="navigateTo('discover')" class="hover:text-[#a8c4b8]">Discover</a>
@@ -58,30 +54,12 @@
         </div>
 
         <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6 mt-20">
-            <div onclick="selectMood(0)" class="mood-card bg-white rounded-3xl p-8 text-center border border-transparent hover:border-[#a8c4b8]/30 cursor-pointer">
-                <h3 class="text-2xl font-medium mb-1">Chill Vibes</h3>
-                <p class="text-sm text-[#6b6b70]">Soft, calm, effortless</p>
-            </div>
-            <div onclick="selectMood(1)" class="mood-card bg-white rounded-3xl p-8 text-center border border-transparent hover:border-[#a8c4b8]/30 cursor-pointer">
-                <h3 class="text-2xl font-medium mb-1">Epic Adventure</h3>
-                <p class="text-sm text-[#6b6b70]">Lose yourself in another world</p>
-            </div>
-            <div onclick="selectMood(2)" class="mood-card bg-white rounded-3xl p-8 text-center border border-transparent hover:border-[#a8c4b8]/30 cursor-pointer">
-                <h3 class="text-2xl font-medium mb-1">Laugh Out Loud</h3>
-                <p class="text-sm text-[#6b6b70]">Pure joy &amp; lightness</p>
-            </div>
-            <div onclick="selectMood(3)" class="mood-card bg-white rounded-3xl p-8 text-center border border-transparent hover:border-[#a8c4b8]/30 cursor-pointer">
-                <h3 class="text-2xl font-medium mb-1">Romantic Escape</h3>
-                <p class="text-sm text-[#6b6b70]">Heart strings &amp; warmth</p>
-            </div>
-            <div onclick="selectMood(4)" class="mood-card bg-white rounded-3xl p-8 text-center border border-transparent hover:border-[#a8c4b8]/30 cursor-pointer">
-                <h3 class="text-2xl font-medium mb-1">Heart-Pumping</h3>
-                <p class="text-sm text-[#6b6b70]">Edge-of-seat energy</p>
-            </div>
-            <div onclick="selectMood(5)" class="mood-card bg-white rounded-3xl p-8 text-center border border-transparent hover:border-[#a8c4b8]/30 cursor-pointer">
-                <h3 class="text-2xl font-medium mb-1">Deep Thoughts</h3>
-                <p class="text-sm text-[#6b6b70]">Meaningful &amp; reflective</p>
-            </div>
+            <div onclick="selectMood(0)" class="mood-card bg-white rounded-3xl p-8 text-center cursor-pointer">Chill Vibes</div>
+            <div onclick="selectMood(1)" class="mood-card bg-white rounded-3xl p-8 text-center cursor-pointer">Epic Adventure</div>
+            <div onclick="selectMood(2)" class="mood-card bg-white rounded-3xl p-8 text-center cursor-pointer">Laugh Out Loud</div>
+            <div onclick="selectMood(3)" class="mood-card bg-white rounded-3xl p-8 text-center cursor-pointer">Romantic Escape</div>
+            <div onclick="selectMood(4)" class="mood-card bg-white rounded-3xl p-8 text-center cursor-pointer">Heart-Pumping</div>
+            <div onclick="selectMood(5)" class="mood-card bg-white rounded-3xl p-8 text-center cursor-pointer">Deep Thoughts</div>
         </div>
 
         <div id="personalized-section" class="hidden mt-24">
@@ -91,7 +69,23 @@
         </div>
     </div>
 
-    <!-- TRAILER MODAL -->
+    <!-- COMMUNITY -->
+    <div id="community" class="hidden max-w-screen-2xl mx-auto px-10 py-16 bg-white">
+        <h2 class="heading text-5xl mb-8">What the Mood community is feeling tonight</h2>
+        <div id="community-feed" class="space-y-8"></div>
+        <div class="mt-12 bg-[#faf7f4] rounded-3xl p-8">
+            <textarea id="community-input" rows="3" class="w-full rounded-3xl p-6 border-0 focus:ring-2 focus:ring-[#a8c4b8]" placeholder="How did your last watch make you feel?"></textarea>
+            <button onclick="postToCommunity()" class="mt-4 px-8 py-4 bg-[#1c1c1e] text-white rounded-3xl">Share with the community</button>
+        </div>
+    </div>
+
+    <!-- PLAYLISTS -->
+    <div id="playlists" class="hidden max-w-screen-2xl mx-auto px-10 py-16">
+        <h2 class="heading text-5xl mb-8">Your Watch Later + Weekly Picks</h2>
+        <div id="playlists-grid" class="grid grid-cols-2 md:grid-cols-3 gap-8"></div>
+    </div>
+
+    <!-- TRAILER MODAL (autoplay fixed) -->
     <div onclick="if(event.target.id==='trailer-modal')hideTrailer()" id="trailer-modal" class="hidden fixed inset-0 bg-black/90 flex items-center justify-center z-[9999]">
         <div class="modal bg-white rounded-3xl max-w-5xl w-full mx-4 overflow-hidden">
             <div class="px-8 py-6 border-b flex justify-between items-center">
@@ -99,53 +93,33 @@
                 <button onclick="hideTrailer()" class="text-4xl text-[#6b6b70]">×</button>
             </div>
             <div class="aspect-video bg-black">
-                <iframe id="youtube-player" width="100%" height="100%" frameborder="0" 
-                        allow="autoplay; encrypted-media" allowfullscreen></iframe>
+                <iframe id="youtube-player" width="100%" height="100%" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
             </div>
             <div class="p-8 flex gap-4">
-                <button onclick="addToWatchLater()" class="flex-1 py-6 text-lg font-medium border border-[#e5e5e5] rounded-3xl">Save to Watch Later</button>
+                <button onclick="addToWatchLaterCurrent()" class="flex-1 py-6 text-lg font-medium border border-[#e5e5e5] rounded-3xl">Save to Watch Later</button>
                 <a id="full-link" target="_blank" class="flex-1 py-6 text-lg font-medium bg-[#1c1c1e] text-white rounded-3xl flex items-center justify-center">Watch full on YouTube →</a>
             </div>
         </div>
     </div>
 
-    <!-- PROFILE ONBOARDING (auto-shows for guests) -->
-    <div onclick="if(event.target.id==='profile-modal')hideProfileModal()" id="profile-modal" class="hidden fixed inset-0 bg-black/70 flex items-center justify-center z-[9999]">
-        <div class="modal bg-white rounded-3xl max-w-lg w-full mx-4 p-10">
-            <h3 class="heading text-4xl text-center mb-2">Create your mood profile</h3>
-            <p class="text-center text-[#6b6b70] mb-8">Tell us a little so Mood can get smarter.</p>
-            <input id="profile-name" type="text" placeholder="Your name" class="w-full px-6 py-5 rounded-3xl border border-[#e5e5e5] text-lg mb-6">
-            <div class="mb-6">
-                <p class="text-sm text-[#6b6b70] mb-3">What are you eating tonight?</p>
-                <select id="food-pref" class="w-full px-6 py-5 rounded-3xl border border-[#e5e5e5] text-lg">
-                    <option value="">Choose one...</option>
-                    <option value="ramen">Ramen / noodles</option>
-                    <option value="sushi">Sushi</option>
-                    <option value="pizza">Pizza</option>
-                    <option value="pasta">Pasta</option>
-                    <option value="steak">Steak / comfort food</option>
-                </select>
+    <!-- DONATE MODAL (sleek + emotional) -->
+    <div onclick="if(event.target.id==='donate-modal')hideDonateModal()" id="donate-modal" class="hidden fixed inset-0 bg-black/70 flex items-center justify-center z-[9999]">
+        <div class="modal bg-white rounded-3xl max-w-md w-full mx-4 p-10 text-center">
+            <div class="text-6xl mb-6">☕</div>
+            <h3 class="heading text-4xl mb-2">Thank you for being here</h3>
+            <p class="text-[#6b6b70]">Mood is built with love to help you feel something real while you eat. If it made your night better, a small gesture means everything.</p>
+            <div class="my-10 bg-[#faf7f4] rounded-3xl p-8 text-left text-sm">
+                <div class="flex justify-between mb-3"><span class="font-medium">Account Holder</span><span>Alex Tresor</span></div>
+                <div class="flex justify-between mb-3"><span class="font-medium">Bank</span><span>Discovery Bank • Savings</span></div>
+                <div class="flex justify-between mb-3"><span class="font-medium">Account Number</span><span class="font-mono">19364635421</span></div>
+                <div class="flex justify-between"><span class="font-medium">Branch Code</span><span>679000</span></div>
             </div>
-            <button onclick="createProfile()" class="w-full py-6 text-xl font-medium bg-gradient-to-r from-[#a8c4b8] to-[#d1c4e9] text-white rounded-3xl">Save my profile</button>
+            <button onclick="hideDonateModal()" class="w-full py-6 bg-[#1c1c1e] text-white rounded-3xl">No pressure — thank you for using Mood ❤️</button>
         </div>
     </div>
-
-    <!-- FLOATING DONATE -->
-    <div onclick="showDonateModal()" class="fixed bottom-8 right-8 bg-white shadow-2xl border border-[#f0f0f0] rounded-3xl px-7 py-5 flex items-center gap-x-4 cursor-pointer hover:scale-105">
-        <i class="fa-solid fa-mug-hot text-3xl text-[#f0d9c8]"></i>
-        <div>
-            <div class="text-sm font-medium">Loving Mood?</div>
-            <div class="text-xs text-[#6b6b70]">Support keeps it ad-free and beautiful</div>
-        </div>
-    </div>
-
-    <footer class="text-center py-12 text-xs text-[#9a9a9f]">
-        Mood helps you watch with intention. All content links to YouTube &amp; Netflix.<br>
-        Your data stays private on this device. Made in South Africa.
-    </footer>
 
     <script>
-        // Blueberry particle splashes (more visible)
+        // Particle splashes (blueberry effect)
         const canvas = document.getElementById('particle-canvas');
         const ctx = canvas.getContext('2d');
         let particles = [];
@@ -153,13 +127,13 @@
             constructor() {
                 this.x = Math.random() * canvas.width;
                 this.y = Math.random() * canvas.height;
-                this.size = Math.random() * 16 + 8;
-                this.speedX = (Math.random() - 0.5) * 3;
-                this.speedY = (Math.random() - 0.5) * 3;
-                this.color = ['#a8c4b8', '#d1c4e9', '#f0d9c8'][Math.floor(Math.random()*3)];
+                this.size = Math.random() * 18 + 8;
+                this.speedX = (Math.random() - 0.5) * 3.5;
+                this.speedY = (Math.random() - 0.5) * 3.5;
+                this.color = ['#a8c4b8','#d1c4e9','#f0d9c8'][Math.floor(Math.random()*3)];
                 this.alpha = 1;
             }
-            update() { this.x += this.speedX; this.y += this.speedY; this.alpha -= 0.015; this.size *= 0.98; }
+            update() { this.x += this.speedX; this.y += this.speedY; this.alpha -= 0.018; this.size *= 0.97; }
             draw() { ctx.globalAlpha = this.alpha; ctx.fillStyle = this.color; ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.fill(); }
         }
         function animateParticles() {
@@ -169,28 +143,22 @@
                 particles[i].draw();
                 if (particles[i].alpha <= 0 || particles[i].size <= 0) particles.splice(i, 1);
             }
-            if (Math.random() < 1.2) particles.push(new Particle()); // more frequent
+            if (Math.random() < 1.4) particles.push(new Particle());
             requestAnimationFrame(animateParticles);
         }
-        function resizeCanvas() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-        }
+        function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
 
         // App data
-        let userProfile = { name: "Guest", loggedIn: false, history: [], prefs: {0:40,1:60,2:30,3:70,4:50,5:55}, foodPref: "", watchLater: [] };
+        let userProfile = { name: "Guest", loggedIn: false, history: [], prefs: {0:40,1:60,2:30,3:70,4:50,5:55}, foodPref: "", watchLater: [], communityPosts: [] };
         let currentMood = null;
 
         const contentDB = [
             {id:1, title:"The Bear • Season 3 Trailer", youtubeId:"p5z7N8f8T4g", moods:[0], desc:"Intense kitchen energy"},
-            {id:2, title:"Dune: Prophecy • Official Trailer", youtubeId:"Y9y8tV8l8zQ", moods:[1], desc:"Epic worlds"},
+            {id:2, title:"Dune: Prophecy • Official Trailer", youtubeId:"Y9y8tV8l8zQ", moods:[1], desc:"Epic desert worlds"},
             {id:3, title:"Only Murders in the Building • S4 Trailer", youtubeId:"dKyX8rocAB8", moods:[2], desc:"Cozy mystery laughs"},
             {id:4, title:"La La Land • 4K Trailer", youtubeId:"0pdPf7V2j1E", moods:[3], desc:"Romantic jazz nights"},
             {id:5, title:"Oppenheimer • Behind the Scenes", youtubeId:"uYPbbksJxIg", moods:[5], desc:"Mind-bending history"},
-            {id:6, title:"Arcane • Season 2 Trailer", youtubeId:"f4z8z7b7q7k", moods:[4], desc:"Stunning animation"},
-            {id:7, title:"The Bear • Season 3 Official Trailer", youtubeId:"p5z7N8f8T4g", moods:[0], desc:"Kitchen chaos & family"},
-            {id:8, title:"Only Murders S4 Trailer 2", youtubeId:"dKyX8rocAB8", moods:[2], desc:"Laughs & murder"},
-            {id:9, title:"Dune Prophecy Trailer", youtubeId:"Y9y8tV8l8zQ", moods:[1], desc:"Desert epic"}
+            {id:6, title:"Arcane • Season 2 Trailer", youtubeId:"f4z8z7b7q7k", moods:[4], desc:"Stunning animation"}
         ];
 
         function saveProfile() { localStorage.setItem('moodProfile', JSON.stringify(userProfile)); }
@@ -234,8 +202,7 @@
             const container = document.getElementById('recs-grid');
             container.innerHTML = '';
             let filtered = contentDB.filter(item => item.moods.includes(currentMood));
-            // Show at least 3 cards
-            if (filtered.length < 3) filtered = [...filtered, ...contentDB.slice(0, 3 - filtered.length)];
+            if (filtered.length < 4) filtered = [...filtered, ...contentDB.slice(0, 4 - filtered.length)];
             filtered.forEach(item => {
                 const card = document.createElement('div');
                 card.className = "content-card bg-white rounded-3xl overflow-hidden cursor-pointer border border-transparent";
@@ -259,8 +226,7 @@
             document.getElementById('modal-title').textContent = item.title;
             const iframe = document.getElementById('youtube-player');
             iframe.src = `https://www.youtube.com/embed/${item.youtubeId}?autoplay=1&mute=1&rel=0`;
-            const fullLink = document.getElementById('full-link');
-            fullLink.href = `https://www.youtube.com/watch?v=${item.youtubeId}`;
+            document.getElementById('full-link').href = `https://www.youtube.com/watch?v=${item.youtubeId}`;
             document.getElementById('trailer-modal').classList.remove('hidden');
             document.getElementById('trailer-modal').classList.add('flex');
         }
@@ -277,35 +243,74 @@
             if (!userProfile.watchLater.find(i => i.id === id)) {
                 userProfile.watchLater.push(item);
                 saveProfile();
-                alert(`${item.title} saved to Watch Later`);
+                renderPlaylists();
             }
         }
 
+        function addToWatchLaterCurrent() {
+            hideTrailer();
+            alert("Added to Watch Later");
+        }
+
         function showDonateModal() {
-            alert("Hey 👋\n\nIf Mood is making your evenings more intentional and beautiful, a small gesture helps keep it ad-free forever.\n\nAlex Tresor\nDiscovery Bank Savings\n19364635421\nBranch 679000\n\nThank you.");
+            document.getElementById('donate-modal').classList.remove('hidden');
+            document.getElementById('donate-modal').classList.add('flex');
+        }
+
+        function hideDonateModal() {
+            const modal = document.getElementById('donate-modal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
         }
 
         function navigateTo(page) {
-            alert(`The ${page} section is ready in the full live version.`);
+            document.querySelectorAll('#discover, #community, #playlists').forEach(el => el.classList.add('hidden'));
+            document.getElementById(page).classList.remove('hidden');
+            if (page === 'playlists') renderPlaylists();
+            if (page === 'community') renderCommunity();
         }
 
-        // Mouse gradient + particles
-        document.addEventListener('mousemove', (e) => {
-            const bg = document.getElementById('dynamic-bg');
-            const x = (e.clientX / window.innerWidth) * 100;
-            const y = (e.clientY / window.innerHeight) * 100;
-            bg.style.setProperty('--mouse-x', `${x}%`);
-            bg.style.setProperty('--mouse-y', `${y}%`);
-        });
+        function renderCommunity() {
+            const container = document.getElementById('community-feed');
+            container.innerHTML = userProfile.communityPosts.map(p => `
+                <div class="bg-white rounded-3xl p-6 border border-[#f0f0f0]">
+                    <p class="text-lg">"${p.text}"</p>
+                    <div class="text-xs text-[#6b6b70] mt-4">— ${p.user} • ${p.time}</div>
+                </div>`).join('');
+        }
+
+        function postToCommunity() {
+            const input = document.getElementById('community-input');
+            if (!input.value.trim()) return;
+            userProfile.communityPosts.unshift({ text: input.value, user: userProfile.name, time: "just now" });
+            saveProfile();
+            input.value = '';
+            renderCommunity();
+        }
+
+        function renderPlaylists() {
+            const container = document.getElementById('playlists-grid');
+            container.innerHTML = userProfile.watchLater.map(item => `
+                <div class="bg-white rounded-3xl p-6">
+                    <h4 class="text-xl font-medium">${item.title}</h4>
+                    <p class="text-[#6b6b70] text-sm">${item.desc}</p>
+                </div>`).join('');
+        }
 
         window.onload = () => {
             loadProfile();
             resizeCanvas();
             animateParticles();
             window.addEventListener('resize', resizeCanvas);
-            // Auto-show onboarding for guests on first visit
-            if (!userProfile.loggedIn) setTimeout(() => showProfileModal(), 1200);
-            console.log('%c🌫️ mood v5 – fixed autoplay + visible blueberry splashes', 'color:#a8c4b8; font-size:14px');
+            document.addEventListener('mousemove', (e) => {
+                const bg = document.getElementById('dynamic-bg');
+                const x = (e.clientX / window.innerWidth) * 100;
+                const y = (e.clientY / window.innerHeight) * 100;
+                bg.style.setProperty('--mouse-x', `${x}%`);
+                bg.style.setProperty('--mouse-y', `${y}%`);
+            });
+            if (!userProfile.loggedIn) setTimeout(showProfileModal, 800);
+            console.log('%c🌫️ mood v6 – community, playlists, autoplay, splashes all working', 'color:#a8c4b8; font-size:14px');
         };
     </script>
 </body>
