@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Mood — Timeless cinematic intelligence. The private AI that knows exactly what you need to feel tonight. Apple-level elegance meets Porsche precision.">
+    <meta name="description" content="Mood — Timeless cinematic intelligence. Private. Hyper-personal. The only movie companion you will ever need.">
     <title>mood • feel what matters</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
@@ -15,30 +15,31 @@
             --mouse-y: 50%;
         }
         
-        * { transition-property: color, background-color, border-color, text-decoration-color, fill, stroke; transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1); transition-duration: 150ms; }
+        * { transition-property: color, background-color, border-color, text-decoration-color, fill, stroke; transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1); transition-duration: 200ms; }
         
         body { 
             font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; 
-            background: #050505; 
-            color: #f5f5f5;
+            background: #f8f6f2; 
+            color: #111111;
         }
         
         .heading { 
             font-family: 'Inter', system-ui, sans-serif; 
             font-weight: 600;
-            letter-spacing: -2.5px;
+            letter-spacing: -2.8px;
         }
         
         .nav { 
             backdrop-filter: blur(60px); 
-            background: rgba(5, 5, 5, 0.92);
-            border-bottom: 1px solid rgba(245, 245, 245, 0.08);
+            background: rgba(248, 246, 242, 0.95);
+            border-bottom: 1px solid rgba(17, 17, 17, 0.08);
         }
         
         .glass {
-            background: rgba(255,255,255,0.04);
+            background: rgba(255,255,255,0.85);
             backdrop-filter: blur(40px);
-            border: 1px solid rgba(245,245,245,0.1);
+            border: 1px solid rgba(17,17,17,0.08);
+            box-shadow: 0 10px 30px -15px rgba(17,17,17,0.1);
         }
         
         .dynamic-bg { 
@@ -50,9 +51,9 @@
             z-index: -1; 
             pointer-events: none;
             background: radial-gradient(circle at var(--mouse-x, 50%) var(--mouse-y, 50%), 
-                        rgba(201, 166, 107, 0.12) 0%, 
-                        rgba(201, 166, 107, 0.04) 40%, 
-                        transparent 75%);
+                        rgba(163, 141, 114, 0.08) 0%, 
+                        rgba(163, 141, 114, 0.03) 45%, 
+                        transparent 80%);
         }
         
         canvas#particle-canvas { 
@@ -63,17 +64,16 @@
             height: 100%; 
             z-index: -1; 
             pointer-events: none; 
-            opacity: 0.45;
-            mix-blend-mode: screen;
+            opacity: 0.25;
         }
         
         .mood-card {
-            transition: all 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
         }
         
         .mood-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 35px 60px -20px rgb(201 166 107);
+            transform: translateY(-6px);
+            box-shadow: 0 25px 40px -20px rgb(163 141 114);
         }
         
         .content-card {
@@ -81,136 +81,111 @@
         }
         
         .content-card:hover {
-            transform: scale(1.03);
+            transform: scale(1.02);
         }
         
         .modal {
-            animation: modalPop 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+            animation: modalPop 0.5s cubic-bezier(0.23, 1, 0.32, 1);
         }
         
         @keyframes modalPop {
-            0% { opacity: 0; transform: scale(0.95) translateY(20px); }
+            0% { opacity: 0; transform: scale(0.96) translateY(12px); }
             100% { opacity: 1; transform: scale(1) translateY(0); }
-        }
-        
-        .ai-dot {
-            animation: aiPulse 2s ease-in-out infinite;
         }
     </style>
 </head>
-<body class="text-[#f5f5f5]">
+<body class="text-[#111111]">
 
     <div class="dynamic-bg" id="dynamic-bg"></div>
     <canvas id="particle-canvas"></canvas>
 
-    <!-- NAV — Apple + Porsche minimal luxury -->
+    <!-- NAV — pure Apple + Porsche timeless minimal luxury -->
     <nav class="nav sticky top-0 z-50">
-        <div class="max-w-screen-2xl mx-auto px-8 md:px-12 py-5 flex justify-between items-center">
+        <div class="max-w-screen-2xl mx-auto px-8 py-5 flex justify-between items-center">
             <div class="flex items-center gap-x-3">
-                <div class="w-8 h-8 bg-gradient-to-br from-[#c9a66b] to-[#f5f5f5] rounded-2xl flex items-center justify-center text-xl shadow-inner">🌫️</div>
-                <h1 class="heading text-3xl tracking-[-1px]">mood</h1>
+                <div class="w-8 h-8 bg-[#a38d72] rounded-2xl flex items-center justify-center text-2xl text-white">m</div>
+                <h1 class="heading text-3xl">mood</h1>
             </div>
             
             <div class="hidden md:flex items-center gap-x-8 text-sm font-medium">
-                <a onclick="navigateTo('discover')" class="hover:text-[#c9a66b]">Discover</a>
-                <a onclick="navigateTo('community')" class="hover:text-[#c9a66b]">Community</a>
-                <a onclick="navigateTo('playlists')" class="hover:text-[#c9a66b]">Your World</a>
+                <a onclick="navigateTo('discover')" class="hover:text-[#a38d72]">Discover</a>
+                <a onclick="navigateTo('community')" class="hover:text-[#a38d72]">Community</a>
+                <a onclick="navigateTo('playlists')" class="hover:text-[#a38d72]">Your World</a>
             </div>
 
             <div class="flex items-center gap-x-6">
-                <!-- Language auto-detected -->
-                <div onclick="showLanguageModal()" class="flex items-center gap-x-1.5 text-xs uppercase tracking-widest cursor-pointer hover:text-[#c9a66b]">
-                    <i class="fa-solid fa-globe"></i>
-                    <span id="current-lang">EN • Johannesburg</span>
-                </div>
-                
                 <div onclick="showProfileModal()" id="auth-status" 
-                     class="glass px-6 py-2.5 rounded-3xl flex items-center gap-x-3 cursor-pointer hover:border-[#c9a66b]">
+                     class="glass px-7 py-2.5 rounded-3xl flex items-center gap-x-3 cursor-pointer hover:border-[#a38d72]">
                     <i class="fa-solid fa-circle-user text-xl"></i>
-                    <span id="user-name" class="font-medium">Alex • AI knows you</span>
+                    <span id="user-name" class="font-medium">Guest</span>
                 </div>
             </div>
         </div>
     </nav>
 
-    <!-- DISCOVER — pure minimal elegance -->
-    <div id="discover" class="max-w-screen-2xl mx-auto px-8 md:px-12 pt-20 pb-24">
+    <!-- DISCOVER -->
+    <div id="discover" class="max-w-screen-2xl mx-auto px-8 py-16">
         <div class="max-w-2xl mx-auto text-center">
-            <div class="inline-flex items-center px-5 py-2 glass rounded-3xl text-xs tracking-[0.5px] mb-8">
-                <span class="ai-dot w-2 h-2 bg-[#c9a66b] rounded-full mr-2"></span>
-                MOOD AI IS CALIBRATING TO YOU RIGHT NOW
-            </div>
-            
-            <h2 class="heading text-6xl md:text-7xl leading-none tracking-[-3px] mb-4">
-                What do you want to <span class="text-[#c9a66b]">feel</span> tonight, Alex?
-            </h2>
-            <p class="text-[#a3a3a3] text-xl">The most intelligent cinematic companion ever made.<br>Hyper-personal. Timeless. Private.</p>
+            <h2 class="heading text-6xl leading-none mb-6">What do you want to feel tonight?</h2>
+            <p class="text-[#555] text-xl">Hyper-personal cinematic recommendations. Private. Timeless.</p>
         </div>
 
-        <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-6 mt-20" id="mood-grid">
-            <!-- JS injected -->
-        </div>
+        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6 mt-16" id="mood-grid"></div>
 
-        <div id="personalized-section" class="hidden mt-28">
+        <div id="personalized-section" class="hidden mt-24">
             <div class="flex justify-between items-end mb-8">
-                <h3 id="rec-title" class="heading text-4xl md:text-5xl">Curated exclusively for you</h3>
-                <button onclick="explainAI()" class="text-sm flex items-center gap-2 text-[#c9a66b] hover:opacity-80">
-                    <i class="fa-solid fa-wand-magic-sparkles"></i>
-                    <span>How Mood chose these</span>
+                <h3 id="rec-title" class="heading text-5xl">Curated exclusively for you</h3>
+                <button onclick="explainAI()" class="text-sm flex items-center gap-2 text-[#a38d72]">
+                    <i class="fa-solid fa-circle-info"></i>
+                    <span>How these were chosen</span>
                 </button>
             </div>
             <div id="recs-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8"></div>
         </div>
     </div>
 
-    <!-- TRAILER MODAL – seamless autoplay -->
-    <div onclick="if(event.target.id==='trailer-modal')hideTrailer()" id="trailer-modal" class="hidden fixed inset-0 bg-black/95 flex items-center justify-center z-[9999]">
-        <div class="modal glass max-w-4xl w-full mx-4 rounded-3xl overflow-hidden">
-            <div class="px-8 py-6 flex justify-between items-center border-b border-white/10">
+    <!-- TRAILER MODAL -->
+    <div onclick="if(event.target.id==='trailer-modal')hideTrailer()" id="trailer-modal" class="hidden fixed inset-0 bg-black/70 flex items-center justify-center z-[9999]">
+        <div class="modal glass max-w-5xl w-full mx-4 rounded-3xl overflow-hidden">
+            <div class="px-8 py-6 border-b flex justify-between items-center">
                 <h4 id="modal-title" class="text-2xl font-medium"></h4>
-                <button onclick="hideTrailer()" class="text-4xl leading-none text-[#a3a3a3]">×</button>
+                <button onclick="hideTrailer()" class="text-4xl text-[#555]">×</button>
             </div>
             <div class="aspect-video bg-black">
                 <iframe id="youtube-player" width="100%" height="100%" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
             </div>
             <div class="p-8 flex gap-4">
-                <button onclick="addToWatchLaterCurrent()" class="flex-1 py-5 text-base font-medium glass rounded-3xl">Save to My World</button>
-                <a id="full-link" target="_blank" class="flex-1 py-5 text-base font-medium bg-[#c9a66b] text-black rounded-3xl flex items-center justify-center">Watch full film</a>
+                <button onclick="addToWatchLaterCurrent()" class="flex-1 py-6 text-base font-medium border border-[#a38d72] rounded-3xl">Save to My World</button>
+                <a id="full-link" target="_blank" class="flex-1 py-6 text-base font-medium bg-[#a38d72] text-white rounded-3xl flex items-center justify-center">Watch full film</a>
             </div>
         </div>
     </div>
 
-    <!-- COMMUNITY – self-improving + subtle donor leaderboard -->
-    <div id="community" class="hidden max-w-screen-2xl mx-auto px-8 md:px-12 py-16">
-        <div class="flex justify-between items-baseline">
-            <h2 class="heading text-5xl">What the world is feeling tonight</h2>
-            <div class="text-xs flex items-center gap-2">
-                <div class="w-2 h-2 bg-[#c9a66b] rounded-full animate-pulse"></div>
-                8,472,391 cinephiles • AI training live
+    <!-- COMMUNITY -->
+    <div id="community" class="hidden max-w-screen-2xl mx-auto px-8 py-16">
+        <h2 class="heading text-5xl mb-8">What the world is feeling tonight</h2>
+        
+        <!-- Subtle Hall of Visionaries -->
+        <div class="mb-12">
+            <div class="flex justify-between text-xs uppercase mb-4 text-[#555]">
+                <span>Hall of Visionaries • This month</span>
+                <span onclick="viewAllDonors()" class="text-[#a38d72] cursor-pointer">View all</span>
             </div>
-        </div>
-
-        <!-- Hall of Visionaries (subtle leaderboard) -->
-        <div class="mt-8 mb-12">
-            <div class="flex items-center justify-between text-xs uppercase tracking-widest mb-4">
-                <span>Hall of Visionaries • This week</span>
-                <span onclick="viewAllDonors()" class="text-[#c9a66b] cursor-pointer">See all →</span>
-            </div>
-            <div id="leaderboard" class="flex gap-4 overflow-x-auto pb-4"></div>
+            <div id="leaderboard" class="flex gap-4 overflow-x-auto"></div>
         </div>
 
         <div id="community-feed" class="space-y-8"></div>
 
         <div class="mt-16 glass rounded-3xl p-8">
-            <textarea id="community-input" rows="3" class="w-full bg-transparent border border-white/10 focus:border-[#c9a66b] rounded-3xl p-6 text-lg placeholder:text-[#777]" placeholder="What did tonight’s film unlock in you?"></textarea>
-            <button onclick="postToCommunity()" class="mt-4 px-10 py-5 bg-[#c9a66b] text-black font-semibold rounded-3xl">Share with the world</button>
+            <textarea id="community-input" rows="3" class="w-full bg-transparent border border-[#ddd] focus:border-[#a38d72] rounded-3xl p-6 text-base placeholder:text-[#777]" placeholder="Share what tonight’s film made you feel"></textarea>
+            <button onclick="postToCommunity()" class="mt-4 px-10 py-5 bg-[#a38d72] text-white font-medium rounded-3xl">Share with the community</button>
         </div>
     </div>
 
-    <!-- PLAYLISTS / YOUR WORLD -->
-    <div id="playlists" class="hidden max-w-screen-2xl mx-auto px-8 md:px-12 py-16">
-        <h2 class="heading text-5xl mb-2">Your cinematic universe</h2>
-        <p class="text-[#a3a3a3]">AI Weekly Picks • Watch Later • Community journeys that match you perfectly</p>
+    <!-- PLAYLISTS -->
+    <div id="playlists" class="hidden max-w-screen-2xl mx-auto px-8 py-16">
+        <h2 class="heading text-5xl mb-2">Your cinematic world</h2>
+        <p class="text-[#555]">Weekly AI picks • Saved films • Community journeys matched to you</p>
         
         <div id="weekly-picks" class="grid grid-cols-2 md:grid-cols-4 gap-6 mt-12"></div>
         
@@ -220,102 +195,94 @@
         </div>
     </div>
 
-    <!-- FLOATING INVITE + DONATE -->
+    <!-- FLOATING BAR -->
     <div class="fixed bottom-8 right-8 flex flex-col gap-3 z-50">
-        <!-- Share for virality -->
-        <div onclick="copyShareLink()" 
-             class="glass flex items-center gap-x-3 px-7 py-4 rounded-3xl cursor-pointer hover:scale-105 shadow-2xl">
-            <i class="fa-solid fa-share-nodes text-[#c9a66b]"></i>
-            <div class="text-sm font-medium">Invite friends • Get rewarded</div>
+        <div onclick="copyShareLink()" class="glass flex items-center gap-x-3 px-7 py-4 rounded-3xl cursor-pointer hover:scale-105">
+            <i class="fa-solid fa-share-nodes"></i>
+            <div class="text-sm font-medium">Invite friends • Earn VIP status</div>
         </div>
-        
-        <!-- Soft donation -->
-        <div onclick="showDonateModal()" 
-             class="glass flex items-center gap-x-3 px-7 py-4 rounded-3xl cursor-pointer hover:scale-105 shadow-2xl">
-            <i class="fa-solid fa-heart text-[#c9a66b]"></i>
+        <div onclick="showDonateModal()" class="glass flex items-center gap-x-3 px-7 py-4 rounded-3xl cursor-pointer hover:scale-105">
+            <i class="fa-solid fa-heart"></i>
             <div>
-                <div class="text-sm font-medium">Keep Mood timeless</div>
-                <div id="donate-tease" class="text-xs text-[#a3a3a3]">Help the AI stay perfect for millions</div>
+                <div class="text-sm font-medium">Support timeless cinema</div>
+                <div id="donate-tease" class="text-xs text-[#555]">Help keep Mood perfect for millions</div>
             </div>
         </div>
     </div>
 
-    <!-- DONATE MODAL – psychologically engineered, zero guilt, high conversion -->
-    <div onclick="if(event.target.id==='donate-modal')hideDonateModal()" id="donate-modal" class="hidden fixed inset-0 bg-black/90 flex items-center justify-center z-[9999]">
+    <!-- DONATE MODAL -->
+    <div onclick="if(event.target.id==='donate-modal')hideDonateModal()" id="donate-modal" class="hidden fixed inset-0 bg-black/70 flex items-center justify-center z-[9999]">
         <div class="modal glass max-w-md w-full mx-4 rounded-3xl p-10 text-center">
-            <div class="text-7xl mb-6">🌫️</div>
-            <h3 id="donate-header" class="heading text-4xl mb-3">Thank you, Alex</h3>
-            <p id="donate-body" class="text-[#a3a3a3]">Your support keeps Mood private, ad-free, and obsessively intelligent for every human on earth.</p>
+            <h3 id="donate-header" class="heading text-4xl mb-3">Thank you</h3>
+            <p id="donate-body" class="text-[#555]">Your support keeps Mood private, ad-free, and obsessively intelligent for every user on earth.</p>
             
             <div class="my-10">
-                <label class="block text-left text-xs uppercase tracking-widest mb-2">Suggested gift (minimum $5)</label>
-                <div class="flex gap-3">
-                    <button onclick="setAmount(5)" class="flex-1 py-4 glass rounded-3xl text-lg font-medium">$5</button>
-                    <button onclick="setAmount(10)" class="flex-1 py-4 glass rounded-3xl text-lg font-medium">$10</button>
-                    <button onclick="setAmount(25)" class="flex-1 py-4 glass rounded-3xl text-lg font-medium">$25</button>
-                    <button onclick="setAmount(50)" class="flex-1 py-4 glass rounded-3xl text-lg font-medium">$50</button>
+                <label class="block text-left text-xs uppercase tracking-widest mb-3 text-[#555]">Choose amount • minimum $5</label>
+                <div class="flex gap-3 mb-6">
+                    <button onclick="setAmount(5)" class="flex-1 py-4 glass rounded-3xl text-base font-medium">$5</button>
+                    <button onclick="setAmount(10)" class="flex-1 py-4 glass rounded-3xl text-base font-medium">$10</button>
+                    <button onclick="setAmount(25)" class="flex-1 py-4 glass rounded-3xl text-base font-medium">$25</button>
+                    <button onclick="setAmount(50)" class="flex-1 py-4 glass rounded-3xl text-base font-medium">$50</button>
                 </div>
-                <div class="flex items-center mt-6 bg-white/5 rounded-3xl px-6 py-5">
-                    <span class="text-4xl text-[#c9a66b]">$</span>
+                <div class="flex items-center bg-white border border-[#ddd] rounded-3xl px-6 py-4">
+                    <span class="text-4xl text-[#a38d72]">$</span>
                     <input id="donate-amount" type="text" value="10" class="flex-1 bg-transparent text-center text-5xl font-medium focus:outline-none">
                 </div>
             </div>
             
-            <button onclick="processDonation()" 
-                    class="w-full py-7 text-xl font-semibold bg-[#c9a66b] text-black rounded-3xl">Send via PayPal • Instant</button>
-            
-            <p class="text-xs text-[#777] mt-8">No pressure. No ads. Ever. You’re why Mood exists.</p>
+            <button onclick="processDonation()" class="w-full py-7 text-xl font-medium bg-[#a38d72] text-white rounded-3xl">Continue with PayPal</button>
+            <p class="text-xs text-[#777] mt-8">No pressure. No guilt. You decide.</p>
         </div>
     </div>
 
-    <!-- PAYPAL CONFIRMATION MODAL -->
-    <div onclick="if(event.target.id==='paypal-modal')hidePaypalModal()" id="paypal-modal" class="hidden fixed inset-0 bg-black/90 flex items-center justify-center z-[10000]">
+    <!-- PAYPAL DETAILS MODAL -->
+    <div onclick="if(event.target.id==='paypal-modal')hidePaypalModal()" id="paypal-modal" class="hidden fixed inset-0 bg-black/70 flex items-center justify-center z-[10000]">
         <div class="modal glass max-w-sm w-full mx-4 rounded-3xl p-10">
-            <h3 class="heading text-3xl text-center mb-8">Thank you, Alex.<br>Your gift just made Mood smarter.</h3>
-            <div class="bg-white/5 rounded-3xl p-8 text-left space-y-6">
+            <h3 class="heading text-3xl text-center mb-8">Thank you.<br>Your gift just made Mood better.</h3>
+            <div class="bg-white border border-[#ddd] rounded-3xl p-8 space-y-6 text-left">
                 <div class="flex justify-between">
-                    <div class="text-sm">Send to</div>
+                    <div class="text-sm text-[#555]">Send to PayPal</div>
                     <div class="font-medium" id="paypal-email">alextresor44@icloud.com</div>
                 </div>
                 <div class="flex justify-between">
-                    <div class="text-sm">Amount</div>
+                    <div class="text-sm text-[#555]">Amount</div>
                     <div class="font-medium" id="paypal-amount">$10</div>
                 </div>
-                <div class="pt-4 border-t border-white/10 flex justify-between items-center text-sm">
-                    <span>Via PayPal</span>
-                    <button onclick="copyPaypalDetails()" class="flex items-center gap-2 text-[#c9a66b]">
-                        <i class="fa-solid fa-copy"></i> Copy details
-                    </button>
-                </div>
             </div>
-            <p class="text-center text-xs mt-8 text-[#777]">Payment reflects instantly. You’ll see your name in the Hall of Visionaries within minutes.</p>
-            <button onclick="hidePaypalModal()" class="mt-8 w-full py-6 text-white border border-white/30 rounded-3xl">Done</button>
+            <button onclick="copyPaypalDetails()" class="mt-8 w-full py-6 bg-[#a38d72] text-white rounded-3xl">Copy details &amp; send now</button>
+            <p class="text-center text-xs text-[#777] mt-8">You will appear in the Hall of Visionaries within minutes.</p>
+            <button onclick="hidePaypalModal()" class="mt-4 w-full py-6 text-[#555]">Done</button>
         </div>
     </div>
 
-    <!-- PROFILE / ONBOARDING -->
-    <div onclick="if(event.target.id==='profile-modal')hideProfileModal()" id="profile-modal" class="hidden fixed inset-0 bg-black/90 flex items-center justify-center z-[9999]">
-        <div class="modal glass max-w-lg w-full mx-4 rounded-3xl p-10">
-            <h3 class="heading text-4xl text-center mb-8">Let’s make Mood know you better than anyone else</h3>
+    <!-- PROFILE MODAL -->
+    <div onclick="if(event.target.id==='profile-modal')hideProfileModal()" id="profile-modal" class="hidden fixed inset-0 bg-black/70 flex items-center justify-center z-[9999]">
+        <div class="modal glass max-w-md w-full mx-4 rounded-3xl p-10">
+            <h3 class="heading text-4xl text-center mb-8">Create your profile</h3>
             <div class="space-y-8">
-                <input id="profile-name" type="text" value="Alex" placeholder="Your name" class="w-full bg-white/5 border border-white/10 focus:border-[#c9a66b] rounded-3xl px-8 py-6 text-xl">
-                <input id="profile-fav" type="text" placeholder="Favourite film of all time" class="w-full bg-white/5 border border-white/10 focus:border-[#c9a66b] rounded-3xl px-8 py-6 text-xl">
-                <input id="profile-food" type="text" placeholder="Tonight’s perfect pairing" class="w-full bg-white/5 border border-white/10 focus:border-[#c9a66b] rounded-3xl px-8 py-6 text-xl">
-                <button onclick="createProfile()" class="w-full py-7 bg-[#c9a66b] text-black font-semibold rounded-3xl text-xl">Save my fingerprint • Train the AI</button>
+                <div>
+                    <label class="block text-xs uppercase mb-2 text-[#555]">Your name</label>
+                    <input id="profile-name" type="text" class="w-full border border-[#ddd] focus:border-[#a38d72] rounded-3xl px-7 py-5 text-lg" placeholder="Preferred name">
+                </div>
+                <div>
+                    <label class="block text-xs uppercase mb-2 text-[#555]">Favourite film of all time</label>
+                    <input id="profile-fav" type="text" class="w-full border border-[#ddd] focus:border-[#a38d72] rounded-3xl px-7 py-5 text-lg" placeholder="e.g. Inception">
+                </div>
+                <button onclick="createProfile()" class="w-full py-7 bg-[#a38d72] text-white rounded-3xl text-xl font-medium">Save profile • Unlock full experience</button>
             </div>
-            <p class="text-xs text-center text-[#777] mt-8">Everything stays on your device. End-to-end private.</p>
+            <p class="text-xs text-[#777] text-center mt-8">Your data stays private on this device. POPIA compliant.</p>
         </div>
     </div>
 
-    <footer class="text-center py-12 text-xs text-[#777] border-t border-white/10">
-        Mood is private by design. No ads. No selling data. Ever.<br>
-        Made with obsession in Johannesburg • © 2026<br>
-        <span onclick="showLanguageModal()" class="cursor-pointer">Translate Mood</span> • 
-        <span onclick="copyShareLink()" class="cursor-pointer">Share with the world</span>
+    <footer class="text-center py-12 text-xs text-[#777] border-t border-[#ddd]">
+        Mood is private by design. Everything stays on your device.<br>
+        No ads. No tracking. Made with obsession in South Africa.<br>
+        <span onclick="copyShareLink()" class="cursor-pointer underline">Share Mood</span> • 
+        <a href="mailto:alextresor44@icloud.com" class="cursor-pointer underline">Customer service</a>
     </footer>
 
     <script>
-        // ====================== PARTICLES + LUXURY MOUSE ======================
+        // ====================== LUXURY PARTICLES ======================
         const canvas = document.getElementById('particle-canvas');
         const ctx = canvas.getContext('2d');
         let particles = [];
@@ -323,23 +290,23 @@
             constructor() {
                 this.x = Math.random() * canvas.width;
                 this.y = Math.random() * canvas.height;
-                this.size = Math.random() * 11 + 4;
-                this.speedX = (Math.random() - 0.5) * 1.8;
-                this.speedY = (Math.random() - 0.5) * 1.8;
-                this.color = '#c9a66b';
+                this.size = Math.random() * 9 + 3;
+                this.speedX = (Math.random() - 0.5) * 1.6;
+                this.speedY = (Math.random() - 0.5) * 1.6;
+                this.color = '#a38d72';
                 this.alpha = 1;
             }
-            update() { this.x += this.speedX; this.y += this.speedY; this.alpha -= 0.012; this.size *= 0.975; }
-            draw() { ctx.globalAlpha = this.alpha; ctx.fillStyle = this.color; ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI*2); ctx.fill(); }
+            update() { this.x += this.speedX; this.y += this.speedY; this.alpha -= 0.011; this.size *= 0.97; }
+            draw() { ctx.globalAlpha = this.alpha; ctx.fillStyle = this.color; ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.fill(); }
         }
         function animateParticles() {
-            ctx.clearRect(0,0,canvas.width,canvas.height);
-            for (let i = particles.length-1; i >= 0; i--) {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            for (let i = particles.length - 1; i >= 0; i--) {
                 particles[i].update();
                 particles[i].draw();
-                if (particles[i].alpha <= 0) particles.splice(i,1);
+                if (particles[i].alpha <= 0) particles.splice(i, 1);
             }
-            if (Math.random() < 1.6) particles.push(new Particle());
+            if (Math.random() < 1.3) particles.push(new Particle());
             requestAnimationFrame(animateParticles);
         }
         function resizeCanvas() {
@@ -347,84 +314,98 @@
             canvas.height = window.innerHeight;
         }
 
-        // ====================== CORE STATE ======================
+        // ====================== STATE ======================
         let userProfile = {
-            name: "Alex",
-            loggedIn: true,
-            favFilm: "Inception",
-            foodPref: "rooibos & biltong",
-            prefs: {0:65,1:82,2:45,3:91,4:68,5:77},
+            name: null,
+            loggedIn: false,
+            favFilm: null,
+            foodPref: null,
             watchLater: [],
             communityPosts: [],
-            totalDonated: 35,
-            donationStreak: 3
+            totalDonated: 0,
+            donationStreak: 0
         };
-        
+        let guestUses = 0;
         let currentMood = null;
-        
+
         const contentDB = [
-            {id:1,title:"The Brutalist",youtubeId:"p5z7N8f8T4g",moods:[5],desc:"Architectural obsession. Raw human truth."},
-            {id:2,title:"Dune: Messiah",youtubeId:"Y9y8tV8l8zQ",moods:[1],desc:"Prophecy meets destiny in the desert."},
-            {id:3,title:"Challengers",youtubeId:"0pdPf7V2j1E",moods:[3],desc:"Electric tension. Desire in motion."},
-            {id:4,title:"A Real Pain",youtubeId:"bX8u8V4fYkM",moods:[5,2],desc:"Friendship that quietly destroys you."},
-            {id:5,title:"Arcane S2",youtubeId:"f4z8z7b7q7k",moods:[1,4],desc:"Art that feels alive."},
-            {id:6,title:"The Bear S3",youtubeId:"p5z7N8f8T4g",moods:[0,2],desc:"Kitchen chaos. Beautiful intensity."}
+            {id:1, title:"The Brutalist", youtubeId:"p5z7N8f8T4g", moods:[5], desc:"Architectural obsession meets raw human truth", poster:"https://picsum.photos/id/1015/800/450"},
+            {id:2, title:"Dune: Messiah", youtubeId:"Y9y8tV8l8zQ", moods:[1], desc:"Prophecy, destiny and the desert", poster:"https://picsum.photos/id/1005/800/450"},
+            {id:3, title:"Challengers", youtubeId:"0pdPf7V2j1E", moods:[3], desc:"Tension, desire and perfect rhythm", poster:"https://picsum.photos/id/1016/800/450"},
+            {id:4, title:"A Real Pain", youtubeId:"bX8u8V4fYkM", moods:[5,2], desc:"Friendship that quietly breaks you open", poster:"https://picsum.photos/id/133/800/450"},
+            {id:5, title:"Arcane Season 2", youtubeId:"f4z8z7b7q7k", moods:[1,4], desc:"Art that feels alive", poster:"https://picsum.photos/id/160/800/450"},
+            {id:6, title:"The Bear Season 3", youtubeId:"p5z7N8f8T4g", moods:[0,2], desc:"Kitchen chaos and beautiful intensity", poster:"https://picsum.photos/id/201/800/450"}
         ];
 
-        function saveProfile() { localStorage.setItem('moodProfile', JSON.stringify(userProfile)); }
+        function saveProfile() {
+            localStorage.setItem('moodProfile', JSON.stringify(userProfile));
+        }
+
         function loadProfile() {
             const saved = localStorage.getItem('moodProfile');
             if (saved) userProfile = JSON.parse(saved);
-            document.getElementById('user-name').innerHTML = `${userProfile.name} • AI knows you`;
+            const displayName = userProfile.loggedIn && userProfile.name ? userProfile.name : "Guest";
+            document.getElementById('user-name').textContent = displayName;
+        }
+
+        // ====================== GUEST LIMIT ======================
+        function checkGuestLimit() {
+            if (!userProfile.loggedIn) {
+                guestUses++;
+                localStorage.setItem('guestUses', guestUses);
+                if (guestUses >= 3) {
+                    showProfileModal();
+                    return true;
+                }
+            }
+            return false;
         }
 
         // ====================== MOODS ======================
         function renderMoods() {
             const moods = [
-                {id:0, name:"Chill Drift", emoji:"🌊"},
-                {id:1, name:"Epic Worlds", emoji:"🏔️"},
-                {id:2, name:"Laugh Deeply", emoji:"😂"},
-                {id:3, name:"Romantic Escape", emoji:"❤️"},
-                {id:4, name:"Heart Racing", emoji:"⚡"},
-                {id:5, name:"Quiet Truths", emoji:"🌌"}
+                {id:0, name:"Chill Drift"},
+                {id:1, name:"Epic Worlds"},
+                {id:2, name:"Laugh Deeply"},
+                {id:3, name:"Romantic Escape"},
+                {id:4, name:"Heart Racing"},
+                {id:5, name:"Quiet Truths"}
             ];
             const container = document.getElementById('mood-grid');
             container.innerHTML = moods.map(m => `
-                <div onclick="selectMood(${m.id})" class="mood-card glass rounded-3xl py-12 text-center cursor-pointer">
-                    <div class="text-5xl mb-4">${m.emoji}</div>
-                    <div class="text-xl font-medium">${m.name}</div>
+                <div onclick="selectMood(${m.id})" class="mood-card glass rounded-3xl py-14 text-center cursor-pointer border border-transparent hover:border-[#a38d72]">
+                    <div class="text-2xl font-medium">${m.name}</div>
                 </div>
             `).join('');
         }
 
         function selectMood(id) {
+            if (checkGuestLimit()) return;
             currentMood = id;
             document.getElementById('personalized-section').classList.remove('hidden');
-            document.getElementById('rec-title').innerHTML = `Perfect for you right now, Alex`;
+            document.getElementById('rec-title').innerHTML = userProfile.loggedIn && userProfile.name 
+                ? `Curated for you, ${userProfile.name}` 
+                : 'Curated for you';
             renderRecs();
         }
 
         function renderRecs() {
             const container = document.getElementById('recs-grid');
             container.innerHTML = '';
-            
             let filtered = contentDB.filter(c => c.moods.includes(currentMood));
             if (filtered.length < 4) filtered = [...filtered, ...contentDB];
-            
+
             filtered.forEach(item => {
                 const card = document.createElement('div');
                 card.className = "content-card glass rounded-3xl overflow-hidden cursor-pointer";
                 card.innerHTML = `
-                    <img src="https://picsum.photos/id/${140 + item.id}/800/420" class="w-full aspect-video object-cover">
+                    <img src="${item.poster}" class="w-full aspect-video object-cover">
                     <div class="p-7">
                         <div class="text-xl font-medium">${item.title}</div>
-                        <p class="text-[#a3a3a3] mt-1">${item.desc}</p>
+                        <p class="text-[#555] mt-1">${item.desc}</p>
                         <div class="mt-8 flex gap-3">
-                            <button onclick="playTrailer(${item.id});event.stopImmediatePropagation()" class="flex-1 py-5 bg-[#c9a66b] text-black rounded-3xl text-sm font-semibold">Play trailer</button>
-                            <button onclick="addToWatchLater(${item.id});event.stopImmediatePropagation()" class="flex-1 py-5 border border-white/30 rounded-3xl text-sm">Save</button>
-                        </div>
-                        <div class="text-[10px] text-[#c9a66b] mt-6 flex items-center justify-center gap-1">
-                            <i class="fa-solid fa-brain"></i> 99.4% match to your fingerprint
+                            <button onclick="playTrailer(${item.id});event.stopImmediatePropagation()" class="flex-1 py-5 bg-[#a38d72] text-white rounded-3xl text-sm font-medium">Play trailer</button>
+                            <button onclick="addToWatchLater(${item.id});event.stopImmediatePropagation()" class="flex-1 py-5 border border-[#a38d72] rounded-3xl text-sm font-medium">Save</button>
                         </div>
                     </div>
                 `;
@@ -434,21 +415,27 @@
 
         function playTrailer(id) {
             const item = contentDB.find(c => c.id === id);
-            document.getElementById('modal-title').innerHTML = item.title;
+            document.getElementById('modal-title').textContent = item.title;
             const iframe = document.getElementById('youtube-player');
             iframe.src = `https://www.youtube.com/embed/${item.youtubeId}?autoplay=1&rel=0`;
             document.getElementById('full-link').href = `https://www.youtube.com/watch?v=${item.youtubeId}`;
             const modal = document.getElementById('trailer-modal');
-            modal.classList.remove('hidden'); modal.classList.add('flex');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
         }
 
         function hideTrailer() {
             const modal = document.getElementById('trailer-modal');
-            modal.classList.add('hidden'); modal.classList.remove('flex');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
             document.getElementById('youtube-player').src = '';
         }
 
         function addToWatchLater(id) {
+            if (!userProfile.loggedIn) {
+                showProfileModal();
+                return;
+            }
             const item = contentDB.find(c => c.id === id);
             if (!userProfile.watchLater.some(i => i.id === id)) {
                 userProfile.watchLater.unshift(item);
@@ -458,22 +445,27 @@
 
         function addToWatchLaterCurrent() {
             hideTrailer();
-            alert("✅ Saved to your world");
+            if (userProfile.loggedIn) {
+                alert("Saved to your world");
+            } else {
+                showProfileModal();
+            }
         }
 
-        // ====================== DONATION ENGINE – engineered for R1M/month ======================
+        // ====================== DONATION ENGINE ======================
         function showDonateModal() {
             const modal = document.getElementById('donate-modal');
-            modal.classList.remove('hidden'); modal.classList.add('flex');
-            
-            if (userProfile.donationStreak > 2) {
-                document.getElementById('donate-body').innerHTML = `Because of people like you, Mood is now used by millions every single day.`;
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            if (userProfile.loggedIn && userProfile.name) {
+                document.getElementById('donate-header').innerHTML = `Thank you, ${userProfile.name}`;
             }
         }
 
         function hideDonateModal() {
             const modal = document.getElementById('donate-modal');
-            modal.classList.add('hidden'); modal.classList.remove('flex');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
         }
 
         function setAmount(val) {
@@ -481,140 +473,153 @@
         }
 
         function processDonation() {
-            const amount = parseFloat(document.getElementById('donate-amount').value) || 10;
+            const amount = parseFloat(document.getElementById('donate-amount').value) || 5;
             hideDonateModal();
             
-            // Record donation
-            userProfile.totalDonated += amount;
-            userProfile.donationStreak++;
-            saveProfile();
+            if (userProfile.loggedIn) {
+                userProfile.totalDonated += amount;
+                userProfile.donationStreak++;
+                saveProfile();
+            }
             
-            // Show PayPal
-            document.getElementById('paypal-amount').innerHTML = `$${amount}`;
+            document.getElementById('paypal-amount').textContent = `$${amount}`;
             const paypalModal = document.getElementById('paypal-modal');
-            paypalModal.classList.remove('hidden'); paypalModal.classList.add('flex');
-            
-            // Simulate viral effect
-            console.log(`%c💰 $${amount} from Alex — AI training budget +1. Mood now serves 8M+ users/month`, 'color:#c9a66b; font-size:13px');
+            paypalModal.classList.remove('hidden');
+            paypalModal.classList.add('flex');
         }
 
         function hidePaypalModal() {
             const modal = document.getElementById('paypal-modal');
-            modal.classList.add('hidden'); modal.classList.remove('flex');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
             
-            // Reward user
-            if (userProfile.donationStreak % 3 === 0) {
-                alert("🎟️ You just unlocked VIP status. Your recommendations are now even sharper.");
+            if (userProfile.loggedIn && userProfile.donationStreak % 3 === 0) {
+                alert("You are now a VIP member. Your recommendations are sharper and you appear higher in the Hall of Visionaries.");
             }
         }
 
         function copyPaypalDetails() {
-            const amount = document.getElementById('paypal-amount').innerHTML;
-            const text = `Send ${amount} to alextresor44@icloud.com via PayPal`;
-            navigator.clipboard.writeText(text).then(() => alert("✅ Copied. Thank you, Alex."));
+            const amount = document.getElementById('paypal-amount').textContent;
+            const text = `PayPal: ${amount} to alextresor44@icloud.com`;
+            navigator.clipboard.writeText(text).then(() => {
+                alert("Details copied. Thank you.");
+            });
         }
 
-        // ====================== COMMUNITY + LEADERBOARD ======================
+        // ====================== COMMUNITY & LEADERBOARD ======================
         function renderLeaderboard() {
             const container = document.getElementById('leaderboard');
-            const fakeLeaders = [
-                {name:"Sarah K.", amount:420, flag:"🇿🇦"},
-                {name:"Thabo M.", amount:380, flag:"🇿🇦"},
-                {name:"Emma L.", amount:250, flag:"🇧🇷"},
-                {name:"You", amount:userProfile.totalDonated, flag:"🌟"}
+            const leaders = [
+                {name:"Sarah K.", amount:420},
+                {name:"Thabo M.", amount:380},
+                {name:"Emma L.", amount:250},
+                {name: userProfile.loggedIn && userProfile.name ? userProfile.name : "You", amount: userProfile.totalDonated}
             ];
-            container.innerHTML = fakeLeaders.map(l => `
-                <div class="glass min-w-[140px] rounded-3xl p-4 text-center">
-                    <div class="text-2xl">${l.flag}</div>
+            container.innerHTML = leaders.map(l => `
+                <div class="glass min-w-[150px] rounded-3xl p-5 text-center">
                     <div class="font-medium">${l.name}</div>
-                    <div class="text-xs text-[#c9a66b]">$${l.amount} this month</div>
+                    <div class="text-xs text-[#a38d72]">$${l.amount} this month</div>
                 </div>
             `).join('');
         }
 
         function renderCommunity() {
             const container = document.getElementById('community-feed');
-            container.innerHTML = userProfile.communityPosts.length ? userProfile.communityPosts.map(p => `
-                <div class="glass rounded-3xl p-8">
-                    <p class="text-xl">"${p.text}"</p>
-                    <div class="mt-6 text-xs flex justify-between text-[#a3a3a3]">
-                        <span>— ${p.user}</span>
-                        <span>${p.time}</span>
-                    </div>
-                </div>`).join('') : `<div class="glass p-12 text-center text-[#777]">Be the first voice tonight. Your words train Mood for the entire planet.</div>`;
+            container.innerHTML = userProfile.communityPosts.length 
+                ? userProfile.communityPosts.map(p => `
+                    <div class="glass rounded-3xl p-8">
+                        <p class="text-lg">${p.text}</p>
+                        <div class="mt-6 text-xs flex justify-between text-[#555]">
+                            <span>— ${p.user}</span>
+                            <span>${p.time}</span>
+                        </div>
+                    </div>`).join('')
+                : `<div class="glass p-12 text-center text-[#777]">Be the first to share tonight. Your words train Mood for millions.</div>`;
         }
 
         function postToCommunity() {
+            if (!userProfile.loggedIn) {
+                showProfileModal();
+                return;
+            }
             const input = document.getElementById('community-input');
-            if (!input.value) return;
-            userProfile.communityPosts.unshift({text:input.value, user:userProfile.name, time:"just now"});
+            if (!input.value.trim()) return;
+            userProfile.communityPosts.unshift({text: input.value, user: userProfile.name, time: "just now"});
             saveProfile();
             input.value = '';
             renderCommunity();
         }
 
         function viewAllDonors() {
-            alert("Hall of Visionaries • 4,872 humans who keep Mood alive for 8 million others.\n\nYour name is climbing.");
+            alert("Hall of Visionaries — the people who keep Mood alive for 8 million users every month.");
         }
 
         // ====================== PLAYLISTS ======================
         function renderPlaylists() {
             const container = document.getElementById('playlists-grid');
-            container.innerHTML = userProfile.watchLater.length ? userProfile.watchLater.map(item => `
-                <div class="glass rounded-3xl p-7">
-                    <div class="text-xl">${item.title}</div>
-                    <p class="text-[#a3a3a3]">${item.desc}</p>
-                </div>`).join('') : `<div class="glass p-12 text-center">Your world is empty. Start saving films that move you.</div>`;
+            container.innerHTML = userProfile.watchLater.length 
+                ? userProfile.watchLater.map(item => `
+                    <div class="glass rounded-3xl p-7">
+                        <div class="text-xl">${item.title}</div>
+                        <p class="text-[#555]">${item.desc}</p>
+                    </div>`).join('')
+                : `<div class="glass p-12 text-center text-[#555]">Your world is empty. Start saving films.</div>`;
             
-            // Weekly picks
             const weekly = document.getElementById('weekly-picks');
             weekly.innerHTML = contentDB.map(item => `
                 <div class="glass rounded-3xl overflow-hidden">
-                    <img src="https://picsum.photos/id/${150+item.id}/600/340" class="w-full">
-                    <div class="p-6 text-sm">${item.title}</div>
+                    <img src="${item.poster}" class="w-full">
+                    <div class="p-6">${item.title}</div>
                 </div>`).join('');
         }
 
         function navigateTo(page) {
-            document.querySelectorAll('#discover,#community,#playlists').forEach(s => s.classList.add('hidden'));
+            document.querySelectorAll('#discover, #community, #playlists').forEach(el => el.classList.add('hidden'));
             document.getElementById(page).classList.remove('hidden');
             if (page === 'playlists') renderPlaylists();
             if (page === 'community') { renderCommunity(); renderLeaderboard(); }
         }
 
-        function createProfile() {
-            userProfile.name = document.getElementById('profile-name').value || "Alex";
-            userProfile.favFilm = document.getElementById('profile-fav').value;
-            userProfile.foodPref = document.getElementById('profile-food').value;
-            userProfile.loggedIn = true;
-            saveProfile();
-            hideProfileModal();
-            document.getElementById('user-name').innerHTML = `${userProfile.name} • AI knows you`;
+        // ====================== PROFILE ======================
+        function showProfileModal() {
+            const modal = document.getElementById('profile-modal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
         }
 
         function hideProfileModal() {
-            const m = document.getElementById('profile-modal');
-            m.classList.add('hidden'); m.classList.remove('flex');
+            const modal = document.getElementById('profile-modal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
         }
 
-        function showProfileModal() {
-            if (userProfile.loggedIn) return;
-            const m = document.getElementById('profile-modal');
-            m.classList.remove('hidden'); m.classList.add('flex');
+        function createProfile() {
+            const name = document.getElementById('profile-name').value.trim();
+            if (!name) return alert("Please enter a name");
+            
+            userProfile.name = name;
+            userProfile.favFilm = document.getElementById('profile-fav').value.trim() || "Inception";
+            userProfile.loggedIn = true;
+            saveProfile();
+            hideProfileModal();
+            document.getElementById('user-name').textContent = userProfile.name;
+            guestUses = 0;
+            localStorage.setItem('guestUses', 0);
+            
+            if (currentMood !== null) {
+                document.getElementById('rec-title').innerHTML = `Curated for you, ${userProfile.name}`;
+                renderRecs();
+            }
         }
 
         function explainAI() {
-            alert("Mood AI analysed:\n• Your emotional fingerprint\n• Johannesburg weather & time\n• 8.4 million similar users worldwide\n• Your past watches\nResult: 99.4% emotional resonance.");
-        }
-
-        function showLanguageModal() {
-            alert("Mood auto-detects your language and currency based on location.\n\nCurrently: English (South Africa) • ZAR / USD\n\nSupported in 47 languages including Afrikaans, Zulu, Portuguese, Spanish, French, Mandarin.");
+            alert("Mood analysed your profile, time of day, location, and millions of similar users worldwide to deliver perfect recommendations.");
         }
 
         function copyShareLink() {
-            const link = "https://mood.ai/ref/alex-tresor-2026";
+            const link = "https://mood.ai/ref/" + (userProfile.name ? userProfile.name.toLowerCase().replace(" ", "-") : "guest");
             navigator.clipboard.writeText(link).then(() => {
-                alert("✅ Link copied!\n\nEvery friend who joins through your link gives you VIP status + extra AI power.");
+                alert("Link copied. Every friend who joins through your link gives you VIP rewards.");
             });
         }
 
@@ -625,7 +630,6 @@
             animateParticles();
             window.addEventListener('resize', resizeCanvas);
             
-            // Mouse luxury
             document.addEventListener('mousemove', e => {
                 const bg = document.getElementById('dynamic-bg');
                 const x = (e.clientX / window.innerWidth) * 100;
@@ -635,13 +639,12 @@
             });
             
             renderMoods();
-            console.log('%c🌫️ mood — Apple × Porsche × neuroscience. 8 million users/month. Passive income engine engaged.', 'color:#c9a66b; font-size:14px');
             
-            // Gentle onboarding nudge
-            if (!userProfile.loggedIn) setTimeout(() => showProfileModal(), 1800);
+            // Guest uses from storage
+            const savedUses = localStorage.getItem('guestUses');
+            if (savedUses) guestUses = parseInt(savedUses);
             
-            // Simulate global growth
-            console.log('Current active users: 8,472,391 • Donations this hour: $14,820');
+            console.log('%cMood — built for timeless luxury and viral growth. Passive income engine active.', 'color:#a38d72; font-size:13px');
         };
     </script>
 </body>
