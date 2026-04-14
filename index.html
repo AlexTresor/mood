@@ -1,1518 +1,331 @@
-Mood · HTML
-Copy
-
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>mood • find your next obsession</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=DM+Sans:wght@300;400;500&family=Noto+Serif+JP:wght@300;400&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+<title>Moody Chai · Steep your mood</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400&family=DM+Sans:wght@300;400;500&display=swap');
+* { margin:0; padding:0; box-sizing:border-box; }
 :root {
-  --pink: #f2a7c3;
-  --petal: #fce4ec;
-  --blush: #fdf0f5;
-  --white: #ffffff;
-  --ink: #1a1a1a;
-  --mist: #6b7280;
-  --slate: #374151;
-  --accent: #e8749a;
-  --deep-pink: #c94b7e;
-  --gold: #c9a96e;
-  --radius: 2rem;
-  --theme-primary: #c94b7e;
-  --theme-secondary: #f2a7c3;
-  --theme-light: #fdf0f5;
-  --theme-gradient: linear-gradient(135deg, #c94b7e, #e8749a);
+  --sakura: #f2a8c4;
+  --sakura-deep: #d4688a;
+  --gold: #e8c577;
+  --ink: #1f1a22;
 }
- 
-.theme-male {
-  --theme-primary: #2563eb;
-  --theme-secondary: #93c5fd;
-  --theme-light: #eff6ff;
-  --theme-gradient: linear-gradient(135deg, #1d4ed8, #2563eb);
-  --accent: #3b82f6;
-  --deep-pink: #1d4ed8;
-  --pink: #93c5fd;
-  --petal: #dbeafe;
-  --blush: #eff6ff;
-}
- 
-* { margin: 0; padding: 0; box-sizing: border-box; }
-html { background: var(--white); }
 body {
   font-family: 'DM Sans', sans-serif;
-  background: var(--white);
+  background: linear-gradient(155deg, #f8e8f0 0%, #f0e8f8 30%, #e8f0f8 70%, #f8f0f0 100%);
   color: var(--ink);
   overflow-x: hidden;
+  min-height: 100vh;
 }
- 
-.sakura-bg {
+.orb {
   position: fixed;
-  inset: 0;
-  z-index: 0;
-  pointer-events: none;
-}
-.sakura-bg::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background:
-    radial-gradient(ellipse 80% 60% at 15% 20%, rgba(242,167,195,0.18) 0%, transparent 60%),
-    radial-gradient(ellipse 60% 50% at 85% 10%, rgba(242,167,195,0.14) 0%, transparent 55%),
-    #ffffff;
-}
-body.theme-male .sakura-bg::before {
-  background:
-    radial-gradient(ellipse 80% 60% at 15% 20%, rgba(59,130,246,0.1) 0%, transparent 60%),
-    radial-gradient(ellipse 60% 50% at 85% 10%, rgba(37,99,235,0.08) 0%, transparent 55%),
-    #ffffff;
-}
- 
-canvas#petals { position: fixed; inset: 0; pointer-events: none; z-index: 1; opacity: 0.65; }
- 
-#mouse-glow {
-  position: fixed;
-  width: 500px; height: 500px;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(242,167,195,0.1) 0%, transparent 70%);
+  filter: blur(120px);
+  pointer-events: none;
+  z-index: 0;
+  animation: orb-float 18s ease-in-out infinite;
+}
+.orb1 { width: 620px; height: 620px; background: radial-gradient(circle, rgba(242,168,196,0.28) 0%, transparent 70%); top: -180px; left: -180px; }
+.orb2 { width: 480px; height: 480px; background: radial-gradient(circle, rgba(196,174,240,0.22) 0%, transparent 70%); bottom: -120px; right: -120px; animation-delay: 6s; }
+.glass {
+  background: rgba(255,255,255,0.38);
+  backdrop-filter: blur(32px) saturate(180%);
+  -webkit-backdrop-filter: blur(32px) saturate(180%);
+  border: 1px solid rgba(255,255,255,0.55);
+  border-radius: 24px;
+  box-shadow: 0 8px 32px rgba(212,104,138,0.12),
+              inset 0 1px 0 rgba(255,255,255,0.8);
+}
+.glass-deep {
+  background: rgba(255,255,255,0.22);
+  backdrop-filter: blur(42px);
+  border: 1px solid rgba(255,255,255,0.35);
+  box-shadow: 0 20px 50px rgba(180,90,130,0.18);
+}
+.petal {
+  position: fixed;
+  width: 12px;
+  height: 18px;
+  background: linear-gradient(135deg, #f2a8c4, #d4688a);
+  border-radius: 50% 0 50% 0;
+  opacity: 0.75;
   pointer-events: none;
   z-index: 1;
-  transform: translate(-50%, -50%);
-  transition: left 0.08s, top 0.08s;
+  animation: petalFall linear infinite;
 }
-body.theme-male #mouse-glow {
-  background: radial-gradient(circle, rgba(59,130,246,0.08) 0%, transparent 70%);
+@keyframes petalFall {
+  0% { transform: translateY(-100px) rotate(0deg); }
+  100% { transform: translateY(110vh) rotate(720deg); }
 }
- 
-nav {
-  position: sticky; top: 0; z-index: 100;
-  background: rgba(255,255,255,0.94);
+@keyframes orb-float {
+  0%,100% { transform: translate(0,0) scale(1); }
+  50% { transform: translate(30px, -40px) scale(1.08); }
+}
+header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: rgba(255,255,255,0.72);
   backdrop-filter: blur(30px);
-  border-bottom: 1px solid rgba(242,167,195,0.15);
-  transition: border-color 0.4s;
+  border-bottom: 1px solid rgba(242,168,196,0.2);
 }
-body.theme-male nav { border-bottom: 1px solid rgba(59,130,246,0.15); }
- 
-.nav-inner {
-  max-width: 1400px; margin: 0 auto; padding: 0 2.5rem;
-  height: 68px; display: flex; align-items: center; justify-content: space-between;
-}
-.logo { display: flex; align-items: center; gap: 0.75rem; cursor: pointer; }
-.logo-mark {
-  width: 36px; height: 36px;
-  background: var(--theme-gradient);
-  border-radius: 12px;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 1.1rem; transition: background 0.4s;
-}
-.logo-text {
+.logo {
   font-family: 'Cormorant Garamond', serif;
-  font-size: 1.6rem; font-weight: 400;
-  letter-spacing: 0.12em; color: var(--ink);
+  font-size: 2rem;
+  font-weight: 300;
+  background: linear-gradient(90deg, #f2a8c4, #e8c577);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
-.nav-links { display: flex; gap: 2.5rem; align-items: center; }
-.nav-links a {
-  font-size: 0.82rem; letter-spacing: 0.08em;
-  text-transform: uppercase; color: var(--mist);
-  cursor: pointer; transition: color 0.2s; text-decoration: none;
+.beta {
+  font-size: 0.68rem;
+  letter-spacing: 1px;
+  background: rgba(242,168,196,0.15);
+  color: #d4688a;
+  padding: 2px 12px;
+  border-radius: 9999px;
+  border: 1px solid rgba(212,104,138,0.3);
 }
-.nav-links a:hover { color: var(--theme-primary); }
-.nav-links a.active { color: var(--ink); }
- 
-.nav-cta {
-  display: flex; align-items: center; gap: 0.5rem;
-  padding: 0.55rem 1.4rem; border-radius: 100px;
-  background: var(--ink); color: white;
-  font-size: 0.82rem; letter-spacing: 0.06em;
-  cursor: pointer; border: none;
-  transition: background 0.2s, transform 0.15s;
-  font-family: 'DM Sans', sans-serif;
-}
-.nav-cta:hover { background: var(--theme-primary); transform: scale(1.03); }
- 
-.page { position: relative; z-index: 2; }
-#discover, #community, #playlists { display: none; }
-#discover { display: block; }
- 
-.container { max-width: 1400px; margin: 0 auto; padding: 0 2.5rem; }
- 
-.hero { padding: 5rem 0 3rem; text-align: center; }
-.hero-eyebrow {
-  display: inline-flex; align-items: center; gap: 0.5rem;
-  font-size: 0.72rem; letter-spacing: 0.18em; text-transform: uppercase;
-  color: var(--mist); margin-bottom: 1.8rem;
-  padding: 0.45rem 1rem;
-  border: 1px solid rgba(242,167,195,0.4);
-  border-radius: 100px; transition: border-color 0.4s;
-}
-body.theme-male .hero-eyebrow { border-color: rgba(59,130,246,0.3); }
-.eyebrow-dot { width: 5px; height: 5px; background: var(--theme-primary); border-radius: 50%; animation: pulse 2s ease infinite; transition: background 0.4s; }
-@keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.4;transform:scale(0.8)} }
- 
-.hero-h1 {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: clamp(3.2rem, 6vw, 6.5rem);
-  font-weight: 300; line-height: 1.0;
-  letter-spacing: -0.02em; color: var(--ink); margin-bottom: 1.5rem;
-}
-.hero-h1 em { font-style: italic; color: var(--theme-primary); transition: color 0.4s; }
- 
-.hero-sub {
-  font-size: 1.05rem; font-weight: 300; color: var(--mist);
-  max-width: 480px; margin: 0 auto 3rem; line-height: 1.65;
-}
- 
-.ramen-scene { position: relative; width: 340px; margin: 0 auto 2.5rem; display: flex; justify-content: center; }
-#ramen-canvas { display: block; width: 340px; height: 280px; margin: 0 auto; }
- 
-.hero-stats { display: flex; justify-content: center; gap: 3rem; margin-bottom: 3rem; }
-.stat { text-align: center; }
-.stat-num {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 2rem; font-weight: 400; color: var(--ink); display: block;
-}
-.stat-label { font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--mist); }
- 
-.hero-actions { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
-.btn-primary {
-  display: inline-flex; align-items: center; gap: 0.6rem;
-  padding: 0.85rem 2rem; background: var(--ink); color: white;
-  border-radius: 100px; font-size: 0.88rem; letter-spacing: 0.04em;
-  cursor: pointer; border: none;
-  transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
-  font-family: 'DM Sans', sans-serif;
-}
-.btn-primary:hover { background: var(--theme-primary); transform: translateY(-2px); box-shadow: 0 12px 28px -8px rgba(201,75,126,0.4); }
-.btn-ghost {
-  display: inline-flex; align-items: center; gap: 0.6rem;
-  padding: 0.85rem 2rem; background: transparent; color: var(--ink);
-  border-radius: 100px; font-size: 0.88rem; letter-spacing: 0.04em;
-  cursor: pointer; border: 1.5px solid rgba(242,167,195,0.5);
-  transition: border-color 0.2s, background 0.2s;
-  font-family: 'DM Sans', sans-serif;
-}
-.btn-ghost:hover { border-color: var(--theme-primary); background: rgba(242,167,195,0.07); }
-body.theme-male .btn-ghost { border-color: rgba(59,130,246,0.4); }
- 
-/* COUPLE SCROLL SECTION */
-.couple-section {
-  position: relative;
-  overflow: hidden;
-  height: 200px;
-  margin: 3rem 0 1rem;
-  background: linear-gradient(to bottom, transparent, rgba(252,228,236,0.2), transparent);
-  transition: background 0.4s;
-}
-body.theme-male .couple-section {
-  background: linear-gradient(to bottom, transparent, rgba(219,234,254,0.2), transparent);
-}
-#couple-canvas { display: block; width: 100%; height: 200px; }
- 
-.section-label {
-  font-size: 0.72rem; letter-spacing: 0.15em;
-  text-transform: uppercase; color: var(--mist);
-  text-align: center; margin-bottom: 1.5rem;
-}
- 
-.mood-grid {
-  display: grid;
-  grid-template-columns: repeat(6, 1fr);
-  gap: 0.75rem; margin-bottom: 4rem;
-}
-@media(max-width:900px){ .mood-grid{ grid-template-columns: repeat(3,1fr); } }
-@media(max-width:600px){ .mood-grid{ grid-template-columns: repeat(2,1fr); } }
- 
-.mood-btn {
-  padding: 1.4rem 0.5rem; border-radius: 1.2rem;
-  background: var(--white);
-  border: 1.5px solid rgba(17,17,17,0.07);
-  text-align: center; cursor: pointer;
-  transition: all 0.35s cubic-bezier(0.23,1,0.32,1);
-  position: relative; overflow: hidden;
-}
-.mood-btn::before {
-  content: ''; position: absolute; inset: 0;
-  background: var(--mood-bg, transparent); opacity: 0;
-  transition: opacity 0.35s; border-radius: inherit;
-}
-.mood-btn:hover::before, .mood-btn.active::before { opacity: 1; }
-.mood-btn:hover, .mood-btn.active {
-  border-color: transparent;
-  transform: translateY(-4px);
-  box-shadow: 0 20px 35px -12px rgba(0,0,0,0.12);
-}
-.mood-icon { font-size: 1.7rem; display: block; margin-bottom: 0.4rem; position: relative; z-index: 1; }
-.mood-label { font-size: 0.78rem; font-weight: 500; letter-spacing: 0.04em; color: var(--ink); position: relative; z-index: 1; }
-.mood-sublabel { font-size: 0.68rem; color: var(--mist); margin-top: 0.2rem; position: relative; z-index: 1; }
- 
-#personalized-section { display: none; }
-#personalized-section.visible { display: block; }
- 
-.recs-header {
-  display: flex; justify-content: space-between;
-  align-items: flex-end; margin-bottom: 2rem;
-  flex-wrap: wrap; gap: 1rem;
-}
-.recs-title {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 2.4rem; font-weight: 400; color: var(--ink);
-}
-.recs-title span { color: var(--theme-primary); font-style: italic; transition: color 0.4s; }
-.recs-actions { display: flex; gap: 1rem; align-items: center; }
-.action-link {
-  display: flex; align-items: center; gap: 0.4rem;
-  font-size: 0.8rem; color: var(--mist); cursor: pointer;
-  transition: color 0.2s; background: none; border: none;
-  font-family: 'DM Sans', sans-serif;
-}
-.action-link:hover { color: var(--theme-primary); }
- 
-.recs-grid {
-  display: grid; grid-template-columns: repeat(4, 1fr);
-  gap: 1.2rem; margin-bottom: 3rem;
-}
-@media(max-width:1100px){ .recs-grid{ grid-template-columns: repeat(3,1fr); } }
-@media(max-width:750px){ .recs-grid{ grid-template-columns: repeat(2,1fr); } }
-@media(max-width:500px){ .recs-grid{ grid-template-columns: 1fr; } }
- 
-.film-card {
-  border-radius: 1.2rem; overflow: hidden;
-  background: var(--white);
-  border: 1px solid rgba(17,17,17,0.06);
-  cursor: pointer;
-  transition: transform 0.45s cubic-bezier(0.23,1,0.32,1), box-shadow 0.45s;
-}
-.film-card:hover {
-  transform: translateY(-8px) scale(1.01);
-  box-shadow: 0 30px 50px -15px rgba(17,17,17,0.18);
-}
-.film-poster-wrap { position: relative; aspect-ratio: 16/9; overflow: hidden; }
-.film-poster-wrap img {
-  width: 100%; height: 100%; object-fit: cover; display: block;
-  transition: transform 0.6s cubic-bezier(0.23,1,0.32,1);
-}
-.film-card:hover .film-poster-wrap img { transform: scale(1.07); }
-.film-poster-wrap::after {
-  content: ''; position: absolute; top: 0; left: -70%;
-  width: 50%; height: 100%;
-  background: linear-gradient(120deg, transparent 0%, rgba(255,255,255,0.5) 50%, transparent 100%);
-  transform: skewX(-20deg);
-}
-.film-card:hover .film-poster-wrap::after { animation: shineSlide 0.7s ease forwards; }
-@keyframes shineSlide { 0%{ left:-70%; } 100%{ left:130%; } }
- 
-.film-mood-badge {
-  position: absolute; top: 0.6rem; left: 0.6rem;
-  padding: 0.25rem 0.65rem; border-radius: 100px;
-  font-size: 0.65rem; font-weight: 500; letter-spacing: 0.06em;
-  text-transform: uppercase;
-  background: rgba(255,255,255,0.88); backdrop-filter: blur(10px);
-  color: var(--ink); border: 1px solid rgba(255,255,255,0.5);
-}
-.film-stream-badge {
-  position: absolute; top: 0.6rem; right: 0.6rem;
-  padding: 0.25rem 0.65rem; border-radius: 100px;
-  font-size: 0.65rem; font-weight: 600; letter-spacing: 0.04em;
+.glass-btn {
+  background: linear-gradient(135deg, #f2a8c4, #d4688a);
   color: white;
+  border: none;
+  border-radius: 9999px;
+  padding: 14px 32px;
+  font-weight: 500;
+  box-shadow: 0 10px 30px rgba(212,104,138,0.35);
+  transition: all 0.3s cubic-bezier(0.34,1.56,0.64,1);
 }
-.badge-netflix { background: #E50914; }
-.badge-prime { background: #00A8E1; }
-.badge-apple { background: #1c1c1e; }
-.badge-hbo { background: #5822CC; }
-.badge-disney { background: #0050A0; }
-.badge-crunchyroll { background: #F47521; }
- 
-.film-body { padding: 1.1rem 1.2rem 1.2rem; }
-.film-title {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 1.2rem; font-weight: 400; margin-bottom: 0.35rem; color: var(--ink);
+.glass-btn:hover {
+  transform: translateY(-3px) scale(1.04);
+  box-shadow: 0 16px 40px rgba(212,104,138,0.45);
 }
-.film-desc { font-size: 0.78rem; color: var(--mist); line-height: 1.5; margin-bottom: 0.6rem; }
-.film-ramen {
-  font-size: 0.72rem; color: var(--theme-primary);
-  display: flex; align-items: center; gap: 0.3rem;
-  margin-bottom: 1rem; transition: color 0.4s;
-}
-.film-meta { display: flex; gap: 0.5rem; margin-bottom: 0.8rem; flex-wrap: wrap; }
-.film-tag {
-  font-size: 0.62rem; padding: 0.2rem 0.55rem;
-  border-radius: 100px; background: rgba(242,167,195,0.12);
-  color: var(--theme-primary); font-weight: 500; letter-spacing: 0.04em;
-  transition: background 0.4s, color 0.4s;
-}
-body.theme-male .film-tag { background: rgba(59,130,246,0.1); }
- 
-.film-actions { display: flex; gap: 0.5rem; }
-.film-btn-play {
-  flex: 1; padding: 0.55rem; background: var(--ink); color: white;
-  border-radius: 0.7rem; font-size: 0.78rem; font-weight: 500;
-  letter-spacing: 0.03em; cursor: pointer; border: none;
-  transition: background 0.2s; font-family: 'DM Sans', sans-serif;
-}
-.film-btn-play:hover { background: var(--theme-primary); }
-.film-btn-save {
-  padding: 0.55rem 0.9rem; background: transparent; color: var(--mist);
-  border-radius: 0.7rem; font-size: 0.78rem; cursor: pointer;
-  border: 1px solid rgba(17,17,17,0.1);
-  transition: border-color 0.2s, color 0.2s, background 0.2s;
-  font-family: 'DM Sans', sans-serif;
-}
-.film-btn-save:hover { border-color: var(--theme-primary); color: var(--theme-primary); }
-.film-btn-save.saved { background: var(--theme-primary); color: white; border-color: var(--theme-primary); }
- 
-.donation-nudge {
-  display: none; align-items: center; justify-content: space-between;
-  gap: 2rem; padding: 1.8rem 2.5rem; border-radius: var(--radius);
-  background: linear-gradient(135deg, var(--petal) 0%, rgba(255,255,255,0.8) 100%);
-  border: 1px solid rgba(242,167,195,0.3); margin-bottom: 3rem;
-  transition: background 0.4s, border-color 0.4s;
-}
-body.theme-male .donation-nudge { background: linear-gradient(135deg, #dbeafe 0%, rgba(255,255,255,0.8) 100%); border-color: rgba(59,130,246,0.2); }
-.donation-nudge.visible { display: flex; }
-.nudge-overline { font-size: 0.68rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--theme-primary); margin-bottom: 0.3rem; transition: color 0.4s; }
-.nudge-p { font-size: 0.95rem; color: var(--slate); }
-.nudge-btn {
-  display: inline-flex; align-items: center; gap: 0.5rem;
-  padding: 0.75rem 1.6rem; background: var(--theme-primary); color: white;
-  border-radius: 100px; font-size: 0.82rem; cursor: pointer; border: none;
-  white-space: nowrap; transition: background 0.2s, transform 0.15s;
-  font-family: 'DM Sans', sans-serif;
-}
-.nudge-btn:hover { background: var(--ink); transform: scale(1.03); }
- 
-.guest-bar {
-  background: rgba(252,228,236,0.5);
-  border: 1px solid rgba(242,167,195,0.3);
-  border-radius: var(--radius); padding: 1.2rem 2rem;
-  text-align: center; margin-bottom: 2rem; display: none;
-  transition: background 0.4s, border-color 0.4s;
-}
-body.theme-male .guest-bar { background: rgba(219,234,254,0.5); border-color: rgba(59,130,246,0.3); }
-.guest-bar.visible { display: block; }
-.guest-bar p { font-size: 0.88rem; color: var(--slate); margin-bottom: 0.7rem; }
-.guest-swipe-dots { display: flex; justify-content: center; gap: 0.5rem; margin-bottom: 0.8rem; }
-.swipe-dot { width: 8px; height: 8px; border-radius: 50%; background: rgba(17,17,17,0.12); transition: background 0.2s; }
-.swipe-dot.used { background: var(--theme-primary); }
- 
-/* COMMUNITY */
-.community-header { margin-bottom: 3rem; }
-.community-header h2 {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 3rem; font-weight: 300; color: var(--ink); margin-bottom: 0.5rem;
-}
-.community-header p { font-size: 0.9rem; color: var(--mist); }
-.vis-label { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
-.vis-label span { font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--mist); }
-.vis-label a { font-size: 0.78rem; color: var(--theme-primary); cursor: pointer; }
-#leaderboard { display: flex; gap: 0.75rem; overflow-x: auto; padding-bottom: 0.5rem; }
-.vis-card {
-  min-width: 150px; padding: 1rem 1.2rem;
-  border-radius: 1rem; background: rgba(255,255,255,0.9);
+.mood-pill {
+  background: rgba(255,255,255,0.45);
   backdrop-filter: blur(20px);
-  border: 1px solid rgba(242,167,195,0.2);
-  text-align: center; flex-shrink: 0; transition: border-color 0.4s;
+  border: 1px solid rgba(255,255,255,0.6);
+  border-radius: 20px;
+  padding: 18px 12px;
+  text-align: center;
+  transition: all 0.4s cubic-bezier(0.34,1.56,0.64,1);
+  box-shadow: 0 8px 24px rgba(180,90,130,0.08);
 }
-body.theme-male .vis-card { border-color: rgba(59,130,246,0.2); }
-.vis-name { font-size: 0.88rem; font-weight: 500; color: var(--ink); margin-bottom: 0.2rem; }
-.vis-amount { font-size: 0.72rem; color: var(--theme-primary); transition: color 0.4s; }
-.community-feed { margin-bottom: 3rem; display: flex; flex-direction: column; gap: 1rem; }
-.post-card {
-  padding: 1.4rem 1.8rem; border-radius: 1.2rem;
-  background: rgba(255,255,255,0.85); backdrop-filter: blur(20px);
-  border: 1px solid rgba(17,17,17,0.06);
+.mood-pill:hover, .mood-pill.active {
+  transform: translateY(-6px) scale(1.05);
+  background: rgba(242,168,196,0.25);
+  border-color: #f2a8c4;
+  box-shadow: 0 20px 40px rgba(212,104,138,0.25);
 }
-.post-text { font-size: 0.95rem; color: var(--slate); line-height: 1.6; margin-bottom: 0.8rem; }
-.post-meta { display: flex; justify-content: space-between; font-size: 0.72rem; color: var(--mist); }
-.community-compose {
-  padding: 1.8rem; border-radius: var(--radius);
-  background: rgba(255,255,255,0.85);
-  border: 1px solid rgba(242,167,195,0.2); transition: border-color 0.4s;
+.rec-card {
+  background: rgba(255,255,255,0.38);
+  backdrop-filter: blur(28px);
+  border: 1px solid rgba(255,255,255,0.5);
+  border-radius: 24px;
+  overflow: hidden;
+  box-shadow: 0 12px 40px rgba(180,90,130,0.15);
+  transition: transform 0.4s cubic-bezier(0.34,1.56,0.64,1);
 }
-body.theme-male .community-compose { border-color: rgba(59,130,246,0.2); }
-.community-compose textarea {
-  width: 100%; background: transparent;
-  border: 1px solid rgba(17,17,17,0.1); border-radius: 1rem;
-  padding: 1rem 1.2rem; font-family: 'DM Sans', sans-serif;
-  font-size: 0.9rem; color: var(--ink); resize: none; outline: none;
-  transition: border-color 0.2s; margin-bottom: 1rem;
-}
-.community-compose textarea:focus { border-color: var(--theme-primary); }
- 
-/* PLAYLISTS */
-.playlists-header { margin-bottom: 3rem; }
-.playlists-header h2 {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 3rem; font-weight: 300; color: var(--ink); margin-bottom: 0.5rem;
-}
-.playlists-header p { font-size: 0.9rem; color: var(--mist); }
-.weekly-grid {
-  display: grid; grid-template-columns: repeat(4, 1fr);
-  gap: 1rem; margin-bottom: 3rem;
-}
-@media(max-width:900px){ .weekly-grid{ grid-template-columns: repeat(2,1fr); } }
-.saved-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.2rem; }
-@media(max-width:750px){ .saved-grid{ grid-template-columns: repeat(2,1fr); } }
-.saved-empty {
-  grid-column: 1/-1; padding: 3rem; text-align: center;
-  color: var(--mist); font-size: 0.9rem;
-  border: 1px dashed rgba(242,167,195,0.4); border-radius: var(--radius);
-}
- 
-.float-bar { position: fixed; bottom: 2rem; right: 2rem; display: flex; flex-direction: column; gap: 0.6rem; z-index: 90; }
-.float-pill {
-  display: flex; align-items: center; gap: 0.65rem;
-  padding: 0.75rem 1.4rem; border-radius: 100px;
-  background: rgba(255,255,255,0.92); backdrop-filter: blur(30px);
-  border: 1px solid rgba(17,17,17,0.08);
-  box-shadow: 0 8px 25px -8px rgba(17,17,17,0.15);
-  cursor: pointer; transition: transform 0.2s, box-shadow 0.2s;
-  font-size: 0.8rem; font-weight: 500; color: var(--ink); font-family: 'DM Sans', sans-serif;
-}
-.float-pill:hover { transform: translateY(-2px); box-shadow: 0 14px 35px -10px rgba(17,17,17,0.2); }
- 
-.modal-overlay {
-  display: none; position: fixed; inset: 0;
-  background: rgba(17,17,17,0.45); backdrop-filter: blur(8px);
-  z-index: 200; align-items: center; justify-content: center; padding: 1.5rem;
-}
-.modal-overlay.open { display: flex; }
-.modal-box {
-  background: var(--white); border-radius: 1.8rem; overflow: hidden;
-  width: 100%; animation: modalIn 0.45s cubic-bezier(0.23,1,0.32,1);
-}
-@keyframes modalIn {
-  from { opacity: 0; transform: scale(0.94) translateY(20px); }
-  to   { opacity: 1; transform: scale(1) translateY(0); }
-}
-.modal-box.wide { max-width: 860px; }
-.modal-box.narrow { max-width: 440px; padding: 2.5rem; }
-.modal-header {
-  padding: 1.5rem 2rem; border-bottom: 1px solid rgba(17,17,17,0.07);
-  display: flex; align-items: center; justify-content: space-between;
-}
-.modal-title { font-family: 'Cormorant Garamond', serif; font-size: 1.5rem; font-weight: 400; }
-.modal-close {
-  width: 34px; height: 34px; border-radius: 50%;
-  background: rgba(17,17,17,0.06); border: none; cursor: pointer;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 1.1rem; color: var(--mist); transition: background 0.2s;
-}
-.modal-close:hover { background: rgba(17,17,17,0.12); }
-.video-wrap { aspect-ratio: 16/9; background: #000; }
-.video-wrap iframe { width: 100%; height: 100%; border: none; }
-.modal-footer { padding: 1.5rem 2rem; display: flex; gap: 0.75rem; }
-.modal-footer .btn-outline {
-  flex: 1; padding: 0.9rem;
-  border: 1.5px solid rgba(242,167,195,0.5); border-radius: 100px;
-  background: transparent; cursor: pointer; font-size: 0.85rem;
-  font-family: 'DM Sans', sans-serif; transition: border-color 0.2s;
-}
-.modal-footer .btn-outline:hover { border-color: var(--theme-primary); }
-.modal-footer .btn-fill {
-  flex: 1; padding: 0.9rem; border-radius: 100px;
-  background: var(--ink); color: white; border: none; cursor: pointer;
-  font-size: 0.85rem; font-family: 'DM Sans', sans-serif;
-  text-align: center; text-decoration: none;
-  display: flex; align-items: center; justify-content: center;
-  transition: background 0.2s;
-}
-.modal-footer .btn-fill:hover { background: var(--theme-primary); }
- 
-/* GENDER MODAL */
-.gender-modal-inner { padding: 2.5rem; text-align: center; }
-.gender-modal-inner h3 {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 2.2rem; font-weight: 400; margin-bottom: 0.5rem;
-}
-.gender-modal-inner .sub { font-size: 0.88rem; color: var(--mist); margin-bottom: 2.5rem; }
-.gender-choices { display: flex; gap: 1rem; margin-bottom: 1.5rem; }
-.gender-btn {
-  flex: 1; padding: 2rem 1rem; border-radius: 1.5rem;
-  border: 2px solid rgba(17,17,17,0.08);
-  background: transparent; cursor: pointer;
-  transition: all 0.3s; font-family: 'DM Sans', sans-serif;
-}
-.gender-btn:hover { transform: translateY(-4px); }
-.gender-btn.female:hover, .gender-btn.female.sel { border-color: #c94b7e; background: rgba(201,75,126,0.06); }
-.gender-btn.male:hover, .gender-btn.male.sel { border-color: #2563eb; background: rgba(37,99,235,0.06); }
-.gender-btn.nb:hover, .gender-btn.nb.sel { border-color: #7c3aed; background: rgba(124,58,237,0.06); }
-.gender-icon { font-size: 2.5rem; display: block; margin-bottom: 0.6rem; }
-.gender-label { font-size: 0.9rem; font-weight: 500; color: var(--ink); }
- 
-/* PROFILE MODAL */
-.profile-modal-inner { padding: 2.5rem; }
-.profile-modal-inner h3 {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 2rem; font-weight: 400; text-align: center; margin-bottom: 0.4rem;
-}
-.profile-modal-inner .sub { text-align: center; font-size: 0.82rem; color: var(--mist); margin-bottom: 2rem; }
-.form-group { margin-bottom: 1.2rem; }
-.form-group label { display: block; font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--mist); margin-bottom: 0.5rem; }
-.form-group input, .form-group select {
-  width: 100%; padding: 0.85rem 1.2rem;
-  border: 1.5px solid rgba(17,17,17,0.1); border-radius: 1rem;
-  font-family: 'DM Sans', sans-serif; font-size: 0.92rem;
-  color: var(--ink); outline: none; transition: border-color 0.2s;
-  background: rgba(253,240,245,0.3); -webkit-appearance: none;
-}
-.form-group input:focus, .form-group select:focus { border-color: var(--theme-primary); background: white; }
-.profile-submit {
-  width: 100%; padding: 1rem; border-radius: 100px;
-  background: var(--ink); color: white; border: none;
-  font-size: 0.9rem; font-family: 'DM Sans', sans-serif;
-  cursor: pointer; margin-top: 0.5rem; transition: background 0.2s;
-}
-.profile-submit:hover { background: var(--theme-primary); }
-.form-note { text-align: center; font-size: 0.72rem; color: var(--mist); margin-top: 1rem; }
- 
-/* DONATE MODAL */
-.donate-inner { padding: 2.5rem; text-align: center; }
-.donate-inner h3 { font-family: 'Cormorant Garamond', serif; font-size: 2.2rem; font-weight: 400; margin-bottom: 0.5rem; }
-.donate-inner .sub { font-size: 0.88rem; color: var(--mist); margin-bottom: 2rem; line-height: 1.6; }
-.amount-choices { display: flex; gap: 0.5rem; margin-bottom: 1rem; }
-.amount-btn {
-  flex: 1; padding: 0.75rem; border: 1.5px solid rgba(17,17,17,0.1);
-  border-radius: 0.8rem; background: transparent; font-size: 0.88rem;
-  font-family: 'DM Sans', sans-serif; cursor: pointer; transition: all 0.2s;
-}
-.amount-btn:hover, .amount-btn.selected { border-color: var(--theme-primary); background: rgba(201,75,126,0.08); color: var(--theme-primary); }
-.amount-input-wrap {
-  display: flex; align-items: center;
-  border: 1.5px solid rgba(17,17,17,0.1); border-radius: 1rem;
-  padding: 0.75rem 1.5rem; margin-bottom: 1.5rem;
-}
-.amount-currency { font-size: 1.8rem; color: var(--theme-primary); font-family: 'Cormorant Garamond', serif; margin-right: 0.3rem; }
-.amount-input-wrap input {
-  flex: 1; font-size: 2.2rem; font-family: 'Cormorant Garamond', serif;
-  border: none; outline: none; text-align: center; color: var(--ink); background: transparent;
-}
-.donate-cta {
-  width: 100%; padding: 1rem; border-radius: 100px;
-  background: var(--theme-primary); color: white; border: none;
-  font-size: 0.9rem; font-family: 'DM Sans', sans-serif;
-  cursor: pointer; transition: background 0.2s, transform 0.15s;
-  margin-bottom: 0.8rem;
-}
-.donate-cta:hover { background: var(--ink); transform: scale(1.02); }
-.donate-note { font-size: 0.72rem; color: var(--mist); }
- 
-.paypal-inner { padding: 2.5rem; text-align: center; }
-.paypal-inner h3 { font-family: 'Cormorant Garamond', serif; font-size: 1.8rem; font-weight: 400; margin-bottom: 1.5rem; }
-.paypal-details {
-  background: rgba(253,240,245,0.5); border: 1px solid rgba(242,167,195,0.3);
-  border-radius: 1.2rem; padding: 1.5rem; margin-bottom: 1.5rem;
-}
-.paypal-row {
-  display: flex; justify-content: space-between; padding: 0.6rem 0;
-  border-bottom: 1px solid rgba(17,17,17,0.06); font-size: 0.88rem;
-}
-.paypal-row:last-child { border-bottom: none; }
-.paypal-row .label { color: var(--mist); }
-.paypal-row .value { font-weight: 500; color: var(--ink); }
-.paypal-copy-btn {
-  width: 100%; padding: 1rem; border-radius: 100px;
-  background: var(--theme-primary); color: white; border: none;
-  font-size: 0.9rem; font-family: 'DM Sans', sans-serif;
-  cursor: pointer; transition: background 0.2s; margin-bottom: 0.75rem;
-}
-.paypal-copy-btn:hover { background: var(--ink); }
-.paypal-done-btn {
-  width: 100%; padding: 0.75rem; background: transparent; border: none;
-  font-size: 0.85rem; color: var(--mist); cursor: pointer; font-family: 'DM Sans', sans-serif;
-}
- 
-/* NEUROSCIENCE BADGE */
-.neuro-bar {
-  display: flex; align-items: center; justify-content: center;
-  gap: 2rem; padding: 1.5rem; margin-bottom: 3rem;
-  border-radius: var(--radius);
-  background: linear-gradient(135deg, rgba(242,167,195,0.08), rgba(255,255,255,0.5));
-  border: 1px solid rgba(242,167,195,0.2);
-  flex-wrap: wrap;
-}
-body.theme-male .neuro-bar { background: linear-gradient(135deg, rgba(59,130,246,0.06), rgba(255,255,255,0.5)); border-color: rgba(59,130,246,0.15); }
-.neuro-item { display: flex; align-items: center; gap: 0.5rem; font-size: 0.78rem; color: var(--slate); }
-.neuro-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--theme-primary); transition: background 0.4s; }
- 
-footer {
-  padding: 3rem 0 2rem; text-align: center;
-  border-top: 1px solid rgba(17,17,17,0.06); margin-top: 4rem;
-}
-.footer-text { font-size: 0.75rem; color: var(--mist); line-height: 1.8; }
-.footer-text a { color: var(--mist); text-decoration: underline; cursor: pointer; }
-.footer-text a:hover { color: var(--theme-primary); }
- 
-#toast {
-  position: fixed; bottom: 7rem; left: 50%; transform: translateX(-50%);
-  background: rgba(26,26,26,0.92); color: white; padding: 0.65rem 1.4rem;
-  border-radius: 100px; font-size: 0.82rem; z-index: 999; opacity: 0;
-  backdrop-filter: blur(20px); transition: opacity 0.25s;
-  font-family: 'DM Sans', sans-serif; letter-spacing: 0.02em;
-  white-space: nowrap; pointer-events: none;
+.rec-card:hover {
+  transform: scale(1.04) translateY(-8px);
 }
 </style>
 </head>
 <body>
- 
-<div class="sakura-bg"></div>
-<canvas id="petals"></canvas>
-<div id="mouse-glow"></div>
-<div id="toast"></div>
- 
-<nav>
-  <div class="nav-inner">
-    <div class="logo" onclick="navigateTo('discover')">
-      <div class="logo-mark">🌸</div>
-      <span class="logo-text">mood</span>
+
+<!-- ORBS & PETALS -->
+<div class="orb orb1"></div>
+<div class="orb orb2"></div>
+
+<!-- HEADER -->
+<header class="glass py-4 px-6 flex items-center justify-between">
+  <div class="logo">
+    <span style="font-size:2.2rem;">🌸</span>
+    Moody Chai
+  </div>
+  <div class="beta">BETA • Free Forever</div>
+  <button onclick="showDonate()" class="glass-btn text-sm px-6 py-2">Support the Bowl 🍜</button>
+</header>
+
+<!-- LANDING / MOOD PICKER -->
+<section id="landing" class="min-h-screen flex flex-col items-center justify-center px-6 text-center">
+  <div class="text-7xl mb-6 animate-bounce">🍜</div>
+  <h1 class="text-5xl font-light tracking-tighter mb-2">Steep your mood.<br>Sip the perfect story.</h1>
+  <p class="text-lg text-gray-600 max-w-xs mx-auto mb-10">Glassmorphic. Neuroscience-backed. Ramen-warm.</p>
+  
+  <p class="text-sm uppercase tracking-[2px] text-pink-600 mb-6">How are you feeling tonight?</p>
+  
+  <div class="grid grid-cols-3 gap-4 max-w-md w-full">
+    <div onclick="selectMood('cozy')" class="mood-pill glass text-center cursor-pointer">
+      <div class="text-4xl mb-2">🍵</div>
+      <div class="font-medium">Cozy</div>
     </div>
-    <div class="nav-links">
-      <a onclick="navigateTo('discover')" id="nav-discover" class="active">Discover</a>
-      <a onclick="navigateTo('community')" id="nav-community">Community</a>
-      <a onclick="navigateTo('playlists')" id="nav-playlists">Your World</a>
+    <div onclick="selectMood('euphoric')" class="mood-pill glass text-center cursor-pointer">
+      <div class="text-4xl mb-2">🌸</div>
+      <div class="font-medium">Euphoric</div>
     </div>
-    <button class="nav-cta" onclick="showProfileModal()">
-      <i class="fa-solid fa-circle-user" style="font-size:0.9rem"></i>
-      <span id="user-name">Guest</span>
+    <div onclick="selectMood('melancholic')" class="mood-pill glass text-center cursor-pointer">
+      <div class="text-4xl mb-2">🌧️</div>
+      <div class="font-medium">Melancholic</div>
+    </div>
+    <div onclick="selectMood('curious')" class="mood-pill glass text-center cursor-pointer">
+      <div class="text-4xl mb-2">🔭</div>
+      <div class="font-medium">Curious</div>
+    </div>
+    <div onclick="selectMood('anxious')" class="mood-pill glass text-center cursor-pointer">
+      <div class="text-4xl mb-2">🌀</div>
+      <div class="font-medium">Anxious</div>
+    </div>
+    <div onclick="selectMood('nostalgic')" class="mood-pill glass text-center cursor-pointer">
+      <div class="text-4xl mb-2">🍂</div>
+      <div class="font-medium">Nostalgic</div>
+    </div>
+  </div>
+
+  <button onclick="enterApp()" class="glass-btn mt-12 text-lg px-12 py-5 w-full max-w-xs">
+    Steep My Mood →
+  </button>
+
+  <p class="text-xs text-gray-500 mt-8">Free forever • Donations keep the steam rising</p>
+</section>
+
+<!-- MAIN APP (shown after mood pick) -->
+<section id="app-main" class="hidden min-h-screen pb-24">
+  <div class="px-6 pt-8">
+    <h2 class="text-3xl font-light">Good evening, <span id="user-greeting" class="text-pink-600">Alex</span></h2>
+    <p class="text-sm text-gray-500">Your <span id="current-mood-display" class="font-medium"></span> evening awaits</p>
+  </div>
+
+  <!-- RECOMMENDATIONS -->
+  <div class="px-6 mt-8">
+    <p class="text-xs uppercase tracking-widest text-gray-500 mb-3">STEAMED JUST FOR YOU</p>
+    <div id="recs-container" class="grid grid-cols-2 gap-4"></div>
+  </div>
+
+  <!-- COMMUNITY -->
+  <div class="px-6 mt-10">
+    <p class="text-xs uppercase tracking-widest text-gray-500 mb-3">WHAT THE BOWL IS FEELING TONIGHT</p>
+    <div id="community-feed" class="space-y-6"></div>
+  </div>
+
+  <!-- RAMEN LAB TEASER -->
+  <div onclick="alert('Ramen Lab coming in next update — history, pairings, user recipes')" class="mx-6 mt-8 glass p-6 rounded-3xl flex items-center gap-4 cursor-pointer">
+    <div class="text-5xl">🍜</div>
+    <div>
+      <p class="font-medium">Ramen Lab</p>
+      <p class="text-sm text-gray-500">Learn every bowl. Pair it with the perfect anime or K-drama.</p>
+    </div>
+  </div>
+
+  <!-- REFERRAL + VIP -->
+  <div class="mx-6 mt-8 glass p-6 rounded-3xl">
+    <p class="text-xs uppercase">Invite friends • Earn free VIP days</p>
+    <div class="bg-white/60 rounded-2xl p-4 mt-3 flex items-center justify-between">
+      <code class="font-mono text-pink-600">MOODY-ALEX42</code>
+      <button onclick="copyReferral()" class="px-6 py-2 bg-pink-600 text-white text-sm rounded-2xl">Copy code</button>
+    </div>
+    <p class="text-xs text-gray-500 mt-3">1 new friend = 1 free VIP day for both of you</p>
+  </div>
+</section>
+
+<!-- DONATE MODAL -->
+<div onclick="if(event.target.id==='donate-modal')hideDonate()" id="donate-modal" class="hidden fixed inset-0 bg-black/60 backdrop-blur-xl z-50 flex items-end">
+  <div class="bg-white rounded-t-3xl w-full max-w-xl mx-auto p-8">
+    <h2 class="text-3xl font-light text-center">Support the Bowl</h2>
+    <p class="text-center text-gray-500 mt-2">Your gift keeps Moody Chai free, beautiful, and steaming.</p>
+    
+    <div class="grid grid-cols-2 gap-4 mt-8">
+      <button onclick="donateNow(50)" class="glass p-6 text-center rounded-3xl">R50<br><span class="text-xs">A warm bowl</span></button>
+      <button onclick="donateNow(85)" class="glass p-6 text-center rounded-3xl border-2 border-pink-300">R85<br><span class="text-xs">1 month of chai</span></button>
+      <button onclick="donateNow(250)" class="glass p-6 text-center rounded-3xl">R250<br><span class="text-xs">Patron</span></button>
+      <button onclick="donateNow(500)" class="glass p-6 text-center rounded-3xl">R500<br><span class="text-xs">Visionary ✦</span></button>
+    </div>
+    
+    <button onclick="window.open('https://paypal.me/alextresor44','_blank')" class="w-full mt-8 py-5 glass-btn text-xl">
+      Send via PayPal 🍜
     </button>
   </div>
-</nav>
- 
-<div class="page">
-<div id="discover">
-  <div class="container">
-    <section class="hero">
-      <div class="hero-eyebrow">
-        <span class="eyebrow-dot"></span>
-        <span>Neuroscience-matched · 0.03 seconds</span>
-      </div>
-      <h1 class="hero-h1">
-        Find your next obsession<br>
-        <em>before the ramen gets cold</em>
-      </h1>
-      <p class="hero-sub">We read your mood, your moment, your mind — and surface the perfect film or series before you even finish typing.</p>
-      <div class="ramen-scene">
-        <canvas id="ramen-canvas" width="340" height="280"></canvas>
-      </div>
-      <div class="hero-stats">
-        <div class="stat"><span class="stat-num">100k+</span><span class="stat-label">Titles</span></div>
-        <div class="stat"><span class="stat-num">0.03s</span><span class="stat-label">To match</span></div>
-        <div class="stat"><span class="stat-num">6</span><span class="stat-label">Mood states</span></div>
-      </div>
-      <div class="hero-actions">
-        <button class="btn-primary" onclick="showGenderModal()">
-          <i class="fa-solid fa-arrow-right"></i>
-          Begin your taste profile
-        </button>
-        <button class="btn-ghost" onclick="showDonateModal()">
-          <i class="fa-solid fa-heart" style="color:var(--theme-primary)"></i>
-          Keep the bowl warm
-        </button>
-      </div>
-    </section>
- 
-    <div class="couple-section">
-      <canvas id="couple-canvas"></canvas>
-    </div>
- 
-    <div class="neuro-bar">
-      <div class="neuro-item"><span class="neuro-dot"></span>Dopamine-signal matching</div>
-      <div class="neuro-item"><span class="neuro-dot"></span>Circadian mood mapping</div>
-      <div class="neuro-item"><span class="neuro-dot"></span>Emotional resonance AI</div>
-      <div class="neuro-item"><span class="neuro-dot"></span>Zero ads · forever free</div>
-      <div class="neuro-item"><span class="neuro-dot"></span>Anime · K-drama · Film · Series</div>
-    </div>
- 
-    <div class="guest-bar" id="guest-bar">
-      <div class="guest-swipe-dots">
-        <div class="swipe-dot" id="dot-1"></div>
-        <div class="swipe-dot" id="dot-2"></div>
-        <div class="swipe-dot" id="dot-3"></div>
-      </div>
-      <p>You have <strong id="swipes-left">3</strong> free discoveries remaining. Create a profile to unlock everything — free, forever.</p>
-      <button class="btn-primary" onclick="showGenderModal()">Create your taste profile →</button>
-    </div>
- 
-    <div class="section-label">How are you feeling right now?</div>
-    <div class="mood-grid" id="mood-grid"></div>
- 
-    <section id="personalized-section">
-      <div class="recs-header">
-        <div>
-          <h2 class="recs-title">Matched for you <span id="mood-name-display"></span></h2>
-        </div>
-        <div class="recs-actions">
-          <button class="action-link" onclick="refreshRecs()"><i class="fa-solid fa-arrows-rotate"></i> Refresh</button>
-          <button class="action-link" onclick="explainAI()"><i class="fa-solid fa-circle-info"></i> How we chose these</button>
-        </div>
-      </div>
-      <div class="recs-grid" id="recs-grid"></div>
-      <div class="donation-nudge" id="donation-nudge">
-        <div class="nudge-text">
-          <div class="nudge-overline">Loving these matches?</div>
-          <p class="nudge-p">Mood stays ad-free and intelligent because of people like you.</p>
-        </div>
-        <button class="nudge-btn" onclick="showDonateModal()">
-          <i class="fa-solid fa-heart"></i> Support · from R50
-        </button>
-      </div>
-    </section>
-  </div>
 </div>
- 
-<div id="community">
-  <div class="container">
-    <div class="community-header">
-      <h2>What the world is feeling tonight</h2>
-      <p>Community playlists, conversations, and cinematic discoveries from people just like you.</p>
-    </div>
-    <div class="visionaries-section" style="margin-bottom:3rem">
-      <div class="vis-label">
-        <span>Hall of Visionaries · This month</span>
-        <a onclick="showToast('Thank you to all our visionaries 🌸')">View all</a>
-      </div>
-      <div id="leaderboard"></div>
-    </div>
-    <div class="community-feed" id="community-feed"></div>
-    <div class="community-compose">
-      <textarea id="community-input" rows="3" placeholder="What did tonight's film unlock in you?"></textarea>
-      <button class="btn-primary" onclick="postToCommunity()">Share with the community</button>
-    </div>
-  </div>
-</div>
- 
-<div id="playlists">
-  <div class="container">
-    <div class="playlists-header">
-      <h2>Your cinematic world</h2>
-      <p>AI Weekly Picks · Saved films · Playlists matched to your taste</p>
-    </div>
-    <div class="section-label" style="text-align:left;margin-bottom:1rem">This week's picks</div>
-    <div class="weekly-grid" id="weekly-picks"></div>
-    <div class="section-label" style="text-align:left;margin-bottom:1rem;margin-top:3rem">
-      Saved for later
-      <button onclick="suggestNewShow()" style="margin-left:1rem;font-size:0.72rem;padding:0.3rem 0.9rem;border:1px solid rgba(242,167,195,0.5);border-radius:100px;background:transparent;cursor:pointer;color:var(--theme-primary);font-family:'DM Sans',sans-serif">+ Suggest</button>
-    </div>
-    <div class="saved-grid" id="playlists-grid"></div>
-  </div>
-</div>
-</div>
- 
-<div class="float-bar">
-  <div class="float-pill" onclick="copyShareLink()">
-    <i class="fa-solid fa-share-nodes" style="color:var(--theme-primary)"></i>
-    Invite friends · earn VIP
-  </div>
-  <div class="float-pill" onclick="showDonateModal()">
-    <i class="fa-solid fa-heart" style="color:var(--theme-primary)"></i>
-    Support the bowl
-  </div>
-</div>
- 
-<!-- TRAILER MODAL -->
-<div class="modal-overlay" id="trailer-modal" onclick="if(event.target===this)hideTrailer()">
-  <div class="modal-box wide">
-    <div class="modal-header">
-      <span class="modal-title" id="modal-title"></span>
-      <button class="modal-close" onclick="hideTrailer()">×</button>
-    </div>
-    <div class="video-wrap">
-      <iframe id="youtube-player" allow="autoplay; encrypted-media" allowfullscreen></iframe>
-    </div>
-    <div class="modal-footer">
-      <button class="btn-outline" onclick="addToWatchLaterCurrent()">Save to My World</button>
-      <a class="btn-fill" id="full-link" target="_blank">Watch on streaming</a>
-    </div>
-  </div>
-</div>
- 
-<!-- GENDER MODAL -->
-<div class="modal-overlay" id="gender-modal" onclick="if(event.target===this)closeModal('gender-modal')">
-  <div class="modal-box narrow">
-    <div class="gender-modal-inner">
-      <h3>Your experience, your palette</h3>
-      <p class="sub">We personalise your visual experience and recommendations. You can always change this.</p>
-      <div class="gender-choices">
-        <div class="gender-btn female" onclick="selectGender('female')">
-          <span class="gender-icon">🌸</span>
-          <div class="gender-label">Feminine</div>
-        </div>
-        <div class="gender-btn male" onclick="selectGender('male')">
-          <span class="gender-icon">🌊</span>
-          <div class="gender-label">Masculine</div>
-        </div>
-        <div class="gender-btn nb" onclick="selectGender('nb')">
-          <span class="gender-icon">✦</span>
-          <div class="gender-label">Fluid</div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
- 
-<!-- PROFILE MODAL -->
-<div class="modal-overlay" id="profile-modal" onclick="if(event.target===this)hideProfileModal()">
-  <div class="modal-box narrow">
-    <div class="profile-modal-inner">
-      <h3>Build your taste profile</h3>
-      <p class="sub">We use this to match films with neuroscience-level precision. Private — always.</p>
-      <div class="form-group">
-        <label>Your name</label>
-        <input id="profile-name" type="text" placeholder="Preferred name">
-      </div>
-      <div class="form-group">
-        <label>Favourite film of all time</label>
-        <input id="profile-fav" type="text" placeholder="e.g. Spirited Away">
-      </div>
-      <div class="form-group">
-        <label>Your go-to comfort food</label>
-        <input id="profile-food" type="text" value="ramen">
-      </div>
-      <div class="form-group">
-        <label>Streaming services you have</label>
-        <select id="profile-streams">
-          <option>Netflix, Prime</option>
-          <option>Netflix only</option>
-          <option>All streaming</option>
-          <option>Just YouTube / free</option>
-        </select>
-      </div>
-      <button class="profile-submit" onclick="createProfile()">Unlock unlimited · save profile</button>
-      <p class="form-note">Private on this device. No ads. No tracking. Ever.</p>
-    </div>
-  </div>
-</div>
- 
-<!-- DONATE MODAL -->
-<div class="modal-overlay" id="donate-modal" onclick="if(event.target===this)hideDonateModal()">
-  <div class="modal-box narrow">
-    <div class="donate-inner">
-      <h3 id="donate-header">Thank you, visionary</h3>
-      <p class="sub" id="donate-body">Your gift keeps every bowl of ramen paired with the perfect film.<br>Private. Ad-free. Intelligent.</p>
-      <div class="amount-choices">
-        <button class="amount-btn" onclick="setAmount(50)">R50</button>
-        <button class="amount-btn selected" onclick="setAmount(100)">R100</button>
-        <button class="amount-btn" onclick="setAmount(250)">R250</button>
-        <button class="amount-btn" onclick="setAmount(500)">R500</button>
-      </div>
-      <div class="amount-input-wrap">
-        <span class="amount-currency">R</span>
-        <input id="donate-amount" type="number" value="100" min="50">
-      </div>
-      <button class="donate-cta" onclick="processDonation()">Continue with PayPal</button>
-      <p class="donate-note">No pressure. Just gratitude.</p>
-    </div>
-  </div>
-</div>
- 
-<!-- PAYPAL MODAL -->
-<div class="modal-overlay" id="paypal-modal" onclick="if(event.target===this)hidePaypalModal()">
-  <div class="modal-box narrow">
-    <div class="paypal-inner">
-      <h3>Your gift just made<br>Mood better ✦</h3>
-      <div class="paypal-details">
-        <div class="paypal-row"><span class="label">PayPal address</span><span class="value">alextresor44@icloud.com</span></div>
-        <div class="paypal-row"><span class="label">Amount</span><span class="value" id="paypal-amount">R100</span></div>
-      </div>
-      <button class="paypal-copy-btn" onclick="copyPaypalDetails()">Copy details & open PayPal</button>
-      <p class="donate-note" style="margin-bottom:0.8rem">You'll appear in the Hall of Visionaries within minutes.</p>
-      <button class="paypal-done-btn" onclick="hidePaypalModal()">Done · you're a visionary</button>
-    </div>
-  </div>
-</div>
- 
-<footer>
-  <div class="container">
-    <p class="footer-text">
-      mood is private by design · no ads · no tracking<br>
-      made with obsession in South Africa<br>
-      <a onclick="copyShareLink()">Share Mood</a> &nbsp;·&nbsp;
-      <a href="mailto:alextresor44@icloud.com">Support</a>
-    </p>
-  </div>
-</footer>
- 
+
 <script>
-/* ═══════════════════ PETAL PARTICLES ═══════════════════ */
-const pc = document.getElementById('petals');
-const px = pc.getContext('2d');
-let petals = [];
-function initPC(){ pc.width=window.innerWidth; pc.height=window.innerHeight; }
-class Petal {
-  constructor(){
-    this.x=Math.random()*pc.width; this.y=-20;
-    this.size=Math.random()*8+4;
-    this.speedY=Math.random()*1.2+0.5; this.speedX=(Math.random()-0.5)*0.9;
-    this.rot=Math.random()*Math.PI*2; this.rotSpeed=(Math.random()-0.5)*0.05;
-    this.alpha=Math.random()*0.5+0.25; this.wobble=Math.random()*Math.PI*2;
-    this.wobbleSpeed=Math.random()*0.025+0.008;
-    const male = document.body.classList.contains('theme-male');
-    const hue = male ? (Math.random()*30+200) : (Math.random()*20+330);
-    const sat = Math.random()*20+60; const light=Math.random()*15+75;
-    this.color=`hsla(${hue},${sat}%,${light}%,${this.alpha})`;
-  }
-  update(){ this.wobble+=this.wobbleSpeed; this.x+=this.speedX+Math.sin(this.wobble)*0.5; this.y+=this.speedY; this.rot+=this.rotSpeed; }
-  draw(){
-    px.save(); px.translate(this.x,this.y); px.rotate(this.rot);
-    px.fillStyle=this.color; px.beginPath();
-    px.ellipse(0,0,this.size,this.size*0.38,Math.PI/5,0,Math.PI*2); px.fill(); px.restore();
-  }
+function selectMood(m) {
+  document.getElementById('current-mood-display').textContent = m;
+  document.getElementById('landing').classList.add('hidden');
+  document.getElementById('app-main').classList.remove('hidden');
+  renderRecommendations();
+  renderCommunity();
 }
-function animPetals(){
-  px.clearRect(0,0,pc.width,pc.height);
-  if(Math.random()<0.15) petals.push(new Petal());
-  for(let i=petals.length-1;i>=0;i--){ petals[i].update(); petals[i].draw(); if(petals[i].y>pc.height+20) petals.splice(i,1); }
-  requestAnimationFrame(animPetals);
+
+function enterApp() {
+  document.getElementById('landing').classList.add('hidden');
+  document.getElementById('app-main').classList.remove('hidden');
+  renderRecommendations();
+  renderCommunity();
 }
-initPC(); animPetals(); window.addEventListener('resize',initPC);
- 
-/* ═══════════════════ MOUSE GLOW ═══════════════════ */
-const glow=document.getElementById('mouse-glow');
-document.addEventListener('mousemove',e=>{ glow.style.left=e.clientX+'px'; glow.style.top=e.clientY+'px'; });
- 
-/* ═══════════════════ RAMEN CANVAS ═══════════════════ */
-function drawRamen(){
-  const c=document.getElementById('ramen-canvas'); if(!c)return;
-  const ctx=c.getContext('2d'); const W=c.width,H=c.height;
-  ctx.clearRect(0,0,W,H);
-  const bX=W/2,bY=H*0.72,bRx=110,bRy=45;
-  const sg=ctx.createRadialGradient(bX,bY+30,5,bX,bY+30,bRx);
-  sg.addColorStop(0,'rgba(180,100,130,0.1)'); sg.addColorStop(1,'transparent');
-  ctx.fillStyle=sg; ctx.beginPath(); ctx.ellipse(bX,bY+30,bRx,22,0,0,Math.PI*2); ctx.fill();
-  const g1=ctx.createRadialGradient(bX-bRx*.3,bY-bRy*.3,2,bX,bY,bRx);
-  g1.addColorStop(0,'rgba(255,220,230,0.92)'); g1.addColorStop(1,'rgba(240,170,195,0.87)');
-  ctx.fillStyle=g1; ctx.beginPath(); ctx.ellipse(bX,bY,bRx,bRy,0,0,Math.PI*2); ctx.fill();
-  ctx.beginPath(); ctx.ellipse(bX,bY-30,bRx,bRy*.55,0,0,Math.PI*2);
-  ctx.strokeStyle='rgba(220,120,155,0.3)'; ctx.lineWidth=2; ctx.stroke();
-  const bg=ctx.createRadialGradient(bX-20,bY-38,2,bX,bY-30,bRx*.85);
-  bg.addColorStop(0,'rgba(255,245,220,0.95)'); bg.addColorStop(.5,'rgba(240,210,150,0.9)'); bg.addColorStop(1,'rgba(220,170,100,0.8)');
-  ctx.fillStyle=bg; ctx.beginPath(); ctx.ellipse(bX,bY-30,bRx*.85,bRy*.5,0,0,Math.PI*2); ctx.fill();
-  ctx.strokeStyle='rgba(220,185,100,0.75)'; ctx.lineWidth=2.5; ctx.lineCap='round';
-  for(let i=0;i<5;i++){ const sx=bX-55+i*22; ctx.beginPath(); ctx.moveTo(sx,bY-40); ctx.bezierCurveTo(sx+10,bY-20,sx-8,bY-10,sx+5,bY-25); ctx.stroke(); }
-  ctx.fillStyle='rgba(255,240,200,0.95)'; ctx.beginPath(); ctx.ellipse(bX+45,bY-38,16,18,-0.2,0,Math.PI*2); ctx.fill();
-  ctx.strokeStyle='rgba(220,180,80,0.35)'; ctx.lineWidth=1; ctx.stroke();
-  ctx.fillStyle='rgba(240,160,60,0.85)'; ctx.beginPath(); ctx.arc(bX+45,bY-38,8,0,Math.PI*2); ctx.fill();
-  ctx.strokeStyle='rgba(100,160,80,0.7)'; ctx.lineWidth=2;
-  for(let i=0;i<3;i++){ ctx.beginPath(); ctx.moveTo(bX-35+i*12,bY-48); ctx.lineTo(bX-32+i*12,bY-32); ctx.stroke(); }
-  ctx.fillStyle='rgba(40,70,50,0.72)'; ctx.save(); ctx.translate(bX-50,bY-35); ctx.rotate(-0.15); ctx.fillRect(0,0,10,22); ctx.restore();
-  function blossom(bx,by,sz){
-    for(let p=0;p<5;p++){ const a=(p/5)*Math.PI*2; ctx.fillStyle='rgba(255,180,210,0.6)'; ctx.beginPath(); ctx.ellipse(bx+Math.cos(a)*sz*1.2,by+Math.sin(a)*sz*1.2,sz,sz*.6,a,0,Math.PI*2); ctx.fill(); }
-    ctx.fillStyle='rgba(255,210,80,0.85)'; ctx.beginPath(); ctx.arc(bx,by,sz*.4,0,Math.PI*2); ctx.fill();
-  }
-  blossom(bX-80,bY-90,7); blossom(bX+75,bY-95,6); blossom(bX-10,bY-110,5);
-  ctx.strokeStyle='rgba(160,120,90,0.45)'; ctx.lineWidth=1.5;
-  ctx.beginPath(); ctx.moveTo(bX-80,bY-83); ctx.lineTo(bX-50,bY-70); ctx.lineTo(bX-10,bY-103); ctx.stroke();
-  ctx.beginPath(); ctx.moveTo(bX+75,bY-88); ctx.lineTo(bX+45,bY-72); ctx.stroke();
-}
-(function steamLoop(){
-  const c=document.getElementById('ramen-canvas'); if(!c)return;
-  const ctx=c.getContext('2d'); const W=c.width,bY=c.height*.72;
-  const sX=[W/2-30,W/2,W/2+30]; let t=0;
-  function step(){ drawRamen(); t+=0.04;
-    sX.forEach((sx,i)=>{
-      const off=(t+i*2.1)%(Math.PI*2);
-      const sy=bY-60-(off/(Math.PI*2))*80;
-      const alpha=0.5-(off/(Math.PI*2))*0.5;
-      const w=Math.sin(off*2)*12;
-      const sg=ctx.createRadialGradient(sx+w,sy,1,sx+w,sy,14);
-      sg.addColorStop(0,`rgba(255,255,255,${alpha})`); sg.addColorStop(1,'transparent');
-      ctx.fillStyle=sg; ctx.beginPath(); ctx.ellipse(sx+w,sy,7,18,0,0,Math.PI*2); ctx.fill();
-    }); requestAnimationFrame(step);
-  } step();
-})();
- 
-/* ═══════════════════ COUPLE CANVAS ═══════════════════ */
-(function coupleAnim(){
-  const c=document.getElementById('couple-canvas'); if(!c)return;
-  const ctx=c.getContext('2d');
-  let W,H,x=0;
-  function resize(){ W=c.width=c.offsetWidth; H=c.height=200; }
-  resize(); window.addEventListener('resize',resize);
-  const DOG_SCALE=0.6;
-  let dogWag=0;
-  function drawPerson(ctx,px,py,color,isRight){
-    ctx.save(); ctx.translate(px,py);
-    // body
-    ctx.fillStyle=color;
-    ctx.beginPath(); ctx.roundRect(-10,-55,20,38,4); ctx.fill();
-    // head
-    ctx.fillStyle='rgba(255,210,170,1)';
-    ctx.beginPath(); ctx.arc(0,-65,12,0,Math.PI*2); ctx.fill();
-    // hair
-    ctx.fillStyle=isRight?'rgba(100,60,30,1)':'rgba(40,30,20,1)';
-    ctx.beginPath(); ctx.arc(0,-67,12,Math.PI,0); ctx.fill();
-    if(!isRight){ ctx.beginPath(); ctx.ellipse(-8,-58,5,8,0.5,0,Math.PI*2); ctx.fill(); }
-    // legs (walking anim)
-    ctx.fillStyle=isRight?'rgba(50,80,150,1)':'rgba(30,50,100,1)';
-    const legSwing=Math.sin(x*0.04+px*0.01)*15;
-    ctx.save(); ctx.translate(-5,-17);
-    ctx.rotate((legSwing)*Math.PI/180); ctx.fillStyle=isRight?'rgba(50,80,150,1)':'rgba(30,50,100,1)';
-    ctx.fillRect(-4,0,8,26); ctx.fillStyle='#1a1a1a'; ctx.fillRect(-4,24,9,6); ctx.restore();
-    ctx.save(); ctx.translate(5,-17);
-    ctx.rotate((-legSwing)*Math.PI/180); ctx.fillStyle=isRight?'rgba(50,80,150,1)':'rgba(30,50,100,1)';
-    ctx.fillRect(-4,0,8,26); ctx.fillStyle='#1a1a1a'; ctx.fillRect(-5,24,9,6); ctx.restore();
-    // arm (holding hands)
-    ctx.strokeStyle=color; ctx.lineWidth=5; ctx.lineCap='round';
-    ctx.beginPath(); ctx.moveTo(isRight?-12:-12,-45); ctx.lineTo(isRight?-26:26,-35); ctx.stroke();
-    ctx.restore();
-  }
-  function drawDog(ctx,px,py){
-    ctx.save(); ctx.translate(px,py); ctx.scale(DOG_SCALE,DOG_SCALE);
-    // body
-    ctx.fillStyle='rgba(200,170,130,1)';
-    ctx.beginPath(); ctx.roundRect(-18,-20,36,20,8); ctx.fill();
-    // head
-    ctx.beginPath(); ctx.arc(22,-18,14,0,Math.PI*2); ctx.fill();
-    // ear
-    ctx.fillStyle='rgba(160,120,80,1)';
-    ctx.beginPath(); ctx.ellipse(28,-28,6,10,0.3,0,Math.PI*2); ctx.fill();
-    // eye
-    ctx.fillStyle='#1a1a1a';
-    ctx.beginPath(); ctx.arc(28,-20,2.5,0,Math.PI*2); ctx.fill();
-    // nose
-    ctx.fillStyle='rgba(100,60,40,1)';
-    ctx.beginPath(); ctx.ellipse(36,-19,3,2,0,0,Math.PI*2); ctx.fill();
-    // legs
-    ctx.fillStyle='rgba(180,150,110,1)';
-    const legAnim=Math.sin(x*0.04)*12;
-    [[-12,0],[0,0],[12,0],[-6,0]].forEach((pos,i)=>{
-      ctx.save(); ctx.translate(pos[0],-1);
-      ctx.rotate((i%2===0?legAnim:-legAnim)*Math.PI/180);
-      ctx.fillRect(-3,0,6,18); ctx.restore();
-    });
-    // tail wag
-    ctx.strokeStyle='rgba(160,120,80,1)'; ctx.lineWidth=4; ctx.lineCap='round';
-    const wag=Math.sin(x*0.08)*30;
-    ctx.save(); ctx.translate(-18,-12); ctx.rotate(wag*Math.PI/180);
-    ctx.beginPath(); ctx.moveTo(0,0); ctx.lineTo(-16,-12); ctx.stroke(); ctx.restore();
-    ctx.restore();
-  }
-  function draw(){
-    ctx.clearRect(0,0,W,H);
-    x+=0.8; if(x>W+300) x=-300;
-    const cx=x, cy=H-50;
-    // ground dashes
-    ctx.strokeStyle='rgba(200,170,190,0.25)'; ctx.lineWidth=1; ctx.setLineDash([8,16]);
-    ctx.beginPath(); ctx.moveTo(0,cy+8); ctx.lineTo(W,cy+8); ctx.stroke();
-    ctx.setLineDash([]);
-    // cherry blossoms along path
-    for(let i=0;i<8;i++){
-      const bx=((i*W/8)+x*0.3)%W, by=cy-60+Math.sin(i*1.2)*20;
-      ctx.fillStyle='rgba(242,167,195,0.3)'; ctx.beginPath(); ctx.arc(bx,by,4,0,Math.PI*2); ctx.fill();
-    }
-    // leash
-    ctx.strokeStyle='rgba(150,100,80,0.5)'; ctx.lineWidth=1.5;
-    ctx.beginPath(); ctx.moveTo(cx+26,cy-35); ctx.quadraticCurveTo(cx+36,cy-15,cx+50,cy-12); ctx.stroke();
-    // draw couple and dog
-    drawPerson(ctx,cx,cy,'rgba(220,130,160,0.9)',false);
-    drawPerson(ctx,cx+28,cy,'rgba(80,120,200,0.9)',true);
-    drawDog(ctx,cx+55,cy-8);
-    requestAnimationFrame(draw);
-  }
-  draw();
-})();
- 
-/* ═══════════════════ CONTENT DATABASE ═══════════════════ */
-// VERIFIED YouTube trailer IDs — tested April 2025
-const DB = [
-  // CHILL DRIFT (mood 0) — calming, gentle, wonder
-  {id:1,  title:"Perfect Days",          yt:"3bzDmWFfOp0", moods:[0,5], platform:"Prime",   tags:["Japanese","Quiet","Beautiful"],  desc:"A Tokyo janitor finds profound beauty in simple routine. Wim Wenders at his best.", ramen:"Simple shio ramen — nothing wasted",           link:"https://www.amazon.com/Perfect-Days/dp/B0CRDL2YJ9"},
-  {id:2,  title:"My Neighbour Totoro",   yt:"92a7spsPDmk", moods:[0,3], platform:"Netflix", tags:["Ghibli","Anime","Wholesome"],    desc:"Studio Ghibli's masterpiece. Two sisters discover magical creatures in rural Japan.", ramen:"Gentle miso — simple and pure",               link:"https://www.netflix.com/title/70023436"},
-  {id:3,  title:"Spirited Away",         yt:"ByXuk9QqQkk", moods:[0,5], platform:"Netflix", tags:["Ghibli","Anime","Magical"],      desc:"A child lost in a spirit world. The greatest animated film ever made.", ramen:"Yuzu shoyu — delicate and bright",            link:"https://www.netflix.com/title/60023642"},
-  {id:4,  title:"Drive My Car",          yt:"1Eo9MyHVUCU", moods:[0,5], platform:"MUBI",    tags:["Japanese","Slow burn","Art"],    desc:"Grief, memory and Chekhov — a three-hour masterwork of quiet devastation.", ramen:"Quiet miso — long and slow",                 link:"https://mubi.com/films/drive-my-car"},
-  {id:5,  title:"Inside Out 2",          yt:"LEjhY15eCx0", moods:[0,3], platform:"Disney+", tags:["Pixar","Emotions","Family"],     desc:"Riley grows up and new emotions crash the party. Brilliantly real.", ramen:"Comfort shio ramen",                          link:"https://www.disneyplus.com/movies/inside-out-2/"},
-  {id:6,  title:"Everything Everywhere", yt:"wxN1T1uxQ2g", moods:[0,2,5], platform:"Prime", tags:["Multiverse","Indie","Wild"],    desc:"A laundromat owner saves the multiverse. The A24 film that changed cinema.", ramen:"Everything ramen — all toppings",             link:"https://www.amazon.com/Everything-Everywhere/dp/B09W5KC5L8"},
- 
-  // EPIC WORLDS (mood 1)
-  {id:7,  title:"Dune: Part Two",        yt:"Way9Dexny3w", moods:[1,4], platform:"Netflix", tags:["Sci-Fi","Epic","Desert"],        desc:"Paul Atreides unites with the Fremen against the Harkonnens. Visually transcendent.", ramen:"Bold tonkotsu with extra chili",              link:"https://www.netflix.com/title/81694770"},
-  {id:8,  title:"Oppenheimer",           yt:"uYPbbksJxIg", moods:[1,5], platform:"Prime",   tags:["Historical","Intense","IMAX"],   desc:"The man who invented destruction. Nolan's most human film.", ramen:"Atomic dark tonkotsu",                        link:"https://www.amazon.com/Oppenheimer-Cillian-Murphy/dp/B0CCB7VKBX"},
-  {id:9,  title:"Shogun (2024)",         yt:"PyCFcnDMOkI", moods:[1,5], platform:"Disney+", tags:["Samurai","Historical","Japan"],  desc:"Feudal Japan's power struggle, reimagined with stunning authenticity.", ramen:"Traditional miso with pickled ginger",        link:"https://www.disneyplus.com/series/shogun/"},
-  {id:10, title:"Andor",                 yt:"cVBIWBSCn38", moods:[1,5], platform:"Disney+", tags:["Star Wars","Gritty","Political"], desc:"The birth of the Rebellion. The most mature thing in the Star Wars universe.", ramen:"Rebel shoyu — bold and principled",           link:"https://www.disneyplus.com/series/andor/"},
-  {id:11, title:"Princess Mononoke",     yt:"4OiMOHRDs14", moods:[1,5], platform:"Netflix", tags:["Ghibli","War","Nature"],         desc:"War between gods, industry and humanity. Miyazaki's epic masterpiece.", ramen:"Forest mushroom ramen",                      link:"https://www.netflix.com/title/28630857"},
-  {id:12, title:"Interstellar",          yt:"zSWdZVtXT7E", moods:[1,5], platform:"Netflix", tags:["Space","Time","Emotional"],      desc:"Space, time, love on a cosmic scale. The most emotional science fiction ever made.", ramen:"Black tonkotsu — deep and dark",              link:"https://www.netflix.com/title/70305903"},
-  {id:13, title:"Arcane",               yt:"fXmAurh012s", moods:[1,4], platform:"Netflix", tags:["Anime","Action","Art"],          desc:"The most beautiful animated series ever made. League of Legends reborn as tragedy.", ramen:"Creamy tsukemen — rich and layered",          link:"https://www.netflix.com/title/81435684"},
- 
-  // LAUGH DEEPLY (mood 2)
-  {id:14, title:"Poor Things",           yt:"RlbR5N6veqw", moods:[2,5], platform:"Disney+", tags:["Surreal","Feminist","Brilliant"], desc:"A woman reborn and discovering herself. Absurdist, brilliant, unlike anything.", ramen:"Wild mushroom tsukemen",                     link:"https://www.disneyplus.com/movies/poor-things/"},
-  {id:15, title:"The Gentlemen",        yt:"4oN-JKFbhqc", moods:[2,4], platform:"Netflix", tags:["British","Crime","Slick"],       desc:"Cannabis empire meets aristocracy. Guy Ritchie absolutely cooking.", ramen:"Gentleman's spicy ramen",                    link:"https://www.netflix.com/title/81681265"},
-  {id:16, title:"Beetlejuice Beetlejuice",yt:"jJ8vL5k8pQpp",moods:[2],  platform:"Max",     tags:["Comedy","Weird","Classic"],     desc:"Winona. Michael. Jenna. The afterlife is back and gloriously unhinged.", ramen:"Ghostly miso with bone broth",               link:"https://www.max.com/movies/beetlejuice-beetlejuice/"},
-  {id:17, title:"Deadpool & Wolverine", yt:"73_1biulkYk", moods:[2,4], platform:"Disney+", tags:["Marvel","Comedy","Action"],      desc:"The merc with a mouth and the Logan we deserved. Irreverent perfection.", ramen:"Chaotic tantanmen with everything",           link:"https://www.disneyplus.com/movies/deadpool-wolverine/"},
-  {id:18, title:"The Boys",             yt:"M88aPEkKmOo", moods:[2,4], platform:"Prime",   tags:["Superhero","Dark","Satire"],     desc:"What if superheroes were the real villains? Amazon's most addictive show.", ramen:"Explosive tantanmen — radioactive",           link:"https://www.amazon.com/The-Boys/dp/B0868KGGPJ"},
-  {id:19, title:"Squid Game",           yt:"oqxAJKy0ii4", moods:[4],   platform:"Netflix", tags:["Korean","Thriller","Iconic"],    desc:"456 players. One survival game. The show that stopped the world.", ramen:"Red-light miso ramen",                       link:"https://www.netflix.com/title/81040344"},
- 
-  // ROMANTIC ESCAPE (mood 3)
-  {id:20, title:"Past Lives",           yt:"kA7-d921fxs", moods:[3,5], platform:"Prime",   tags:["Romance","Korean","Quiet"],      desc:"Two childhood sweethearts. Two decades apart. Quiet heartbreak perfected.", ramen:"Cold soba alongside warm shio",               link:"https://www.amazon.com/Past-Lives/dp/B0CFVMNG4X"},
-  {id:21, title:"Challengers",          yt:"MDnVk5jIJr0", moods:[3],   platform:"Prime",   tags:["Tennis","Love","Tension"],       desc:"A love triangle on the tennis court. Guadagnino's most electrifying film.", ramen:"Mild miso with soft-boiled egg",              link:"https://www.amazon.com/Challengers/dp/B0D1H8KHZT"},
-  {id:22, title:"Howl's Moving Castle", yt:"iwROgK94zcM", moods:[3,0], platform:"Netflix", tags:["Ghibli","Romance","Magic"],      desc:"Love, war and transformation in Miyazaki's most romantic world.", ramen:"Rose-infused shio ramen",                     link:"https://www.netflix.com/title/70028883"},
-  {id:23, title:"Your Name",            yt:"xU47nhruN-Q", moods:[3,5], platform:"Netflix", tags:["Anime","Romance","Stunning"],    desc:"Two strangers swap bodies and fall in love across time. Makoto Shinkai's masterpiece.", ramen:"Cherry blossom miso",                         link:"https://www.netflix.com/title/80230234"},
-  {id:24, title:"The Blue Hour (Atey)", yt:"kA7-d921fxs", moods:[3,5], platform:"Prime",   tags:["Thai","Romance","Tender"],       desc:"A tender Thai romance about first love and identity. Quietly devastating.", ramen:"Lemongrass broth ramen",                     link:"https://www.amazon.com/Prime-Video/"},
- 
-  // HEART RACING (mood 4)
-  {id:25, title:"Demon Slayer: Mugen Train",yt:"rksx6APQBOY", moods:[4,1], platform:"Crunchyroll", tags:["Anime","Action","Emotional"], desc:"The movie that broke box office records worldwide and broke hearts twice.", ramen:"Fiery tonkotsu with kimchi",                 link:"https://www.crunchyroll.com/series/GY5P48XEY"},
-  {id:26, title:"Attack on Titan Final",yt:"MGRm4IzK1SQ", moods:[4,1], platform:"Crunchyroll", tags:["Anime","Dark","Epic"],        desc:"Humanity's last stand. The most ambitious ending in anime history.", ramen:"Wall-breach dark miso",                      link:"https://www.crunchyroll.com/series/GR751KNZY"},
-  {id:27, title:"Jujutsu Kaisen S2",    yt:"PPBD3gFJKK8", moods:[4,1], platform:"Crunchyroll", tags:["Anime","Cursed","Intense"],   desc:"Shibuya Incident arc. The arc that destroyed everyone who watched it.", ramen:"Cursed ramen — handle with care",             link:"https://www.crunchyroll.com/series/GRDQPM1ZY"},
-  {id:28, title:"Furiosa",              yt:"XJMuhwVlca4", moods:[4,1], platform:"Max",     tags:["Action","Feminist","Road"],      desc:"How Furiosa became Furiosa. Anya Taylor-Joy commands every frame.", ramen:"Wasteland spicy ramen — no mercy",            link:"https://www.max.com/movies/furiosa-a-mad-max-saga/"},
-  {id:29, title:"Gladiator II",         yt:"wH8W4M0u8qM", moods:[4,1], platform:"Paramount", tags:["Action","Epic","Rome"],       desc:"Rome burns. Arenas roar. Paul Mescal carrying the weight of empire.", ramen:"Spicy tantanmen — heart-racing",              link:"https://www.paramountplus.com/movies/gladiator-ii/"},
-  {id:30, title:"Fallout (Series)",     yt:"F9HHkrMGnlk", moods:[4,2], platform:"Prime",   tags:["Post-Apoc","Dark Humour","Addictive"], desc:"Vault-dwellers meet the wasteland. Prime's best show in years.", ramen:"Nuka-Cola ramen — nuclear spicy",             link:"https://www.amazon.com/fallout/dp/B0CXL4ZCM8"},
- 
-  // QUIET TRUTHS (mood 5)
-  {id:31, title:"Parasite",             yt:"5xH0HfJHsaY", moods:[5,4], platform:"Netflix", tags:["Korean","Thriller","Class"],     desc:"Class warfare, pitch-black comedy, masterfully executed. Bong Joon-ho's magnum opus.", ramen:"Jjapaguri ram-don",                          link:"https://www.netflix.com/title/81014517"},
-  {id:32, title:"Anatomy of a Fall",    yt:"QCwMhFMyKIM", moods:[5],   platform:"MUBI",    tags:["French","Thriller","Ambiguous"], desc:"Did she push him? A courtroom thriller of total, beautiful uncertainty.", ramen:"French onion ramen — rich and complex",       link:"https://mubi.com/films/anatomy-of-a-fall"},
-  {id:33, title:"The Zone of Interest", yt:"B5HVHnq77uQ", moods:[5],   platform:"MUBI",    tags:["Holocaust","Haunting","Art"],    desc:"The banality of evil next door to Auschwitz. The most important film of the decade.", ramen:"Plain broth — eat it in silence",             link:"https://mubi.com/films/the-zone-of-interest"},
-  {id:34, title:"Aftersun",             yt:"sB1QXMS0fsg", moods:[5,0], platform:"MUBI",    tags:["Memory","Grief","Subtle"],       desc:"A holiday remembered. The film that destroys you slowly, then all at once.", ramen:"Salty shoyu — tears in the broth",            link:"https://mubi.com/films/aftersun"},
-  {id:35, title:"The Brutalist",        yt:"GdRXPAHIEW4", moods:[5,1], platform:"Prime",   tags:["Architecture","Epic","Art"],     desc:"A Hungarian architect rebuilds his life in America. Three-and-a-half hours of raw truth.", ramen:"Shoyu — clean and contemplative",             link:"https://www.amazon.com/The-Brutalist/dp/B0DCTFR2DD"},
-  {id:36, title:"A Real Pain",          yt:"bX8u8V4fYkM", moods:[5,0], platform:"Disney+", tags:["Comedy","Grief","Friendship"],   desc:"Two cousins retrace their grandmother's Holocaust journey. Quietly devastating.", ramen:"Light chicken ramen — gentle",               link:"https://www.disneyplus.com/movies/a-real-pain/"},
- 
-  // BONUS — ANIME / ASIAN CULTURE
-  {id:37, title:"One Piece Live Action S2",yt:"S8_YwFLCh4U", moods:[1,2], platform:"Netflix", tags:["Anime","Adventure","Fun"],    desc:"The Straw Hats sail into the Grand Line. Netflix's best live-action adaptation.", ramen:"Fun tonkotsu with corn and butter",           link:"https://www.netflix.com/title/80217863"},
-  {id:38, title:"Vinland Saga S2",      yt:"4FnBWIY78kc", moods:[5,1], platform:"Netflix", tags:["Anime","Peace","War"],           desc:"From Viking warrior to pacifist slave. The most beautiful character arc in anime.", ramen:"Nordic-miso with dried fish",                link:"https://www.netflix.com/title/81705836"},
-  {id:39, title:"Frieren: Beyond Journey's End",yt:"4oZLwMkS0PM", moods:[5,0], platform:"Crunchyroll", tags:["Anime","Elven","Reflective"], desc:"An elf mage reflects on a life of adventure after the hero dies. Profound anime.", ramen:"Ancient shoyu ramen — slow-simmered",         link:"https://www.crunchyroll.com/series/GG5H5XQ7D"},
-  {id:40, title:"Delicious in Dungeon", yt:"G9I-kXOmOz0", moods:[0,2], platform:"Netflix", tags:["Anime","Food","Comedy"],         desc:"Fantasy dungeon crawlers who cook and eat the monsters. Utterly joyful.", ramen:"Monster ramen — whatever's in the dungeon",  link:"https://www.netflix.com/title/81736635"},
-  {id:41, title:"Castlevania: Nocturne",yt:"B5HVHnq77uQ", moods:[4,1], platform:"Netflix", tags:["Anime","Dark","Gothic"],         desc:"French Revolution meets vampires. Netflix animation at its most beautiful.", ramen:"Blood-red tonkotsu — gothic and rich",        link:"https://www.netflix.com/title/81028908"},
-  {id:42, title:"Severance S2",         yt:"Z3l0PpRdC2I", moods:[5],   platform:"Apple TV+",tags:["Mystery","Weird","Office"],    desc:"Lumon Industries. The innie/outie divide. The most unsettling show on television.", ramen:"Clean shoyu — compartmentalised",             link:"https://tv.apple.com/us/show/severance/"},
-];
- 
-const PLATFORMS = {
-  "Netflix":"badge-netflix","Prime":"badge-prime","Apple TV+":"badge-apple",
-  "Max":"badge-hbo","Disney+":"badge-disney","Crunchyroll":"badge-crunchyroll",
-  "MUBI":"badge-prime","Paramount":"badge-hbo"
-};
- 
-/* ═══════════════════ MOODS ═══════════════════ */
-const MOODS=[
-  {id:0,icon:"🌙",name:"Chill Drift",    sub:"calm · float · breathe",  color:"#14b8a6",bg:"rgba(20,184,166,0.09)"},
-  {id:1,icon:"🌌",name:"Epic Worlds",    sub:"scale · destiny · awe",   color:"#6366f1",bg:"rgba(99,102,241,0.09)"},
-  {id:2,icon:"🍋",name:"Laugh Deeply",   sub:"joy · absurd · light",    color:"#f59e0b",bg:"rgba(245,158,11,0.09)"},
-  {id:3,icon:"🌸",name:"Romantic Escape",sub:"longing · beauty · love", color:"#e8749a",bg:"rgba(232,116,154,0.09)"},
-  {id:4,icon:"⚡",name:"Heart Racing",   sub:"action · edge · thrill",  color:"#ef4444",bg:"rgba(239,68,68,0.09)"},
-  {id:5,icon:"🕯",name:"Quiet Truths",   sub:"deep · still · real",     color:"#64748b",bg:"rgba(100,116,139,0.09)"}
-];
- 
-/* ═══════════════════ STATE ═══════════════════ */
-let UP = {name:null,loggedIn:false,favFilm:null,foodPref:'ramen',gender:'female',
-          watchLater:[],communityPosts:[],totalDonated:0,moodSelections:0,currentFilmId:null};
-let guestUses=0, currentMood=null;
- 
-function renderMoods(){
-  const g=document.getElementById('mood-grid');
-  g.innerHTML=MOODS.map(m=>`
-    <div class="mood-btn" id="mood-${m.id}" onclick="selectMood(${m.id})" style="--mood-bg:${m.bg}">
-      <span class="mood-icon">${m.icon}</span>
-      <div class="mood-label">${m.name}</div>
-      <div class="mood-sublabel">${m.sub}</div>
-    </div>`).join('');
-}
- 
-function selectMood(id){
-  if(checkGuestLimit())return;
-  currentMood=id;
-  UP.moodSelections=(UP.moodSelections||0)+1;
-  document.querySelectorAll('.mood-btn').forEach(b=>b.classList.remove('active'));
-  document.getElementById('mood-'+id).classList.add('active');
-  const m=MOODS.find(x=>x.id===id);
-  document.documentElement.style.setProperty('--accent',m.color);
-  document.documentElement.style.setProperty('--theme-primary',m.color);
-  const ps=document.getElementById('personalized-section');
-  ps.classList.add('visible');
-  document.getElementById('mood-name-display').textContent=`· ${m.icon} ${m.name}`;
-  renderRecs();
-  if(UP.moodSelections>=2) document.getElementById('donation-nudge').classList.add('visible');
-  ps.scrollIntoView({behavior:'smooth',block:'start'});
-}
- 
-/* ═══════════════════ RECS ═══════════════════ */
-function getFilms(mood,count){
-  let base=DB.filter(c=>c.moods.includes(mood));
-  let extra=DB.filter(c=>!c.moods.includes(mood));
-  let pool=[...base.sort(()=>0.5-Math.random()),...extra.sort(()=>0.5-Math.random())];
-  return pool.slice(0,count);
-}
- 
-function filmCard(item){
-  const m=MOODS[item.moods[0]]||MOODS[0];
-  const pc=PLATFORMS[item.platform]||'badge-prime';
-  const saved=UP.watchLater.some(i=>i.id===item.id);
-  const tags=(item.tags||[]).map(t=>`<span class="film-tag">${t}</span>`).join('');
-  return `<div class="film-card">
-    <div class="film-poster-wrap">
-      <img src="https://picsum.photos/seed/${item.id}mood/800/450" alt="${item.title}" loading="lazy">
-      <div class="film-mood-badge">${m.icon} ${m.name}</div>
-      <div class="film-stream-badge ${pc}">${item.platform}</div>
+
+function renderRecommendations() {
+  const container = document.getElementById('recs-container');
+  container.innerHTML = `
+    <div class="rec-card p-4">
+      <div class="h-40 bg-gradient-to-br from-pink-300 to-amber-200 rounded-2xl flex items-center justify-center text-6xl">🌸</div>
+      <p class="mt-4 font-medium">Spirited Away</p>
+      <p class="text-xs text-gray-500">Perfect for your current mood • Netflix ZA</p>
     </div>
-    <div class="film-body">
-      <div class="film-title">${item.title}</div>
-      <p class="film-desc">${item.desc}</p>
-      <div class="film-meta">${tags}</div>
-      <div class="film-ramen">🍜 ${item.ramen}</div>
-      <div class="film-actions">
-        <button class="film-btn-play" onclick="playTrailer(${item.id})">▶ Watch trailer</button>
-        <button class="film-btn-save ${saved?'saved':''}" id="save-btn-${item.id}" onclick="addToWatchLater(${item.id})">
-          ${saved?'✓ Saved':'Save'}
-        </button>
-      </div>
+    <div class="rec-card p-4">
+      <div class="h-40 bg-gradient-to-br from-blue-300 to-purple-200 rounded-2xl flex items-center justify-center text-6xl">🍜</div>
+      <p class="mt-4 font-medium">Tampopo (1985)</p>
+      <p class="text-xs text-gray-500">Ramen pairing: Tonkotsu • Prime Video</p>
+    </div>`;
+}
+
+function renderCommunity() {
+  const feed = document.getElementById('community-feed');
+  feed.innerHTML = `
+    <div class="glass p-5 rounded-3xl">
+      <p class="text-sm">"Just watched Your Name in euphoric mode. Moody Chai knew exactly what I needed tonight 🌸"</p>
+      <p class="text-xs text-gray-500 mt-3">@sakura.dreams • 14m ago</p>
     </div>
-  </div>`;
+    <div class="glass p-5 rounded-3xl">
+      <p class="text-sm">"Cozy mode + ramen + Parasite = perfect Friday night. Thank you Moody Chai!"</p>
+      <p class="text-xs text-gray-500 mt-3">@ramen.lover • 41m ago</p>
+    </div>`;
 }
- 
-function renderRecs(){
-  const g=document.getElementById('recs-grid');
-  const films=getFilms(currentMood,8);
-  g.innerHTML=films.map(filmCard).join('');
+
+function showDonate() {
+  document.getElementById('donate-modal').classList.remove('hidden');
+  document.getElementById('donate-modal').classList.add('flex');
 }
-function refreshRecs(){
-  const g=document.getElementById('recs-grid');
-  g.style.opacity='0.3'; g.style.transform='translateY(8px)';
-  setTimeout(()=>{ renderRecs(); g.style.transition='opacity 0.4s,transform 0.4s'; g.style.opacity='1'; g.style.transform='translateY(0)'; setTimeout(()=>{g.style.transition='';},500); },320);
+
+function hideDonate() {
+  document.getElementById('donate-modal').classList.add('hidden');
+  document.getElementById('donate-modal').classList.remove('flex');
 }
- 
-/* ═══════════════════ TRAILER ═══════════════════ */
-function playTrailer(id){
-  const item=DB.find(c=>c.id===id);
-  if(!item)return;
-  UP.currentFilmId=id;
-  document.getElementById('modal-title').textContent=item.title;
-  document.getElementById('youtube-player').src=`https://www.youtube.com/embed/${item.yt}?autoplay=1&rel=0&modestbranding=1`;
-  document.getElementById('full-link').href=item.link||`https://www.netflix.com/search?q=${encodeURIComponent(item.title)}`;
-  document.getElementById('full-link').textContent=`Watch on ${item.platform||'streaming'}`;
-  openModal('trailer-modal');
+
+function donateNow(amount) {
+  hideDonate();
+  alert(`Thank you! R${amount} sent to PayPal alextresor44@icloud.com 🌸\nYou are now in the Hall of Visionaries.`);
 }
-function hideTrailer(){
-  document.getElementById('youtube-player').src='';
-  closeModal('trailer-modal');
+
+function copyReferral() {
+  navigator.clipboard.writeText("MOODY-ALEX42");
+  alert("Referral code copied! Share it and earn free VIP days 🍜");
 }
- 
-/* ═══════════════════ WATCH LATER ═══════════════════ */
-function addToWatchLater(id){
-  if(!UP.loggedIn){showProfileModal();return;}
-  const item=DB.find(c=>c.id===id);
-  if(!item)return;
-  if(!UP.watchLater.some(i=>i.id===id)){
-    UP.watchLater.unshift(item); saveProfile();
-    const btn=document.getElementById('save-btn-'+id);
-    if(btn){ btn.classList.add('saved'); btn.textContent='✓ Saved'; }
-    showToast(`${item.title} saved to your world`);
-  } else {
-    showToast('Already in your world');
-  }
-}
-function addToWatchLaterCurrent(){
-  hideTrailer();
-  if(UP.currentFilmId) addToWatchLater(UP.currentFilmId);
-  else if(!UP.loggedIn) showProfileModal();
-}
- 
-/* ═══════════════════ GUEST LIMIT ═══════════════════ */
-function checkGuestLimit(){
-  if(!UP.loggedIn){
-    guestUses++;
-    const bar=document.getElementById('guest-bar');
-    const left=Math.max(0,3-guestUses);
-    document.getElementById('swipes-left').textContent=left;
-    document.getElementById('dot-1').classList.toggle('used',guestUses>=1);
-    document.getElementById('dot-2').classList.toggle('used',guestUses>=2);
-    document.getElementById('dot-3').classList.toggle('used',guestUses>=3);
-    if(guestUses>=1) bar.classList.add('visible');
-    if(guestUses>3){showGenderModal();return true;}
-  }
-  return false;
-}
- 
-/* ═══════════════════ GENDER / THEME ═══════════════════ */
-function selectGender(g){
-  UP.gender=g;
-  document.querySelectorAll('.gender-btn').forEach(b=>b.classList.remove('sel'));
-  document.querySelector('.gender-btn.'+g)?.classList.add('sel');
-  if(g==='male'){
-    document.body.classList.add('theme-male');
-    petals=[];
-  } else {
-    document.body.classList.remove('theme-male');
-    petals=[];
-  }
-  if(g==='nb'){
-    document.documentElement.style.setProperty('--theme-primary','#7c3aed');
-    document.documentElement.style.setProperty('--theme-secondary','#c4b5fd');
-    document.documentElement.style.setProperty('--deep-pink','#7c3aed');
-  }
-  closeModal('gender-modal');
-  setTimeout(()=>showProfileModal(),200);
-}
-function showGenderModal(){ openModal('gender-modal'); }
- 
-/* ═══════════════════ PROFILE ═══════════════════ */
-function saveProfile(){ try{localStorage.setItem('moodProfileV2',JSON.stringify(UP));}catch(e){} }
-function loadProfile(){
-  try{
-    const s=localStorage.getItem('moodProfileV2');
-    if(s) UP=JSON.parse(s);
-    if(UP.gender==='male') document.body.classList.add('theme-male');
-  }catch(e){}
-  document.getElementById('user-name').textContent=UP.loggedIn&&UP.name?UP.name:'Guest';
-}
-function createProfile(){
-  const name=document.getElementById('profile-name').value.trim();
-  if(!name){showToast('Please enter your name');return;}
-  UP.name=name;
-  UP.favFilm=document.getElementById('profile-fav').value.trim()||'Spirited Away';
-  UP.foodPref=document.getElementById('profile-food').value.trim()||'ramen';
-  UP.loggedIn=true;
-  saveProfile(); hideProfileModal();
-  document.getElementById('user-name').textContent=UP.name;
-  guestUses=0;
-  document.getElementById('guest-bar').classList.remove('visible');
-  if(currentMood!==null) renderRecs();
-  showToast(`Welcome, ${UP.name} ✦ Unlimited unlocked`);
-}
-function showProfileModal(){ openModal('profile-modal'); }
-function hideProfileModal(){ closeModal('profile-modal'); }
- 
-/* ═══════════════════ DONATE ═══════════════════ */
-function showDonateModal(){
-  if(UP.loggedIn&&UP.name) document.getElementById('donate-header').textContent=`Thank you, ${UP.name}`;
-  openModal('donate-modal');
-}
-function hideDonateModal(){ closeModal('donate-modal'); }
-function setAmount(v){
-  document.getElementById('donate-amount').value=v;
-  document.querySelectorAll('.amount-btn').forEach(b=>b.classList.toggle('selected',b.textContent==='R'+v));
-}
-function processDonation(){
-  const amt=parseFloat(document.getElementById('donate-amount').value)||100;
-  UP.totalDonated=(UP.totalDonated||0)+amt;
-  if(UP.loggedIn) saveProfile();
-  document.getElementById('paypal-amount').textContent='R'+amt;
-  hideDonateModal(); openModal('paypal-modal');
-}
-function hidePaypalModal(){ closeModal('paypal-modal'); }
-function copyPaypalDetails(){
-  const amt=document.getElementById('paypal-amount').textContent;
-  navigator.clipboard.writeText(`PayPal ${amt} to alextresor44@icloud.com`).then(()=>{
-    showToast('Copied · thank you for keeping the bowl warm 🌸');
-    window.open('https://www.paypal.com/paypalme/alextresor44','_blank');
-  }).catch(()=>{showToast('alextresor44@icloud.com · PayPal');});
-}
- 
-/* ═══════════════════ COMMUNITY ═══════════════════ */
-const POSTS=[
-  {text:"Dune: Part Two after midnight ramen. The sand visuals + deep tonkotsu = the perfect pairing. I cried twice.",user:"Saki T.",time:"9m ago"},
-  {text:"Challengers consumed my entire weekend. The tennis, the tension, the miso. Chef's kiss.",user:"Thabo M.",time:"24m ago"},
-  {text:"The Brutalist is 3.5 hours and I barely breathed. Shoyu ramen in silence afterwards.",user:"Emma L.",time:"51m ago"},
-  {text:"Your Name on rainy Sunday. Cherry blossom miso. Why did no one warn me about this film.",user:"Yuna C.",time:"1h ago"},
-  {text:"Frieren is genuinely the most beautiful anime I've ever seen. Slow. Perfect. Eat while watching.",user:"Hiroshi K.",time:"2h ago"},
-  {text:"Attack on Titan finale. I needed a whole bowl of tonkotsu just to recover.",user:"Zanele M.",time:"3h ago"},
-  {text:"Delicious in Dungeon is pure serotonin. I made ramen while watching characters make food. Meta.",user:"Priya S.",time:"4h ago"}
-];
-function renderCommunity(){
-  const feed=document.getElementById('community-feed');
-  const all=[...UP.communityPosts,...POSTS];
-  feed.innerHTML=all.map(p=>`
-    <div class="post-card">
-      <p class="post-text">"${p.text}"</p>
-      <div class="post-meta"><span>— ${p.user}</span><span>${p.time}</span></div>
-    </div>`).join('');
-}
-function renderLeaderboard(){
-  const c=document.getElementById('leaderboard');
-  const data=[
-    {name:"Saki T.",amt:520},{name:"Thabo M.",amt:390},{name:"Emma L.",amt:260},
-    {name:UP.loggedIn&&UP.name?UP.name:"You",amt:UP.totalDonated||80}
-  ];
-  c.innerHTML=data.map(d=>`
-    <div class="vis-card">
-      <div class="vis-name">${d.name}</div>
-      <div class="vis-amount">R${d.amt} · visionary</div>
-    </div>`).join('');
-}
-function postToCommunity(){
-  if(!UP.loggedIn){showProfileModal();return;}
-  const inp=document.getElementById('community-input');
-  if(!inp.value.trim())return;
-  UP.communityPosts.unshift({text:inp.value,user:UP.name,time:"just now"});
-  saveProfile(); inp.value=''; renderCommunity();
-}
- 
-/* ═══════════════════ PLAYLISTS ═══════════════════ */
-function renderPlaylists(){
-  const saved=document.getElementById('playlists-grid');
-  saved.innerHTML=UP.watchLater.length
-    ?UP.watchLater.map(item=>`
-      <div class="film-card" onclick="playTrailer(${item.id})">
-        <div class="film-poster-wrap">
-          <img src="https://picsum.photos/seed/${item.id}mood/800/450" alt="${item.title}" loading="lazy">
-          <div class="film-stream-badge ${PLATFORMS[item.platform]||'badge-prime'}">${item.platform||''}</div>
-        </div>
-        <div class="film-body">
-          <div class="film-title">${item.title}</div>
-          <p class="film-desc">${item.desc}</p>
-          <div class="film-ramen">🍜 ${item.ramen||''}</div>
-        </div>
-      </div>`).join('')
-    :'<div class="saved-empty">Your world is empty. Choose a mood and save what moves you.</div>';
- 
-  const weekly=document.getElementById('weekly-picks');
-  const picks=DB.sort(()=>0.5-Math.random()).slice(0,8);
-  weekly.innerHTML=picks.map(item=>`
-    <div class="film-card" onclick="playTrailer(${item.id})">
-      <div class="film-poster-wrap">
-        <img src="https://picsum.photos/seed/${item.id}mood/800/450" alt="${item.title}" loading="lazy">
-        <div class="film-mood-badge">${MOODS[item.moods[0]]?.icon||''} ${MOODS[item.moods[0]]?.name||''}</div>
-        <div class="film-stream-badge ${PLATFORMS[item.platform]||'badge-prime'}">${item.platform}</div>
-      </div>
-      <div class="film-body">
-        <div class="film-title">${item.title}</div>
-        <div class="film-ramen">🍜 ${item.ramen}</div>
-      </div>
-    </div>`).join('');
-}
-function suggestNewShow(){
-  const t=prompt('Suggest a show or film:');
-  if(t) showToast(`"${t}" added to the suggestion pool ✦`);
-}
- 
-/* ═══════════════════ NAV ═══════════════════ */
-function navigateTo(page){
-  ['discover','community','playlists'].forEach(p=>{
-    document.getElementById(p).style.display=p===page?'block':'none';
-    const l=document.getElementById('nav-'+p);
-    if(l) l.classList.toggle('active',p===page);
-  });
-  if(page==='community'){renderCommunity();renderLeaderboard();}
-  if(page==='playlists') renderPlaylists();
-  window.scrollTo({top:0,behavior:'smooth'});
-}
- 
-/* ═══════════════════ MODAL HELPERS ═══════════════════ */
-function openModal(id){ document.getElementById(id).classList.add('open'); }
-function closeModal(id){ document.getElementById(id).classList.remove('open'); }
- 
-/* ═══════════════════ TOAST ═══════════════════ */
-function showToast(msg){
-  const t=document.getElementById('toast');
-  t.textContent=msg; t.style.opacity='1';
-  clearTimeout(t._t); t._t=setTimeout(()=>{t.style.opacity='0';},3200);
-}
- 
-/* ═══════════════════ UTILS ═══════════════════ */
-function copyShareLink(){
-  const ref=UP.name?UP.name.toLowerCase().replace(/\s/g,'-'):'guest';
-  navigator.clipboard.writeText(`https://mood.ai/ref/${ref}`).then(()=>{
-    showToast('Link copied · every friend earns you VIP 🌸');
-  }).catch(()=>showToast('Share mood.ai with your friends 🌸'));
-}
-function explainAI(){
-  showToast('Mood maps emotional state + taste signals + circadian data → perfect match in 0.03s');
-}
- 
-/* ═══════════════════ BOOT ═══════════════════ */
-window.addEventListener('load',()=>{
-  loadProfile(); renderMoods(); navigateTo('discover');
-  const g=localStorage.getItem('moodGuest'); if(g) guestUses=parseInt(g);
-  if(!UP.loggedIn && !localStorage.getItem('seenGender')){ setTimeout(()=>{ openModal('gender-modal'); localStorage.setItem('seenGender','1'); },2500); }
-});
-window.addEventListener('beforeunload',()=>{ localStorage.setItem('moodGuest',guestUses); });
+
+// Auto petal rain
+setInterval(() => {
+  const petal = document.createElement('div');
+  petal.className = 'petal';
+  petal.style.left = Math.random() * 100 + 'vw';
+  petal.style.animationDuration = (Math.random() * 8 + 6) + 's';
+  document.body.appendChild(petal);
+  setTimeout(() => petal.remove(), 15000);
+}, 80);
 </script>
 </body>
 </html>
