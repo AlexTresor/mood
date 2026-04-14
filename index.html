@@ -4,136 +4,204 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Moody Chai · Steep your mood</title>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400&family=DM+Sans:wght@300;400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500&family=DM+Sans:wght@300;400;500&display=swap');
+
 * { margin:0; padding:0; box-sizing:border-box; }
 :root {
   --sakura: #f2a8c4;
   --sakura-deep: #d4688a;
   --gold: #e8c577;
   --ink: #1f1a22;
+  --glass: rgba(255,255,255,0.42);
 }
+
 body {
-  font-family: 'DM Sans', sans-serif;
-  background: linear-gradient(155deg, #f8e8f0 0%, #f0e8f8 30%, #e8f0f8 70%, #f8f0f0 100%);
+  font-family: 'DM Sans', system-ui, sans-serif;
+  background: linear-gradient(160deg, #fdf0f5 0%, #f0f4f8 40%, #f8f0f5 100%);
   color: var(--ink);
-  overflow-x: hidden;
   min-height: 100vh;
+  overflow-x: hidden;
 }
+
+/* GLASSMORPHIC ORBS + PETALS */
 .orb {
   position: fixed;
   border-radius: 50%;
-  filter: blur(120px);
+  filter: blur(110px);
   pointer-events: none;
   z-index: 0;
-  animation: orb-float 18s ease-in-out infinite;
+  animation: orbFloat 22s ease-in-out infinite;
 }
-.orb1 { width: 620px; height: 620px; background: radial-gradient(circle, rgba(242,168,196,0.28) 0%, transparent 70%); top: -180px; left: -180px; }
-.orb2 { width: 480px; height: 480px; background: radial-gradient(circle, rgba(196,174,240,0.22) 0%, transparent 70%); bottom: -120px; right: -120px; animation-delay: 6s; }
-.glass {
-  background: rgba(255,255,255,0.38);
-  backdrop-filter: blur(32px) saturate(180%);
-  -webkit-backdrop-filter: blur(32px) saturate(180%);
-  border: 1px solid rgba(255,255,255,0.55);
-  border-radius: 24px;
-  box-shadow: 0 8px 32px rgba(212,104,138,0.12),
-              inset 0 1px 0 rgba(255,255,255,0.8);
-}
-.glass-deep {
-  background: rgba(255,255,255,0.22);
-  backdrop-filter: blur(42px);
-  border: 1px solid rgba(255,255,255,0.35);
-  box-shadow: 0 20px 50px rgba(180,90,130,0.18);
-}
+.orb1 { width: 680px; height: 680px; background: radial-gradient(circle, rgba(242,168,196,0.32) 0%, transparent 65%); top: -200px; left: -200px; }
+.orb2 { width: 520px; height: 520px; background: radial-gradient(circle, rgba(196,174,240,0.24) 0%, transparent 65%); bottom: -140px; right: -140px; animation-delay: 8s; }
+
 .petal {
   position: fixed;
-  width: 12px;
+  width: 14px;
   height: 18px;
   background: linear-gradient(135deg, #f2a8c4, #d4688a);
   border-radius: 50% 0 50% 0;
-  opacity: 0.75;
+  opacity: 0.8;
   pointer-events: none;
   z-index: 1;
   animation: petalFall linear infinite;
 }
 @keyframes petalFall {
-  0% { transform: translateY(-100px) rotate(0deg); }
-  100% { transform: translateY(110vh) rotate(720deg); }
+  0% { transform: translateY(-120px) rotate(0deg); }
+  100% { transform: translateY(110vh) rotate(820deg); }
 }
-@keyframes orb-float {
+@keyframes orbFloat {
   0%,100% { transform: translate(0,0) scale(1); }
-  50% { transform: translate(30px, -40px) scale(1.08); }
+  50% { transform: translate(40px, -50px) scale(1.12); }
 }
+
+/* HEADER */
 header {
   position: sticky;
   top: 0;
-  z-index: 50;
-  background: rgba(255,255,255,0.72);
-  backdrop-filter: blur(30px);
-  border-bottom: 1px solid rgba(242,168,196,0.2);
+  z-index: 100;
+  background: rgba(255,255,255,0.68);
+  backdrop-filter: blur(32px);
+  border-bottom: 1px solid rgba(242,168,196,0.25);
+  padding: 18px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 .logo {
   font-family: 'Cormorant Garamond', serif;
-  font-size: 2rem;
+  font-size: 2.1rem;
   font-weight: 300;
+  display: flex;
+  align-items: center;
+  gap: 10px;
   background: linear-gradient(90deg, #f2a8c4, #e8c577);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  display: flex;
-  align-items: center;
-  gap: 8px;
 }
-.beta {
+.beta-pill {
   font-size: 0.68rem;
-  letter-spacing: 1px;
-  background: rgba(242,168,196,0.15);
-  color: #d4688a;
-  padding: 2px 12px;
-  border-radius: 9999px;
+  padding: 4px 14px;
+  background: rgba(242,168,196,0.18);
   border: 1px solid rgba(212,104,138,0.3);
-}
-.glass-btn {
-  background: linear-gradient(135deg, #f2a8c4, #d4688a);
-  color: white;
-  border: none;
   border-radius: 9999px;
-  padding: 14px 32px;
-  font-weight: 500;
-  box-shadow: 0 10px 30px rgba(212,104,138,0.35);
-  transition: all 0.3s cubic-bezier(0.34,1.56,0.64,1);
+  color: #d4688a;
+  letter-spacing: 1px;
 }
-.glass-btn:hover {
-  transform: translateY(-3px) scale(1.04);
-  box-shadow: 0 16px 40px rgba(212,104,138,0.45);
+
+/* MOOD PICKER */
+.mood-picker {
+  padding: 40px 24px;
+  text-align: center;
 }
-.mood-pill {
-  background: rgba(255,255,255,0.45);
-  backdrop-filter: blur(20px);
+.mood-picker h1 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 2.8rem;
+  font-weight: 300;
+  margin-bottom: 8px;
+}
+.mood-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  max-width: 420px;
+  margin: 32px auto;
+}
+.mood-card {
+  background: var(--glass);
+  backdrop-filter: blur(28px);
   border: 1px solid rgba(255,255,255,0.6);
-  border-radius: 20px;
-  padding: 18px 12px;
+  border-radius: 24px;
+  padding: 24px 12px;
   text-align: center;
   transition: all 0.4s cubic-bezier(0.34,1.56,0.64,1);
-  box-shadow: 0 8px 24px rgba(180,90,130,0.08);
+  box-shadow: 0 12px 32px rgba(212,104,138,0.12);
 }
-.mood-pill:hover, .mood-pill.active {
-  transform: translateY(-6px) scale(1.05);
-  background: rgba(242,168,196,0.25);
-  border-color: #f2a8c4;
-  box-shadow: 0 20px 40px rgba(212,104,138,0.25);
+.mood-card:hover {
+  transform: translateY(-8px) scale(1.06);
+  box-shadow: 0 24px 48px rgba(212,104,138,0.28);
 }
-.rec-card {
-  background: rgba(255,255,255,0.38);
-  backdrop-filter: blur(28px);
-  border: 1px solid rgba(255,255,255,0.5);
-  border-radius: 24px;
+.mood-card .emoji {
+  font-size: 3rem;
+  display: block;
+  margin-bottom: 8px;
+}
+
+/* MAIN APP */
+.main-content {
+  padding: 0 24px;
+}
+.glass-card {
+  background: var(--glass);
+  backdrop-filter: blur(32px);
+  border: 1px solid rgba(255,255,255,0.55);
+  border-radius: 28px;
+  padding: 20px;
+  margin-bottom: 24px;
+  box-shadow: 0 16px 40px rgba(212,104,138,0.15);
+}
+
+/* RECOMMENDATIONS */
+.rec-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 16px;
+}
+.rec-item {
+  background: white;
+  border-radius: 22px;
   overflow: hidden;
-  box-shadow: 0 12px 40px rgba(180,90,130,0.15);
-  transition: transform 0.4s cubic-bezier(0.34,1.56,0.64,1);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.08);
 }
-.rec-card:hover {
-  transform: scale(1.04) translateY(-8px);
+.rec-item img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+}
+
+/* NAV */
+.bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(255,255,255,0.82);
+  backdrop-filter: blur(30px);
+  border-top: 1px solid rgba(242,168,196,0.3);
+  display: flex;
+  justify-content: space-around;
+  padding: 12px 0 24px;
+  z-index: 200;
+}
+.nav-item {
+  text-align: center;
+  font-size: 0.68rem;
+  color: #666;
+}
+.nav-item.active {
+  color: #d4688a;
+}
+
+/* DONATE MODAL */
+#donate-modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.65);
+  backdrop-filter: blur(18px);
+  z-index: 999;
+  display: none;
+  align-items: flex-end;
+}
+.donate-content {
+  background: white;
+  width: 100%;
+  max-width: 480px;
+  margin: 0 auto;
+  border-top-left-radius: 32px;
+  border-top-right-radius: 32px;
+  padding: 32px 24px;
 }
 </style>
 </head>
@@ -143,189 +211,161 @@ header {
 <div class="orb orb1"></div>
 <div class="orb orb2"></div>
 
-<!-- HEADER -->
-<header class="glass py-4 px-6 flex items-center justify-between">
-  <div class="logo">
-    <span style="font-size:2.2rem;">🌸</span>
-    Moody Chai
-  </div>
-  <div class="beta">BETA • Free Forever</div>
-  <button onclick="showDonate()" class="glass-btn text-sm px-6 py-2">Support the Bowl 🍜</button>
+<header>
+  <div class="logo">🌸 Moody Chai</div>
+  <div class="beta-pill">BETA • Free Forever</div>
+  <button onclick="showDonate()" class="px-5 py-2 text-sm font-medium bg-gradient-to-r from-pink-400 to-rose-400 text-white rounded-full shadow-lg">Support the Bowl 🍜</button>
 </header>
 
-<!-- LANDING / MOOD PICKER -->
-<section id="landing" class="min-h-screen flex flex-col items-center justify-center px-6 text-center">
-  <div class="text-7xl mb-6 animate-bounce">🍜</div>
-  <h1 class="text-5xl font-light tracking-tighter mb-2">Steep your mood.<br>Sip the perfect story.</h1>
-  <p class="text-lg text-gray-600 max-w-xs mx-auto mb-10">Glassmorphic. Neuroscience-backed. Ramen-warm.</p>
+<!-- MOOD PICKER -->
+<section class="mood-picker">
+  <h1>Good evening, Alex</h1>
+  <p class="text-sm text-gray-500 mb-8">How are you feeling right now?</p>
   
-  <p class="text-sm uppercase tracking-[2px] text-pink-600 mb-6">How are you feeling tonight?</p>
-  
-  <div class="grid grid-cols-3 gap-4 max-w-md w-full">
-    <div onclick="selectMood('cozy')" class="mood-pill glass text-center cursor-pointer">
-      <div class="text-4xl mb-2">🍵</div>
-      <div class="font-medium">Cozy</div>
-    </div>
-    <div onclick="selectMood('euphoric')" class="mood-pill glass text-center cursor-pointer">
-      <div class="text-4xl mb-2">🌸</div>
-      <div class="font-medium">Euphoric</div>
-    </div>
-    <div onclick="selectMood('melancholic')" class="mood-pill glass text-center cursor-pointer">
-      <div class="text-4xl mb-2">🌧️</div>
-      <div class="font-medium">Melancholic</div>
-    </div>
-    <div onclick="selectMood('curious')" class="mood-pill glass text-center cursor-pointer">
-      <div class="text-4xl mb-2">🔭</div>
-      <div class="font-medium">Curious</div>
-    </div>
-    <div onclick="selectMood('anxious')" class="mood-pill glass text-center cursor-pointer">
-      <div class="text-4xl mb-2">🌀</div>
-      <div class="font-medium">Anxious</div>
-    </div>
-    <div onclick="selectMood('nostalgic')" class="mood-pill glass text-center cursor-pointer">
-      <div class="text-4xl mb-2">🍂</div>
-      <div class="font-medium">Nostalgic</div>
-    </div>
+  <div class="mood-grid">
+    <div onclick="selectMood(this, 'Melancholic')" class="mood-card"><div class="emoji">🌧️</div><div>Melancholic</div></div>
+    <div onclick="selectMood(this, 'Curious')" class="mood-card"><div class="emoji">🔭</div><div>Curious</div></div>
+    <div onclick="selectMood(this, 'Anxious')" class="mood-card"><div class="emoji">🌀</div><div>Anxious</div></div>
+    <div onclick="selectMood(this, 'Nostalgic')" class="mood-card"><div class="emoji">🍂</div><div>Nostalgic</div></div>
+    <div onclick="selectMood(this, 'Cozy')" class="mood-card"><div class="emoji">🍵</div><div>Cozy</div></div>
+    <div onclick="selectMood(this, 'Euphoric')" class="mood-card"><div class="emoji">🌸</div><div>Euphoric</div></div>
   </div>
 
-  <button onclick="enterApp()" class="glass-btn mt-12 text-lg px-12 py-5 w-full max-w-xs">
-    Steep My Mood →
-  </button>
-
-  <p class="text-xs text-gray-500 mt-8">Free forever • Donations keep the steam rising</p>
+  <button onclick="enterApp()" class="px-12 py-5 text-lg font-medium bg-gradient-to-r from-pink-400 to-rose-400 text-white rounded-full shadow-xl w-full max-w-xs mx-auto block">Steep My Mood →</button>
+  <p class="text-xs text-gray-400 mt-6">Free forever • Donations keep the steam rising</p>
 </section>
 
-<!-- MAIN APP (shown after mood pick) -->
-<section id="app-main" class="hidden min-h-screen pb-24">
-  <div class="px-6 pt-8">
-    <h2 class="text-3xl font-light">Good evening, <span id="user-greeting" class="text-pink-600">Alex</span></h2>
-    <p class="text-sm text-gray-500">Your <span id="current-mood-display" class="font-medium"></span> evening awaits</p>
-  </div>
+<!-- MAIN APP -->
+<section id="main-app" class="hidden min-h-screen pb-24">
 
-  <!-- RECOMMENDATIONS -->
-  <div class="px-6 mt-8">
-    <p class="text-xs uppercase tracking-widest text-gray-500 mb-3">STEAMED JUST FOR YOU</p>
-    <div id="recs-container" class="grid grid-cols-2 gap-4"></div>
-  </div>
+  <div class="main-content">
+    <div class="glass-card">
+      <h2 class="text-2xl font-light">Steamed just for you</h2>
+      <div id="recs" class="rec-grid mt-6"></div>
+    </div>
 
-  <!-- COMMUNITY -->
-  <div class="px-6 mt-10">
-    <p class="text-xs uppercase tracking-widest text-gray-500 mb-3">WHAT THE BOWL IS FEELING TONIGHT</p>
-    <div id="community-feed" class="space-y-6"></div>
-  </div>
+    <div class="glass-card">
+      <h3 class="text-sm uppercase tracking-widest mb-4">What the bowl is feeling tonight</h3>
+      <div id="community" class="space-y-4"></div>
+    </div>
 
-  <!-- RAMEN LAB TEASER -->
-  <div onclick="alert('Ramen Lab coming in next update — history, pairings, user recipes')" class="mx-6 mt-8 glass p-6 rounded-3xl flex items-center gap-4 cursor-pointer">
-    <div class="text-5xl">🍜</div>
-    <div>
-      <p class="font-medium">Ramen Lab</p>
-      <p class="text-sm text-gray-500">Learn every bowl. Pair it with the perfect anime or K-drama.</p>
+    <div onclick="alert('Ramen Lab full version coming soon — history, pairings, user recipes')" class="glass-card flex gap-4 items-center cursor-pointer">
+      <div class="text-6xl">🍜</div>
+      <div>
+        <p class="font-medium text-lg">Ramen Lab</p>
+        <p class="text-sm text-gray-500">Learn every bowl. Pair it with the perfect anime or K-drama.</p>
+      </div>
     </div>
   </div>
 
-  <!-- REFERRAL + VIP -->
-  <div class="mx-6 mt-8 glass p-6 rounded-3xl">
-    <p class="text-xs uppercase">Invite friends • Earn free VIP days</p>
-    <div class="bg-white/60 rounded-2xl p-4 mt-3 flex items-center justify-between">
-      <code class="font-mono text-pink-600">MOODY-ALEX42</code>
-      <button onclick="copyReferral()" class="px-6 py-2 bg-pink-600 text-white text-sm rounded-2xl">Copy code</button>
+  <!-- REFERRAL -->
+  <div class="mx-6 mt-8 glass-card p-6">
+    <p class="text-xs uppercase mb-2">Invite friends • Earn free VIP days</p>
+    <div class="flex items-center gap-3 bg-white/60 rounded-2xl p-4">
+      <code class="font-mono text-lg text-pink-600">MOODY-ALEX42</code>
+      <button onclick="copyCode()" class="ml-auto px-6 py-3 bg-pink-600 text-white rounded-2xl text-sm">Copy</button>
     </div>
     <p class="text-xs text-gray-500 mt-3">1 new friend = 1 free VIP day for both of you</p>
   </div>
 </section>
 
+<!-- BOTTOM NAV -->
+<nav class="bottom-nav">
+  <div onclick="navigate(0)" class="nav-item active">🏠<br>Home</div>
+  <div onclick="navigate(1)" class="nav-item">🌸<br>Chai Club</div>
+  <div onclick="navigate(2)" class="nav-item">🍜<br>Support</div>
+</nav>
+
 <!-- DONATE MODAL -->
-<div onclick="if(event.target.id==='donate-modal')hideDonate()" id="donate-modal" class="hidden fixed inset-0 bg-black/60 backdrop-blur-xl z-50 flex items-end">
-  <div class="bg-white rounded-t-3xl w-full max-w-xl mx-auto p-8">
-    <h2 class="text-3xl font-light text-center">Support the Bowl</h2>
-    <p class="text-center text-gray-500 mt-2">Your gift keeps Moody Chai free, beautiful, and steaming.</p>
+<div id="donate-modal" onclick="if(event.target.id==='donate-modal')hideDonate()">
+  <div class="donate-content glass" onclick="event.stopImmediatePropagation()">
+    <h2 class="text-3xl font-light text-center mb-2">Support the Bowl</h2>
+    <p class="text-center text-gray-500">Your gift keeps Moody Chai free, beautiful, and steaming.</p>
     
     <div class="grid grid-cols-2 gap-4 mt-8">
-      <button onclick="donateNow(50)" class="glass p-6 text-center rounded-3xl">R50<br><span class="text-xs">A warm bowl</span></button>
-      <button onclick="donateNow(85)" class="glass p-6 text-center rounded-3xl border-2 border-pink-300">R85<br><span class="text-xs">1 month of chai</span></button>
-      <button onclick="donateNow(250)" class="glass p-6 text-center rounded-3xl">R250<br><span class="text-xs">Patron</span></button>
-      <button onclick="donateNow(500)" class="glass p-6 text-center rounded-3xl">R500<br><span class="text-xs">Visionary ✦</span></button>
+      <button onclick="donate(50)" class="glass p-6 rounded-3xl text-center">R50<br><small class="text-xs">A warm bowl</small></button>
+      <button onclick="donate(85)" class="glass p-6 rounded-3xl text-center border-2 border-pink-300">R85<br><small class="text-xs">1 month of chai</small></button>
+      <button onclick="donate(250)" class="glass p-6 rounded-3xl text-center">R250<br><small class="text-xs">Patron</small></button>
+      <button onclick="donate(500)" class="glass p-6 rounded-3xl text-center">R500<br><small class="text-xs">Visionary ✦</small></button>
     </div>
     
-    <button onclick="window.open('https://paypal.me/alextresor44','_blank')" class="w-full mt-8 py-5 glass-btn text-xl">
-      Send via PayPal 🍜
-    </button>
+    <button onclick="processPayPal()" class="w-full mt-8 py-6 text-xl font-medium bg-gradient-to-r from-pink-400 to-rose-400 text-white rounded-3xl">Send via PayPal 🍜</button>
   </div>
 </div>
 
 <script>
-function selectMood(m) {
-  document.getElementById('current-mood-display').textContent = m;
-  document.getElementById('landing').classList.add('hidden');
-  document.getElementById('app-main').classList.remove('hidden');
-  renderRecommendations();
-  renderCommunity();
+/* PETAL RAIN */
+function createPetals() {
+  for(let i = 0; i < 35; i++) {
+    const petal = document.createElement('div');
+    petal.className = 'petal';
+    petal.style.left = Math.random() * 100 + 'vw';
+    petal.style.animationDuration = (6 + Math.random() * 12) + 's';
+    petal.style.opacity = 0.6 + Math.random() * 0.4;
+    document.body.appendChild(petal);
+    setTimeout(() => petal.remove(), 20000);
+  }
+}
+setInterval(() => { if(Math.random() > 0.4) createPetals(); }, 120);
+
+/* MOOD SELECTION */
+let currentMood = '';
+function selectMood(el, mood) {
+  document.querySelectorAll('.mood-card').forEach(c => c.classList.remove('active'));
+  el.classList.add('active');
+  currentMood = mood;
 }
 
 function enterApp() {
-  document.getElementById('landing').classList.add('hidden');
-  document.getElementById('app-main').classList.remove('hidden');
-  renderRecommendations();
+  if(!currentMood) return alert("Pick a mood first 🌸");
+  document.querySelector('.mood-picker').classList.add('hidden');
+  document.getElementById('main-app').classList.remove('hidden');
+  renderRecs();
   renderCommunity();
 }
 
-function renderRecommendations() {
-  const container = document.getElementById('recs-container');
+function renderRecs() {
+  const container = document.getElementById('recs');
   container.innerHTML = `
-    <div class="rec-card p-4">
-      <div class="h-40 bg-gradient-to-br from-pink-300 to-amber-200 rounded-2xl flex items-center justify-center text-6xl">🌸</div>
-      <p class="mt-4 font-medium">Spirited Away</p>
-      <p class="text-xs text-gray-500">Perfect for your current mood • Netflix ZA</p>
-    </div>
-    <div class="rec-card p-4">
-      <div class="h-40 bg-gradient-to-br from-blue-300 to-purple-200 rounded-2xl flex items-center justify-center text-6xl">🍜</div>
-      <p class="mt-4 font-medium">Tampopo (1985)</p>
-      <p class="text-xs text-gray-500">Ramen pairing: Tonkotsu • Prime Video</p>
-    </div>`;
+    <div class="rec-item"><img src="https://picsum.photos/id/1015/800/600" alt=""><div class="p-3"><p class="font-medium">Spirited Away</p><p class="text-xs text-gray-500">Ghibli • Perfect for ${currentMood}</p></div></div>
+    <div class="rec-item"><img src="https://picsum.photos/id/201/800/600" alt=""><div class="p-3"><p class="font-medium">Your Name</p><p class="text-xs text-gray-500">Makoto Shinkai • Anime path</p></div></div>`;
 }
 
 function renderCommunity() {
-  const feed = document.getElementById('community-feed');
-  feed.innerHTML = `
-    <div class="glass p-5 rounded-3xl">
-      <p class="text-sm">"Just watched Your Name in euphoric mode. Moody Chai knew exactly what I needed tonight 🌸"</p>
-      <p class="text-xs text-gray-500 mt-3">@sakura.dreams • 14m ago</p>
-    </div>
-    <div class="glass p-5 rounded-3xl">
-      <p class="text-sm">"Cozy mode + ramen + Parasite = perfect Friday night. Thank you Moody Chai!"</p>
-      <p class="text-xs text-gray-500 mt-3">@ramen.lover • 41m ago</p>
-    </div>`;
+  const container = document.getElementById('community');
+  container.innerHTML = `
+    <div class="glass-card p-4"><p class="text-sm">"Moody Chai just gave me the perfect ramen + K-drama pairing for my melancholic night 🍜"</p><p class="text-xs text-gray-500 mt-2">@sakura_nami • 11m ago</p></div>`;
 }
 
 function showDonate() {
-  document.getElementById('donate-modal').classList.remove('hidden');
-  document.getElementById('donate-modal').classList.add('flex');
+  document.getElementById('donate-modal').style.display = 'flex';
 }
-
 function hideDonate() {
-  document.getElementById('donate-modal').classList.add('hidden');
-  document.getElementById('donate-modal').classList.remove('flex');
+  document.getElementById('donate-modal').style.display = 'none';
 }
-
-function donateNow(amount) {
+function donate(amount) {
   hideDonate();
-  alert(`Thank you! R${amount} sent to PayPal alextresor44@icloud.com 🌸\nYou are now in the Hall of Visionaries.`);
+  setTimeout(() => {
+    alert(`Thank you! R${amount} sent to alextresor44@icloud.com 🌸\nYou are now a Visionary.`);
+  }, 400);
+}
+function processPayPal() {
+  hideDonate();
+  window.open('https://paypal.me/alextresor44', '_blank');
+}
+function copyCode() {
+  navigator.clipboard.writeText('MOODY-ALEX42');
+  alert('Referral code copied! Share it and earn free VIP days 🍜');
+}
+function navigate(n) {
+  alert('Navigation coming in next update — full React version when donations hit goal ✨');
 }
 
-function copyReferral() {
-  navigator.clipboard.writeText("MOODY-ALEX42");
-  alert("Referral code copied! Share it and earn free VIP days 🍜");
-}
-
-// Auto petal rain
-setInterval(() => {
-  const petal = document.createElement('div');
-  petal.className = 'petal';
-  petal.style.left = Math.random() * 100 + 'vw';
-  petal.style.animationDuration = (Math.random() * 8 + 6) + 's';
-  document.body.appendChild(petal);
-  setTimeout(() => petal.remove(), 15000);
-}, 80);
+/* BOOT */
+window.onload = () => {
+  createPetals();
+  console.log('%cMoody Chai launched — glassmorphic perfection ready', 'color:#d4688a;font-family:Cormorant Garamond;font-size:13px');
+};
 </script>
 </body>
 </html>
